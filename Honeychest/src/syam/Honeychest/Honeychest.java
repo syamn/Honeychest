@@ -3,12 +3,15 @@ package syam.Honeychest;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Honeychest extends JavaPlugin{
 	public final static Logger log = Logger.getLogger("Minecraft");
 	public final static String logPrefix = "[Honeychest] ";
 	public final static String msgPerfix = "&c[Honeychest] &f";
+
+	private final HoneychestPlayerListener playerListener = new HoneychestPlayerListener(this);
 
 	private static Honeychest instance;
 
@@ -28,6 +31,10 @@ public class Honeychest extends JavaPlugin{
 	 */
 	public void onEnable(){
 		instance = this;
+
+		// イベントを登録
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(playerListener, this);
 
 		// コマンドを登録
 		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand());
