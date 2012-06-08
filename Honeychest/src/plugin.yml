@@ -1,0 +1,20 @@
+##  Plugin Information  ##
+name: Honeychest
+version: 0.01
+main: syam.Honeychest.Honeychest
+description: SakuraServer Plugin!
+website: http://sakura-server.net/
+##  Original Author     ##
+author: syam
+commands:
+    honeychest:
+      usage: /honeychest help - to see the help
+      aliases: [hc]
+      description: To see the Honeychest help.
+permissions:
+    honeychest.admin:
+        default: op
+        description: Can create/break honeychest.
+    honeychest.notify:
+        default: op
+        description: Notify when stealing items from honeychest.
