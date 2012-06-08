@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -178,6 +179,16 @@ public class Actions {
 	}
 	public static String returnBlockLocationString(Location loc){
 		return loc.getWorld().getName()+":"+loc.getBlockX()+","+loc.getBlockY()+","+loc.getBlockZ();
+	}
+	/**
+	 * デバッグ用 syamnがオンラインならメッセージを送る
+	 * @param msg
+	 */
+	public static void debug(String msg){
+		OfflinePlayer syamn = Bukkit.getServer().getOfflinePlayer("syamn");
+		if (syamn.isOnline()){
+			Actions.message(null, (Player) syamn, msg);
+		}
 	}
 
 	/****************************************/

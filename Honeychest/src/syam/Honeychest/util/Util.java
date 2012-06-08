@@ -31,7 +31,7 @@ public class Util {
 
 		// 要素が無くなるまでループ
 		while (iter.hasNext()){
-			buffer.append(iter.hasNext());
+			buffer.append(iter.next());
 			// 次の要素があればデリミタを挟む
 			if (iter.hasNext()){
 				buffer.append(delimiter);

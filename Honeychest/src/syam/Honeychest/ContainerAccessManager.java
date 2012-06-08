@@ -34,7 +34,7 @@ public class ContainerAccessManager {
 			return;
 		}
 		InventoryHolder container = (InventoryHolder) block.getState();
-		accessList.add(new ContainerAccess(container, player, null,block.getLocation()));
+		accessList.add(new ContainerAccess(container, player, InventoryUtil.compressInventory(InventoryUtil.getContainerContents(container)), block.getLocation()));
 	}
 
 	/**
