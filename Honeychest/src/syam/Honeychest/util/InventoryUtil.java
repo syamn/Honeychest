@@ -58,6 +58,91 @@ public class InventoryUtil {
 		return inv.toArray(new ItemStack[0]);
 	}
 
+	/**
+	 * 2つのハッシュマップ変換済みインベントリデータを比較して、違いのあるアイテムを整形して返す
+	 * @param before インベントリ変更前のハッシュマップ HashMap<String, Integer>
+	 * @param after インベントリ変更後のハッシュマップ HashMap<String, Integer>
+	 * @return 違いのあるアイテム文字列 ＠以前は加わったもの 以降は減ったもの 例: item:data,amount&item:data,amount@item:data,amount&item:data
+	 */
+	public static String createDifferenceString(HashMap<String, Integer> before, HashMap<String, Integer> after) {
+		List<String> add = new ArrayList<String>();
+		List<String> sub = new ArrayList<String>();
 
+		for (Entry<String, Integer> item : before.entrySet()){
+			if (!after.containsKey(item.getKey())){
+				// 変更後にアイテムが無かった場合
+				sub.add(item.getKey() + "," + item.getValue());
+			}else if(item.getValue() > after.get(item.getKey())){
+				// 変更後にアイテムが減っていた場合
+				sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
+			}else if(item.getValue() < after.get(item.getKey())){
+				// 変更後にアイテムが増えていた場合
+				add.add(item.getKey() + "," + (after.get(item.getKey()) - item.getValue()));
+			}
+		}
+		for (Entry<String, Integer> item : after.entrySet()) {
+			if (!before.containsKey(item.getKey())){
+				// 変更前に無いアイテムが変更後にあった場合
+				add.add(item.getKey() + "," + item.getValue());
+			}
+		}
+		// 文字列を結合して返す
+		return Util.join(add, "&") + "@" + Util.join(sub, "&");
+	}
+
+	/**
+	 * 違いのあるアイテムの文字列を受け取り、増加と減少データの2つのハッシュマップをリストに入れて返す
+	 * @param diff 処理済みの整形済みアイテム比較文字列
+	 * @return 増加分、減少分、2つのハッシュマップが入ったリストを返す 1つめの要素が増減分、2つめが減少分
+	 */
+	public static List<HashMap<String, Integer>> interpretDifferenceString(String diff) {
+		List<HashMap<String, Integer>> ops = new ArrayList<HashMap<String, Integer>>();
+
+		// ＠で区切られた増えた部分と減った部分を分けて処理する
+		for (String changes : diff.split("@")){
+			HashMap<String, Integer> op = new HashMap<String, Integer>();
+			// 一つの アイテム:個数 データごとに処理する
+			for (String change : changes.split("&")){
+				if (change.length() == 0) continue;
+				// アイテム部分と個数部分を分ける
+				String[] item = change.split(",");
+				op.put(item[0], Integer.parseInt(item[1]));
+			}
+			ops.add(op);
+		}
+		// 減少分がなく、opsリストサイズが1なら空のハッシュマップを追加してサイズを2に揃える
+		if (ops.size() == 1) {
+			ops.add(new HashMap<String, Integer>());
+		}
+		return ops;
+	}
+
+	/**
+	 * 人間にとって読みやすく整形した、チェスト増減データを作る
+	 * @param ops interpretDifferenceString関数で作った、増加分と減少分のハッシュマップが入ったリスト
+	 * @return 整形済み文字列
+	 */
+	public static String createChangeString(List<HashMap<String, Integer>> ops) {
+		if (ops.size() == 0) return "";
+		String changeString = "";
+
+		// 増加分をリストに追加
+		List<String> add = new ArrayList<String>();
+		for (Entry<String, Integer> item : ops.get(0).entrySet()){
+			add.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+		}
+		// 減少分をリストに追加
+		List<String> sub = new ArrayList<String>();
+		for (Entry<String, Integer> item : ops.get(1).entrySet()){
+			sub.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+		}
+
+		// それぞれのリストを組み立て
+		if (add.size() > 0) changeString += "&a+(" + Util.join(add, ", ") + ")";
+		if (sub.size() > 0) changeString += "&4-(" + Util.join(sub, ", ") + ")";
+
+		// 整形済み文字列を返す
+		return changeString;
+	}
 
 }

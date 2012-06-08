@@ -1,5 +1,6 @@
 package syam.Honeychest.util;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
@@ -34,5 +35,25 @@ public class ItemUtil {
 		}
 		// ItemStackを返す
 		return stack;
+	}
+
+	/**
+	 * データ値があれば付与したまま、アイテムの名前を返す
+	 * @param itemData アイテムデータ
+	 * 	 * @return 文字列 アイテム名(:データ値)
+	 */
+	public static String getItemStringName(String itemData) {
+		String[] itemArr = itemData.split(":");
+
+		// 文字列が数値でなければそのまま返す
+		if (!Util.isInteger(itemArr[0])) {
+			return itemData;
+		}
+		// データ値があればデータ値を付けて、無ければアイテム名だけを返す
+		if (itemArr.length > 1){
+			return Material.getMaterial(Integer.parseInt(itemArr[0])).name() + ":" + itemArr[1];
+		}else{
+			return Material.getMaterial(Integer.parseInt(itemArr[0])).name();
+		}
 	}
 }
