@@ -12,6 +12,8 @@ public class Honeychest extends JavaPlugin{
 
 	private static Honeychest instance;
 
+	public static ContainerAccessManager containerManager;
+
 	/**
 	 * プラグイン停止処理
 	 */
@@ -30,6 +32,9 @@ public class Honeychest extends JavaPlugin{
 		// コマンドを登録
 		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand());
 		log.info(logPrefix+"Initialized Command.");
+
+		// コンテナマネージャを初期化
+		containerManager = new ContainerAccessManager();
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
