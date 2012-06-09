@@ -174,10 +174,10 @@ public class Actions {
 	 * @param loc
 	 * @return
 	 */
-	public static String returnLocationString(Location loc){
+	public static String getLocationString(Location loc){
 		return loc.getWorld().getName()+":"+loc.getX()+","+loc.getY()+","+loc.getZ();
 	}
-	public static String returnBlockLocationString(Location loc){
+	public static String getBlockLocationString(Location loc){
 		return loc.getWorld().getName()+":"+loc.getBlockX()+","+loc.getBlockY()+","+loc.getBlockZ();
 	}
 	/**

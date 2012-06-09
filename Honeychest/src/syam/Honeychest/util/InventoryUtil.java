@@ -155,10 +155,14 @@ public class InventoryUtil {
 	/**
 	 * インベントリインターフェースを持つブロックから完全なインベントリ情報を得るための関数
 	 * @param container チェックするブロック
-	 * @return 2つのインベントリの内容を合わせた ItemStack[]
-	 * @author N3X15
+	 * @return ItemStack[]
 	 */
 	public static ItemStack[] getContainerContents(InventoryHolder container) {
+		return container.getInventory().getContents();
+
+		// ダブルチェストの扱いはそのままで大丈夫みたいなのでコメントアウトしてます
+
+		/*
 		// チェスト以外は問題ないのでそのまま返す
 		if (!(container instanceof Chest)) return container.getInventory().getContents();
 
@@ -179,32 +183,8 @@ public class InventoryUtil {
 		if (second == null){
 			return chest.getInventory().getContents();
 		}else{
-			// I think it would be good, to consistently return same chest
-            // contents, regardless of what
-            // block was clicked on. That means, we must determine, which part
-            // of chest comes first, and which second.
-            // I choose the one, which has lower X coordinate. If they are same,
-            // than it's the one with lower Z coordinate.
-            // I believe it can be easily checked with this trick:
-            ItemStack[] result = new ItemStack[54];
-            ItemStack[] firstHalf;
-            ItemStack[] secondHalf;
-
-            if ((chest.getX() + chest.getZ()) < (second.getX() + second.getZ())) {
-                firstHalf = chest.getInventory().getContents();
-                secondHalf = second.getInventory().getContents();
-            } else {
-                firstHalf = second.getInventory().getContents();
-                secondHalf = chest.getInventory().getContents();
-            }
-
-            // 合わせる
-            for (int i = 0; i < 27; i++) {
-                result[i] = firstHalf[i];
-                result[i + 27] = secondHalf[i];
-            }
-
-            return result;
+			// ダブルチェストの扱いをここに
 		}
+		*/
 	}
 }

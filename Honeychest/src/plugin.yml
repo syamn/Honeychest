@@ -1,6 +1,6 @@
 ##  Plugin Information  ##
 name: Honeychest
-version: 0.13
+version: 0.20
 main: syam.Honeychest.Honeychest
 description: SakuraServer Plugin!
 website: http://sakura-server.net/

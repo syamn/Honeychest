@@ -57,9 +57,19 @@ public class ContainerAccessManager {
 		HashMap<String, Integer> after = InventoryUtil.compressInventory(InventoryUtil.getContainerContents(access.container));
 		String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
 		String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
+
 		if (diff.length() > 1){
 			// メッセージを送る
 			Actions.message(null, player, msgPrefix + readble);
+
+			// ハニーチェストか判定
+			String hc = HoneyData.getHc(access.loc);
+			if (hc != null){
+				// ハニーチェスト
+				String locstr = Actions.getBlockLocationString(access.loc);
+				// Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
+				Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing items from HoneyChest! Goodbye!");
+			}
 		}
 
 		// アクセスリストから削除
