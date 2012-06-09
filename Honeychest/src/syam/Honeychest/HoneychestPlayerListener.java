@@ -98,17 +98,17 @@ public class HoneychestPlayerListener implements Listener {
 		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
 	}
 
-	// 切断
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		// インベントリが閉じられたかチェック
-		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
-	}
-
 	// テレポート
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		// インベントリが閉じられたかチェック
 		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
+	}
+
+	// 切断
+	//@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		// アクセスリストから削除
+		Honeychest.containerManager.removeAccessList(event.getPlayer());
 	}
 }
