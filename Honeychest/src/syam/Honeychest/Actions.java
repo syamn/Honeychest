@@ -111,8 +111,10 @@ public class Actions {
 		message(sender, null, "&c===================================");
 		message(sender, null, "&bHoneychest version &3%version &bby syamn");
 		message(sender, null, " &b<>&f = 必要, &b[]&f = オプション");
-		message(sender, null, " /honeychest(/hc)&7 - このヘルプを表示");
-		message(sender, null, " /honeychest manage(/hc m)&7 - Honeychest設置/破壊");
+		message(sender, null, " /honeychest(/hc)&7 - Honeychest設置/破壊");
+		message(sender, null, " /honeychest save(/hc s)&7 - Honeychestデータ保存");
+		message(sender, null, " /honeychest reload(/hc r)&7 - Honeychestデータ再読み込み");
+		message(sender, null, " /honeychest help(/hc h)&7 - このコマンドヘルプを表示");
 		message(sender, null, "&c===================================");
 	}
 

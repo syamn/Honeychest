@@ -68,7 +68,7 @@ public class ContainerAccessManager {
 				// ハニーチェスト
 				String locstr = Actions.getBlockLocationString(access.loc);
 				// Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
-				Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing items from HoneyChest! Goodbye!");
+				player.kickPlayer("[HoneyChest] Stealing from HoneyChest(" + locstr + ")");
 			}
 		}
 

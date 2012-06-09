@@ -51,13 +51,42 @@ public class HoneychestCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (command.getName().equalsIgnoreCase("honeychest") || command.getName().equalsIgnoreCase("hc")){
-			// /honeychest help コマンド
-			if (args.length >= 1 && args[0].equalsIgnoreCase("help")){
-				Actions.sendHelp(sender);
+		// /honeychest save - ハニーチェストデータ保存
+		if (args.length >= 1 && (args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("s"))){
+			// 権限チェック
+			if (!sender.hasPermission("honeychest.manage")){
+				Actions.message(sender, null, "&cこのコマンドを使う権限がありません");
 				return true;
 			}
+			if(!HoneyData.saveData()){
+				Actions.message(sender, null, "&cハニーチェストデータ保存時にエラーが発生しました。");
+			}else{
+				Actions.message(sender, null, "&aハニーチェストデータを保存しました。");
+			}
+			return true;
 		}
+
+		// /honeychest reload - ハニーチェストデータを読み込み
+		if (args.length >= 1 && (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))){
+			// 権限チェック
+			if (!sender.hasPermission("honeychest.manage")){
+				Actions.message(sender, null, "&cこのコマンドを使う権限がありません");
+				return true;
+			}
+			if(!HoneyData.saveData()){
+				Actions.message(sender, null, "&cハニーチェストデータ読み込み時にエラーが発生しました。");
+			}else{
+				Actions.message(sender, null, "&aハニーチェストデータをファイルから読み込みました。");
+			}
+			return true;
+		}
+
+		// /honeychest help - ヘルプを表示
+		if (args.length >= 1 && (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("h"))){
+			Actions.sendHelp(sender);
+			return true;
+		}
+
 		return false;
 	}
 }
