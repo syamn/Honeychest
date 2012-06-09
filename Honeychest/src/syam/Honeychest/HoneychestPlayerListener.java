@@ -65,7 +65,7 @@ public class HoneychestPlayerListener implements Listener {
 				case DISPENSER:
 				case CHEST:
 					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
-						if (player.getItemInHand().getTypeId() == 269 && player.hasPermission("honeychest.manage")){
+						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.manage")){
 							// 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした
 							if (HoneyData.getHc(loc) == null) {
 								HoneyData.setHc(loc, "*");

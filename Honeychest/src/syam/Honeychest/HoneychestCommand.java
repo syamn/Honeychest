@@ -3,6 +3,7 @@ package syam.Honeychest;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +14,11 @@ public class HoneychestCommand implements CommandExecutor {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
 	private static final String msgPrefix = Honeychest.msgPerfix;
+
+	private Honeychest plugin;
+	public HoneychestCommand(Honeychest instance){
+		this.plugin = instance;
+	}
 
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
 		// 引数無しはハニーチェスト管理モード
@@ -37,8 +43,10 @@ public class HoneychestCommand implements CommandExecutor {
 			}else{
 				// 管理モード開始
 				HoneyData.setCreator(player, true);
+				String tool = Material.getMaterial(plugin.getHCConfig().getToolId()).name();
+
 				Actions.message(null, player, "&aハニーチェスト管理モードになりました。");
-				Actions.message(null, player, "&a木のシャベルで右クリックするとハニーチェストになります。");
+				Actions.message(null, player, "&a"+tool+" で右クリックするとハニーチェストになります。");
 			}
 			return true;
 		}

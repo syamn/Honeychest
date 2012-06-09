@@ -16,7 +16,7 @@ public class ConfigurationManager {
 	// デフォルトの設定定数
 	public static final String defaultKickMsg = "[Honeychest] You have been caught steal items from honeychest.";
     public static final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
-    public static final String defaultKickBanSender = "[Honeychest]"; //who will kick / ban when hp get destroyed? Only MCBANS, in other cases it will be Console !
+    public static final String defaultKickBanSender = "[Honeychest]"; // MCBansに送信するBANを行ったユーザ名
     public static final String defaultLogPath = "plugins/Honeychest/honeychest.log";
     public static final int defaultToolID = 271;
 

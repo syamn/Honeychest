@@ -47,7 +47,7 @@ public class Honeychest extends JavaPlugin{
 		pm.registerEvents(playerListener, this);
 
 		// コマンドを登録
-		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand());
+		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand(this));
 		log.info(logPrefix+"Initialized Command.");
 
 		// ハニーチェストデータをファイルから読み出し
@@ -63,6 +63,9 @@ public class Honeychest extends JavaPlugin{
 		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
 	}
 
+	/**
+	 * 設定ファイルを読み込む
+	 */
 	private void loadConfig(){
 		// 設定ファイルパスを取得
 		String filepath = getDataFolder() + System.getProperty("file.separator") + "config.yml";
@@ -82,6 +85,14 @@ public class Honeychest extends JavaPlugin{
 			log.warning(logPrefix+ "an error occured while trying to load the config file.");
 			ex.printStackTrace();
 		}
+	}
+
+	/**
+	 * 設定マネージャを返す
+	 * @return ConfigurationManager
+	 */
+	public ConfigurationManager getHCConfig(){
+		return config;
 	}
 
 	/**
