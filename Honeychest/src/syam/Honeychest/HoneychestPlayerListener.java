@@ -53,6 +53,35 @@ public class HoneychestPlayerListener implements Listener {
 		}
 	}
 
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void createHoneyChest(PlayerInteractEvent event){
+		Player player = event.getPlayer();
+		Block block = event.getClickedBlock();
+		if (block != null) {
+			Location loc = block.getLocation();
+
+			switch (block.getType()){
+				case FURNACE:
+				case DISPENSER:
+				case CHEST:
+					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
+						if (player.getItemInHand().getTypeId() == 269 && player.hasPermission("honeychest.manage")){
+							// 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした
+							if (HoneyData.getHc(loc) == null) {
+								HoneyData.setHc(loc, "*");
+								Actions.message(null, player, "&aハニーチェストを作りました！");
+							}else{
+								HoneyData.removeHc(loc);
+								Actions.message(null, player, "&aハニーチェストを解除しました！");
+							}
+							event.setCancelled(true);
+						}
+					}
+					break;
+			}
+		}
+	}
+
 	/* 他のイベントでコンテナインベントリが閉じられていないかチェックする */
 
 	// チャット
