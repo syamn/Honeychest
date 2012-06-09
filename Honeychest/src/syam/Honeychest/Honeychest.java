@@ -23,7 +23,7 @@ public class Honeychest extends JavaPlugin{
 	public void onDisable(){
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("Honeychest ["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is disabled!");
+		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is disabled!");
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Honeychest extends JavaPlugin{
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("SakuraServerPlugin ["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
+		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
 	}
 
 	/**
