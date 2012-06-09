@@ -56,8 +56,10 @@ public class ConfigurationManager {
 	public boolean getKickFlag() {
 		return conf.getBoolean("kickFlag", true);
 	}
-
 	public boolean getBanFlag() {
 		return conf.getBoolean("banFlag", false);
+	}
+	public String getLogPath() {
+		return conf.getString("logPath", defaultLogPath);
 	}
 }

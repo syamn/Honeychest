@@ -1,5 +1,6 @@
 package syam.Honeychest;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -13,6 +14,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import syam.Honeychest.util.TextFileHandler;
 
 /**
  * プラグインに必要なユーティリティが含まれています
@@ -193,6 +196,20 @@ public class Actions {
 		}
 	}
 
+	/****************************************/
+	/* ログ操作系 */
+	/****************************************/
+	/**
+	 * ログファイルに書き込み
+	 * @param file ログファイル名
+	 * @param line ログ内容
+	 */
+	public static void log(String filepath, String line){
+		TextFileHandler r = new TextFileHandler(filepath);
+		try{
+			r.appendLine("[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "] " + line);
+		} catch (IOException ex) {}
+	}
 	/****************************************/
 	// Honeychest
 	/****************************************/

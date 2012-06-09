@@ -56,7 +56,7 @@ public class Honeychest extends JavaPlugin{
 		}
 
 		// コンテナマネージャを初期化
-		containerManager = new ContainerAccessManager();
+		containerManager = new ContainerAccessManager(this);
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();

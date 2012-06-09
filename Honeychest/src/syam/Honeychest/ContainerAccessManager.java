@@ -20,6 +20,11 @@ public class ContainerAccessManager {
 	private static final String logPrefix = Honeychest.logPrefix;
 	private static final String msgPrefix = Honeychest.msgPerfix;
 
+	public static Honeychest plugin;
+	public ContainerAccessManager(Honeychest instance){
+		plugin = instance;
+	}
+
 	// コンテナへのアクセスリスト コンテナインベントリを開いているプレイヤーがここに入る
 	private final List<ContainerAccess> accessList = new ArrayList<ContainerAccess>();
 
@@ -67,8 +72,13 @@ public class ContainerAccessManager {
 			if (hc != null){
 				// ハニーチェスト
 				String locstr = Actions.getBlockLocationString(access.loc);
-				// Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
+				//Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
 				player.kickPlayer("[HoneyChest] Stealing from HoneyChest(" + locstr + ")");
+
+				// ロギング
+				String logfile = plugin.getHCConfig().getLogPath();
+				String logmsg = "Player "+player.getName()+" was caught stealing from honeychest at location ("+locstr+")";
+				Actions.log(logfile, logmsg);
 			}
 		}
 
@@ -76,6 +86,22 @@ public class ContainerAccessManager {
 		accessList.remove(access);
 	}
 
+	/**
+	 * アクセスリストにあればデータを削除
+	 * @param player
+	 */
+	public void removeAccessList(Player player) {
+		// アクセスリストを取得
+		ContainerAccess access = null;
+		for (ContainerAccess acc : accessList){
+			if (acc.player == player){
+				access = acc;
+			}
+		}
+		// リストにあれば削除
+		if (access != null)
+			accessList.remove(access);
+	}
 
 	/**
 	 * インベントリインターフェースを持つブロックへのアクセスを表すクラス

@@ -43,6 +43,7 @@ public class HoneychestCommand implements CommandExecutor {
 			}else{
 				// 管理モード開始
 				HoneyData.setCreator(player, true);
+
 				String tool = Material.getMaterial(plugin.getHCConfig().getToolId()).name();
 
 				Actions.message(null, player, "&aハニーチェスト管理モードになりました。");

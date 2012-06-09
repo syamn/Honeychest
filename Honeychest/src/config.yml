@@ -5,6 +5,8 @@ toolID: 269
 kickFlag: false
 banFlag: true
 
+logPath: plugins/Honeychest/honeychest.log
+
 honeychestKickBanSender: '[Honeychest]'
 honeychestBanReason: 'Steal items from HoneyChest. Goodbye!'
 honeychestKickMessage: '[Honeychest] You have been caught steal items from honeychest.'
