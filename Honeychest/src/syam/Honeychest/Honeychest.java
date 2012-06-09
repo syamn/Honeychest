@@ -21,6 +21,11 @@ public class Honeychest extends JavaPlugin{
 	 * プラグイン停止処理
 	 */
 	public void onDisable(){
+		// ハニーチェストデータをファイルに書き込み
+		if (!HoneyData.saveData()){
+			log.warning(logPrefix+"an error occured while trying to save the honeychest data.");
+		}
+
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
 		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is disabled!");
@@ -39,6 +44,11 @@ public class Honeychest extends JavaPlugin{
 		// コマンドを登録
 		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand());
 		log.info(logPrefix+"Initialized Command.");
+
+		// ハニーチェストデータをファイルから読み出し
+		if (!HoneyData.reloadData()){
+			log.warning(logPrefix+"an error occured while trying to load the honeychest data.");
+		}
 
 		// コンテナマネージャを初期化
 		containerManager = new ContainerAccessManager();
