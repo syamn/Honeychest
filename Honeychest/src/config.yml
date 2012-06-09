@@ -1,0 +1,10 @@
+# HoneyChest author syam
+# This is a default configuration file!
+
+toolID: 269
+kickFlag: false
+banFlag: true
+
+honeychestKickBanSender: '[Honeychest]'
+honeychestBanReason: 'Steal items from HoneyChest. Goodbye!'
+honeychestKickMessage: '[Honeychest] You have been caught steal items from honeychest.'

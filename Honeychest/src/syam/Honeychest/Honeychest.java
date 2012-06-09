@@ -1,5 +1,6 @@
 package syam.Honeychest;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -12,6 +13,7 @@ public class Honeychest extends JavaPlugin{
 	public final static String msgPerfix = "&c[Honeychest] &f";
 
 	private final HoneychestPlayerListener playerListener = new HoneychestPlayerListener(this);
+	private ConfigurationManager config;
 
 	private static Honeychest instance;
 
@@ -37,6 +39,9 @@ public class Honeychest extends JavaPlugin{
 	public void onEnable(){
 		instance = this;
 
+		// 設定ファイル読み込み
+		loadConfig();
+
 		// イベントを登録
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(playerListener, this);
@@ -56,6 +61,27 @@ public class Honeychest extends JavaPlugin{
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
 		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
+	}
+
+	private void loadConfig(){
+		// 設定ファイルパスを取得
+		String filepath = getDataFolder() + System.getProperty("file.separator") + "config.yml";
+		File file = new File(filepath);
+
+		// 設定ファイルが見つからなければデフォルトのファイルをコピー
+		if (!file.exists()){
+			this.saveDefaultConfig();
+			log.info(logPrefix+ "config.yml is not found! Created default config.yml!");
+		}
+
+		config = new ConfigurationManager();
+		try{
+			// 実際に読み込む
+			config.load(this);
+		}catch(Exception ex){
+			log.warning(logPrefix+ "an error occured while trying to load the config file.");
+			ex.printStackTrace();
+		}
 	}
 
 	/**
