@@ -2,8 +2,8 @@
 # This is a default configuration file!
 
 toolID: 269
-kickFlag: false
-banFlag: true
+kickFlag: true
+banFlag: false
 
 logPath: plugins/Honeychest/honeychest.log
 
