@@ -13,6 +13,7 @@ public class Honeychest extends JavaPlugin{
 	public final static String msgPerfix = "&c[Honeychest] &f";
 
 	private final HoneychestPlayerListener playerListener = new HoneychestPlayerListener(this);
+	private final HoneychestBlockListener blockListener = new HoneychestBlockListener(this);
 	private ConfigurationManager config;
 
 	private static Honeychest instance;
@@ -45,6 +46,7 @@ public class Honeychest extends JavaPlugin{
 		// イベントを登録
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(playerListener, this);
+		pm.registerEvents(blockListener, this);
 
 		// コマンドを登録
 		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand(this));
