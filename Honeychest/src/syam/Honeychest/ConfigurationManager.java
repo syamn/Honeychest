@@ -38,28 +38,38 @@ public class ConfigurationManager {
 		plugin.saveConfig();
 	}
 
+	/* 以下設定取得用getter */
 
-	public String getKickMsg(){
-		return conf.getString("honeychestKickMessage", defaultKickMsg);
-	}
-	public String getBanReason() {
-		return conf.getString("honeychestBanReason", defaultBanReason);
-	}
-	public String getKickBanSender() {
-		return conf.getString("honeychestKickBanSender", defaultKickBanSender);
-	}
 	public int getToolId() {
 		return conf.getInt("toolID", defaultToolID);
 	}
-
-
 	public boolean getKickFlag() {
 		return conf.getBoolean("kickFlag", true);
 	}
 	public boolean getBanFlag() {
 		return conf.getBoolean("banFlag", false);
 	}
+
+	public boolean isGlobalBan(){
+		return conf.getBoolean("globalBan", false);
+	}
+
 	public String getLogPath() {
 		return conf.getString("logPath", defaultLogPath);
 	}
+
+	public String getKickBanSender() {
+		return conf.getString("honeychestKickBanSender", defaultKickBanSender);
+	}
+	public String getKickMessage(){
+		return conf.getString("honeychestKickMessage", defaultKickMsg);
+	}
+	public String getBanReason() {
+		return conf.getString("honeychestBanReason", defaultBanReason);
+	}
+
+
+
+
+
 }
