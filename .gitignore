@@ -25,3 +25,5 @@
 # others
 *.dat
 *.tmp
+/*.gitignore
+lib
