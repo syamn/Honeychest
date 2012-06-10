@@ -3,7 +3,9 @@ package syam.Honeychest;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -68,7 +70,24 @@ public class HoneychestPlayerListener implements Listener {
 						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.manage")){
 							// 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした
 							if (HoneyData.getHc(loc) == null) {
+								// クリックしたブロックをハニーチェストとして登録
 								HoneyData.setHc(loc, "*");
+								// チェストなら周辺を走査、ラージチェストなら両方を登録
+								if (block.getType() == Material.CHEST){
+									Block second = null;
+									// 走査開始
+									if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
+							            second = block.getRelative(BlockFace.NORTH);
+							        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
+							            second = block.getRelative(BlockFace.SOUTH);
+							        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
+							            second = block.getRelative(BlockFace.EAST);
+							        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
+							            second = block.getRelative(BlockFace.WEST);
+									// ラージチェスト登録
+									if (second != null)
+										HoneyData.setHc(second.getLocation(), "*");
+								}
 								Actions.message(null, player, "&aハニーチェストを作りました！");
 							}else{
 								HoneyData.removeHc(loc);
