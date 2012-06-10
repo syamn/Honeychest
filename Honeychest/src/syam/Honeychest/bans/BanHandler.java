@@ -89,12 +89,12 @@ public class BanHandler {
 		// 連携プラグインによって処理を分ける
 		switch (banMethod){
 			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のBAN処理
-				player.kickPlayer(config.getKickMessage());
+				player.kickPlayer(config.getKickReason());
 				// コンソールから ban (playername) 実行
 				Actions.executeCommandOnConsole("ban " + player.getName());
 				break;
 			case MCBANS3: // MCBans 3.x
-				player.kickPlayer(config.getKickMessage());
+				player.kickPlayer(config.getKickReason());
 				ban_MCBans3(player, sender, reason);
 				break;
 			default:
@@ -112,13 +112,13 @@ public class BanHandler {
 		// 連携プラグインによって処理を分ける
 		switch (banMethod){
 			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のBAN処理
-				player.kickPlayer(config.getKickMessage());
+				player.kickPlayer(config.getKickReason());
 				break;
 			case MCBANS3: // MCBans 3.x
 				kick_MCBans3(player, sender, reason);
 				break;
 			default:
-				player.kickPlayer(config.getKickMessage());
+				player.kickPlayer(config.getKickReason());
 				log.warning(logPrefix+"Error occurred on kicking player (BanHandler.class)");
 				break;
 		}

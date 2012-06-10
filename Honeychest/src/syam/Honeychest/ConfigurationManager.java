@@ -14,7 +14,7 @@ public class ConfigurationManager {
 	private FileConfiguration conf;
 
 	// デフォルトの設定定数
-	public static final String defaultKickMsg = "[Honeychest] You have been caught steal items from honeychest.";
+	public static final String defaultKickReason = "[Honeychest] You have been caught steal items from honeychest.";
     public static final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
     public static final String defaultKickBanSender = "[Honeychest]"; // MCBansに送信するBANを行ったユーザ名
     public static final String defaultLogPath = "plugins/Honeychest/honeychest.log";
@@ -61,8 +61,8 @@ public class ConfigurationManager {
 	public String getKickBanSender() {
 		return conf.getString("honeychestKickBanSender", defaultKickBanSender);
 	}
-	public String getKickMessage(){
-		return conf.getString("honeychestKickMessage", defaultKickMsg);
+	public String getKickReason(){
+		return conf.getString("honeychestKickReason", defaultKickReason);
 	}
 	public String getBanReason() {
 		return conf.getString("honeychestBanReason", defaultBanReason);

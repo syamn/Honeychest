@@ -20,9 +20,11 @@ public class ContainerAccessManager {
 	private static final String logPrefix = Honeychest.logPrefix;
 	private static final String msgPrefix = Honeychest.msgPerfix;
 
-	public static Honeychest plugin;
+	private Honeychest plugin;
+	private ConfigurationManager config;
 	public ContainerAccessManager(Honeychest instance){
 		plugin = instance;
+		config = plugin.getHCConfig();
 	}
 
 	// コンテナへのアクセスリスト コンテナインベントリを開いているプレイヤーがここに入る
@@ -58,7 +60,7 @@ public class ContainerAccessManager {
 		// アクセスリスト(インベントリを開いた記録)がなければ返す
 		if (access == null) return;
 
-		// 今のインベントリを取得して、アイテムの増減分をプレイヤーに送信
+		// 閉じた時点でのインベントリを取得
 		HashMap<String, Integer> after = InventoryUtil.compressInventory(InventoryUtil.getContainerContents(access.container));
 		// String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
 		// String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
@@ -71,9 +73,17 @@ public class ContainerAccessManager {
 			if (stealString.length() > 0){
 				// 窃盗あり
 				String locstr = Actions.getBlockLocationString(access.loc);
-				//Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
+
+				// 設定ファイル確認
+				if (config.getBanFlag()){
+					// プレイヤーをBANする
+					plugin.getBansHandler().ban(player, config.getKickBanSender(), config.getBanReason());
+				}else if(config.getKickFlag()){
+					// プレイヤーをKickする
+					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
+				}
+
 				Actions.broadcastMessage("&4[Honeychest] &7Player &4"+player.getName()+" &7was caught stealing from honeychest.");
-				player.kickPlayer("[Honeychest] Stealing from HoneyChest (" + locstr + ")");
 
 				// ロギング
 				String logfile = plugin.getHCConfig().getLogPath();

@@ -7,18 +7,26 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import syam.Honeychest.bans.BanHandler;
+
 public class Honeychest extends JavaPlugin{
+	// Logger
 	public final static Logger log = Logger.getLogger("Minecraft");
 	public final static String logPrefix = "[Honeychest] ";
 	public final static String msgPerfix = "&c[Honeychest] &f";
 
+	// Listener
 	private final HoneychestPlayerListener playerListener = new HoneychestPlayerListener(this);
 	private final HoneychestBlockListener blockListener = new HoneychestBlockListener(this);
+
+	// Honeychest private classes
 	private ConfigurationManager config;
-
-	private static Honeychest instance;
-
+	private BanHandler banHandler;
+	// Honeychest public classes
 	public static ContainerAccessManager containerManager;
+
+	// Instance
+	private static Honeychest instance;
 
 	/**
 	 * プラグイン停止処理
@@ -55,6 +63,20 @@ public class Honeychest extends JavaPlugin{
 		// ハニーチェストデータをファイルから読み出し
 		if (!HoneyData.reloadData()){
 			log.warning(logPrefix+"an error occured while trying to load the honeychest data.");
+		}
+
+		// BANを行うプラグインの決定とハンドラ初期化
+		banHandler = new BanHandler(this);
+		switch (banHandler.setupBanHandler(this)){
+			case VANILLA:
+				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
+				break;
+			case MCBANS3:
+				log.info(logPrefix+"MCBans 3.x plugin found, using that.");
+				break;
+			default:
+				log.warning(logPrefix+"Error occurred on setupBanHandler (Honeychest.class)");
+				break;
 		}
 
 		// コンテナマネージャを初期化
@@ -95,6 +117,14 @@ public class Honeychest extends JavaPlugin{
 	 */
 	public ConfigurationManager getHCConfig(){
 		return config;
+	}
+
+	/**
+	 * BANハンドラを返す
+	 * @return BanHandler
+	 */
+	public BanHandler getBansHandler(){
+		return banHandler;
 	}
 
 	/**

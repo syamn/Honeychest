@@ -10,5 +10,5 @@ globalBan: false
 logPath: plugins/Honeychest/honeychest.log
 
 honeychestKickBanSender: '[Honeychest]'
-honeychestKickMessage: '[Honeychest] You have been caught steal items from honeychest.'
+honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
 honeychestBanReason: 'Steal items from HoneyChest. Goodbye!'
