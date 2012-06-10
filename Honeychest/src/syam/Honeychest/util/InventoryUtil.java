@@ -98,6 +98,28 @@ public class InventoryUtil {
 	}
 
 	/**
+	 * 2つのハッシュマップ変換済みインベントリデータを比較して、減っているアイテムだけを整形して返す
+	 * @param before インベントリ変更前のハッシュマップ HashMap<String, Integer>
+	 * @param after インベントリ変更後のハッシュマップ HashMap<String, Integer>
+	 * @return 減っているアイテム文字列 例: item:data,amount&item:data,amount
+	 */
+	public static String createStealString(HashMap<String, Integer> before, HashMap<String, Integer> after) {
+		List<String> sub = new ArrayList<String>();
+
+		for (Entry<String, Integer> item : before.entrySet()){
+			if (!after.containsKey(item.getKey())){
+				// 変更後にアイテムが無かった場合
+				sub.add(item.getKey() + "," + item.getValue());
+			}else if(item.getValue() > after.get(item.getKey())){
+				// 変更後にアイテムが減っていた場合
+				sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
+			}
+		}
+		// 文字列を結合して返す
+		return Util.join(sub, "&");
+	}
+
+	/**
 	 * 違いのあるアイテムの文字列を受け取り、増加と減少データの2つのハッシュマップをリストに入れて返す
 	 * @param diff 処理済みの整形済みアイテム比較文字列
 	 * @return 増加分、減少分、2つのハッシュマップが入ったリストを返す 1つめの要素が増減分、2つめが減少分

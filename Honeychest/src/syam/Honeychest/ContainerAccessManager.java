@@ -60,21 +60,20 @@ public class ContainerAccessManager {
 
 		// 今のインベントリを取得して、アイテムの増減分をプレイヤーに送信
 		HashMap<String, Integer> after = InventoryUtil.compressInventory(InventoryUtil.getContainerContents(access.container));
-		String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
-		String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
+		// String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
+		// String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
 
-		if (diff.length() > 1){
-			// メッセージを送る
-			Actions.message(null, player, msgPrefix + readble);
-
-			// ハニーチェストか判定
-			String hc = HoneyData.getHc(access.loc);
-			if (hc != null){
-				// ハニーチェスト
+		// ハニーチェストか判定
+		String hc = HoneyData.getHc(access.loc);
+		if (hc != null){
+			// アイテムの窃盗があるか判定
+			String stealString = InventoryUtil.createStealString(access.beforeInv, after);
+			if (stealString.length() > 0){
+				// 窃盗あり
 				String locstr = Actions.getBlockLocationString(access.loc);
 				//Actions.executeCommandOnConsole("kick " + player.getName() + " [HoneyChest] Stealing from HoneyChest(" + locstr + ")");
 				Actions.broadcastMessage("&4[Honeychest] &7Player &4"+player.getName()+" &7was caught stealing from honeychest.");
-				player.kickPlayer("[HoneyChest] Stealing from HoneyChest(" + locstr + ")");
+				player.kickPlayer("[Honeychest] Stealing from HoneyChest (" + locstr + ")");
 
 				// ロギング
 				String logfile = plugin.getHCConfig().getLogPath();
@@ -82,6 +81,7 @@ public class ContainerAccessManager {
 				Actions.log(logfile, logmsg);
 			}
 		}
+
 
 		// アクセスリストから削除
 		accessList.remove(access);
@@ -109,9 +109,13 @@ public class ContainerAccessManager {
 	 * @author syam
 	 */
 	public class ContainerAccess {
+		// 開いたコンテナのインスタンス
 		public InventoryHolder container;
+		// 開いたプレイヤー
 		public Player player;
+		// 開いた時点のコンテナインベントリ
 		public HashMap<String, Integer> beforeInv;
+		// コンテナの座標
 		public Location loc;
 
 		public ContainerAccess(InventoryHolder container, Player player, HashMap<String, Integer> beforeInv, Location loc){
