@@ -16,7 +16,7 @@ import syam.Honeychest.Honeychest;
 public class MessageManager {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPerfix;
+	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	static Configuration fallbackMessages = null;
 	static Configuration messages = null;
@@ -45,7 +45,7 @@ public class MessageManager {
 	/****************************************/
 	// 初期化・読み込み
 	/****************************************/
-	
+
 	/**
 	 * 指定した言語ファイルを読み込んで設定する
 	 * @param lang
@@ -127,12 +127,12 @@ public class MessageManager {
 		}
 	}
 
-	
-	
+
+
 	/****************************************/
 	// 言語設定の取得
 	/****************************************/
-	
+
 	/**
 	 * メッセージを読み込む
 	 * @param key 読み込むメッセージのキー
@@ -144,25 +144,25 @@ public class MessageManager {
 			log.warning(logPrefix+ "Localized messages file is NOT loaded..");
 			return "!" + key + "!";
 		}
-		
+
 		// カスタムされた言語ファイルからメッセージを取得
 		String s = getString(messages, key);
-		
+
 		// カスタムされた言語ファイルに特定のキーが存在しない
 		if (s == null){
 			log.warning(logPrefix+ "Missing message key '"+ key +"'");
-			
+
 			// デフォルトの言語ファイルから読み込みを試す
 			s = getString(fallbackMessages, key);
 			if (s == null){
 				s = "!" + key + "!";
 			}
 		}
-		
+
 		// 表示するメッセージを返す
 		return s;
 	}
-	
+
 	/**
 	 * 内部的に呼び出す: メッセージを読み込む
 	 * @param conf 読み込む対象の Configuration
@@ -172,7 +172,7 @@ public class MessageManager {
 	private static String getString(Configuration conf, String key){
 		String s = null;
 		Object o = conf.get(key); // オブジェクト型として初めは取る
-		
+
 		// 文字列型ならそのまま変換する
 		if (o instanceof String) {
 			s = o.toString();
@@ -181,8 +181,8 @@ public class MessageManager {
 			List<String> l = (List<String>) o;
 			s = Joiner.on("\n").join(l);
 		}
-		
+
 		// 表示するメッセージを返す
 		return s;
-	}	
+	}
 }

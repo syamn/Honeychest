@@ -10,7 +10,7 @@ import syam.Honeychest.Honeychest;
 public class ConfigurationManager {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPerfix;
+	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private JavaPlugin plugin;
 	private FileConfiguration conf;
@@ -19,7 +19,8 @@ public class ConfigurationManager {
 	public static final String defaultKickReason = "[Honeychest] You have been caught steal items from honeychest.";
     public static final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
     public static final String defaultKickBanSender = "[Honeychest]"; // MCBansに送信するBANを行ったユーザ名
-    public static final String defaultLogPath = "plugins/Honeychest/honeychest.log";
+    public static final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
+    public static final String defaultMessageLocale = "en_us"; // デフォルトの言語ファイル
     public static final int defaultToolID = 271;
 
 	/**
@@ -57,6 +58,9 @@ public class ConfigurationManager {
 	}
 	public String getLogPath() {
 		return conf.getString("logPath", defaultLogPath);
+	}
+	public String getMessageLocale() {
+		return conf.getString("messageLocale", defaultMessageLocale);
 	}
 
 	public String getKickBanSender() {

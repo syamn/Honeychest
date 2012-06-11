@@ -19,7 +19,7 @@ import syam.Honeychest.util.InventoryUtil;
 public class ContainerAccessManager {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPerfix;
+	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	private ConfigurationManager config;

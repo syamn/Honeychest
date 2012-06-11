@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class HoneychestCommand implements CommandExecutor {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPerfix;
+	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	public HoneychestCommand(Honeychest instance){

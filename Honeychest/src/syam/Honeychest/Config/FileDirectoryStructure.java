@@ -8,7 +8,7 @@ import syam.Honeychest.Honeychest;
 public class FileDirectoryStructure {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPerfix;
+	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private static File pluginDir = new File("plugins", "Honeychest");
 	private static File languageDir;

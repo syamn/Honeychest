@@ -14,7 +14,7 @@ public class Honeychest extends JavaPlugin{
 	// Logger
 	public final static Logger log = Logger.getLogger("Minecraft");
 	public final static String logPrefix = "[Honeychest] ";
-	public final static String msgPerfix = "&c[Honeychest] &f";
+	public final static String msgPrefix = "&c[Honeychest] &f";
 
 	// Listener
 	private final HoneychestPlayerListener playerListener = new HoneychestPlayerListener(this);
