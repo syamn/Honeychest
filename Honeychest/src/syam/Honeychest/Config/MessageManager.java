@@ -2,6 +2,7 @@ package syam.Honeychest.Config;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -164,6 +165,21 @@ public class MessageManager {
 	}
 
 	/**
+	 * 引数付きのメッセージを読み込む
+	 * @param key 読み込むメッセージのキー
+	 * @param args
+	 * @return 表示するメッセージ
+	 */
+	public static String getString(String key, Object... args){
+		try{
+			return MessageFormat.format(getString(key), args);
+		}catch (Exception e){
+			log.warning(logPrefix+"Error formatting message for "+ key + ": "+e.getMessage());
+			return getString(key);
+		}
+	}
+
+	/**
 	 * 内部的に呼び出す: メッセージを読み込む
 	 * @param conf 読み込む対象の Configuration
 	 * @param key 読み込むキー
@@ -185,4 +201,5 @@ public class MessageManager {
 		// 表示するメッセージを返す
 		return s;
 	}
+
 }
