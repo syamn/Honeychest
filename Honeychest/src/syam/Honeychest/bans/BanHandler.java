@@ -11,8 +11,8 @@ import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.pluginInterface.Kick;
 
 import syam.Honeychest.Actions;
-import syam.Honeychest.ConfigurationManager;
 import syam.Honeychest.Honeychest;
+import syam.Honeychest.Config.ConfigurationManager;
 import syam.Honeychest.util.Util;
 
 public class BanHandler {
@@ -117,7 +117,7 @@ public class BanHandler {
 			case MCBANS3: // MCBans 3.x
 				kick_MCBans3(player, sender, reason);
 				break;
-			default:
+			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
 				log.warning(logPrefix+"Error occurred on kicking player (BanHandler.class)");
 				break;
@@ -135,6 +135,8 @@ public class BanHandler {
 		String banType = "localBan";
 		if (config.isGlobalBan())
 			banType = "globalBan";
+
+
 
 		// MCBansプラグインに新規のBANを送る
 		Ban banMCBans3 = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");

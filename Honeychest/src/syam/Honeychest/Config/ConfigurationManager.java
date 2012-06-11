@@ -1,9 +1,11 @@
-package syam.Honeychest;
+package syam.Honeychest.Config;
 
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import syam.Honeychest.Honeychest;
 
 public class ConfigurationManager {
 	public final static Logger log = Honeychest.log;
@@ -53,7 +55,6 @@ public class ConfigurationManager {
 	public boolean isGlobalBan(){
 		return conf.getBoolean("globalBan", false);
 	}
-
 	public String getLogPath() {
 		return conf.getString("logPath", defaultLogPath);
 	}

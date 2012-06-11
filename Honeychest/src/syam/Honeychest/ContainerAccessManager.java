@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
+import syam.Honeychest.Config.ConfigurationManager;
 import syam.Honeychest.util.InventoryUtil;
 
 /**

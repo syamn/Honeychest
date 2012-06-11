@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import syam.Honeychest.Config.ConfigurationManager;
 import syam.Honeychest.bans.BanHandler;
 
 public class Honeychest extends JavaPlugin{
