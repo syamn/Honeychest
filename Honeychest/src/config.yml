@@ -8,6 +8,7 @@ banFlag: false
 globalBan: false
 
 logPath: plugins/Honeychest/honeychest.log
+messageLocale: default
 
 honeychestKickBanSender: '[Honeychest]'
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
