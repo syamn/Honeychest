@@ -10,6 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import syam.Honeychest.Config.MessageManager;
+
 public class HoneychestCommand implements CommandExecutor {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
@@ -25,29 +27,28 @@ public class HoneychestCommand implements CommandExecutor {
 		if (args.length == 0){
 			// コンソールチェック
 			if (!(sender instanceof Player)){
-				Actions.message(sender, null, "&cコンソールからは使えません！");
+				Actions.message(sender, null, MessageManager.getString("Commands.notFromConsole"));
 				return true;
 			}
 
 			Player player = (Player) sender;
 			// 権限チェック
 			if (!player.hasPermission("honeychest.manage")){
-				Actions.message(null, player, "&cこのコマンドを使う権限がありません");
+				Actions.message(null, player, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}
 
 			if (HoneyData.isCreator(player)){
 				// 管理モード終了
 				HoneyData.setCreator(player, false);
-				Actions.message(null, player, "&aハニーチェスト管理モードを終了しました。");
+				Actions.message(null, player, MessageManager.getString("Commands.manageFinish"));
 			}else{
 				// 管理モード開始
 				HoneyData.setCreator(player, true);
 
 				String tool = Material.getMaterial(plugin.getHCConfig().getToolId()).name();
 
-				Actions.message(null, player, "&aハニーチェスト管理モードになりました。");
-				Actions.message(null, player, "&a"+tool+" で右クリックするとハニーチェストになります。");
+				Actions.message(null, player, MessageManager.getString("Commands.manageStart", tool));
 			}
 			return true;
 		}
@@ -56,13 +57,13 @@ public class HoneychestCommand implements CommandExecutor {
 		if (args.length >= 1 && (args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("s"))){
 			// 権限チェック
 			if (!sender.hasPermission("honeychest.manage")){
-				Actions.message(sender, null, "&cこのコマンドを使う権限がありません");
+				Actions.message(sender, null, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}
 			if(!HoneyData.saveData()){
-				Actions.message(sender, null, "&cハニーチェストデータ保存時にエラーが発生しました。");
+				Actions.message(sender, null, MessageManager.getString("Commands.dataSaveError"));
 			}else{
-				Actions.message(sender, null, "&aハニーチェストデータを保存しました。");
+				Actions.message(sender, null, MessageManager.getString("Commands.dataSaved"));
 			}
 			return true;
 		}
@@ -71,13 +72,13 @@ public class HoneychestCommand implements CommandExecutor {
 		if (args.length >= 1 && (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))){
 			// 権限チェック
 			if (!sender.hasPermission("honeychest.manage")){
-				Actions.message(sender, null, "&cこのコマンドを使う権限がありません");
+				Actions.message(sender, null, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}
 			if(!HoneyData.saveData()){
-				Actions.message(sender, null, "&cハニーチェストデータ読み込み時にエラーが発生しました。");
+				Actions.message(sender, null, MessageManager.getString("Commands.dataLoadError"));
 			}else{
-				Actions.message(sender, null, "&aハニーチェストデータをファイルから読み込みました。");
+				Actions.message(sender, null, MessageManager.getString("Commands.dataLoaded"));
 			}
 			return true;
 		}

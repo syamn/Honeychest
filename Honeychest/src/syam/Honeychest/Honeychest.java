@@ -8,6 +8,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import syam.Honeychest.Config.ConfigurationManager;
+import syam.Honeychest.Config.FileDirectoryStructure;
+import syam.Honeychest.Config.MessageManager;
 import syam.Honeychest.bans.BanHandler;
 
 public class Honeychest extends JavaPlugin{
@@ -92,6 +94,9 @@ public class Honeychest extends JavaPlugin{
 	 * 設定ファイルを読み込む
 	 */
 	private void loadConfig(){
+		// ファイルマネージャセットアップ
+		FileDirectoryStructure.setup();
+
 		// 設定ファイルパスを取得
 		String filepath = getDataFolder() + System.getProperty("file.separator") + "config.yml";
 		File file = new File(filepath);
@@ -102,14 +107,19 @@ public class Honeychest extends JavaPlugin{
 			log.info(logPrefix+ "config.yml is not found! Created default config.yml!");
 		}
 
+		// 設定ファイルを読み込む
 		config = new ConfigurationManager();
 		try{
-			// 実際に読み込む
 			config.load(this);
 		}catch(Exception ex){
 			log.warning(logPrefix+ "an error occured while trying to load the config file.");
 			ex.printStackTrace();
 		}
+
+		// 設定ファイルに記述された言語を取得
+		String lang = config.getMessageLocale();
+		// 言語ファイルをセットアップ
+		MessageManager.init(lang);
 	}
 
 	/**

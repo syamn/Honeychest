@@ -103,6 +103,10 @@ public class FileDirectoryStructure {
 		}
 	}
 
+	public static void extractResource(String from, File to){
+		extractResource(from, to, false);
+	}
+
 	/* 以下 getter */
 
 	public static File getJarFile(){

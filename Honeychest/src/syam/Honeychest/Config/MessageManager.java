@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.base.Joiner;
@@ -22,10 +23,16 @@ public class MessageManager {
 	static Configuration fallbackMessages = null;
 	static Configuration messages = null;
 
+	/****************************************/
+	// 初期化・読み込み
+	/****************************************/
+
 	public static void init(String lang){
 		File langDir = FileDirectoryStructure.getLanguageDirectory();
 
-		/* 言語設定ファイルを出力する */
+		// 言語設定ファイルを出力する
+		FileDirectoryStructure.extractResource("/lang/default.yml", langDir);
+		FileDirectoryStructure.extractResource("/lang/ja_jp.yml", langDir);
 
 		// デフォルトのメッセージファイルを読み込む
 		try{
@@ -42,10 +49,6 @@ public class MessageManager {
 			messages = fallbackMessages;
 		}
 	}
-
-	/****************************************/
-	// 初期化・読み込み
-	/****************************************/
 
 	/**
 	 * 指定した言語ファイルを読み込んで設定する
@@ -94,7 +97,6 @@ public class MessageManager {
 				log.warning("Can't write "+locatedLangFile+": "+e.getMessage());
 			}
 		}
-
 		return conf;
 	}
 
