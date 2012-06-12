@@ -1,0 +1,9 @@
+Commands:
+  notFromConsole: "&cThis command cannot be run from the console!"
+  permissionDenied: "&cYou don't have permission to use this!"
+  manageStart: "&aRight click a container block with a {0} to toggle a honeychest. When finished, use /hc again."
+  manageFinish: "&aHoneychest management mode finished."
+  dataSaved: "&aHoneychest data saved to file!"
+  dataSaveError: "&cAn error occured on saving honeychest data."
+  dataLoaded: "&aHoneychest data loaded from file!"
+  dataLoadError: "&cAn error occured on loading honeychest data."
