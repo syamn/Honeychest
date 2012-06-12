@@ -71,8 +71,8 @@ public class ContainerAccessManager {
 		String hc = HoneyData.getHc(access.loc);
 		if (hc != null){
 			// アイテムの窃盗があるか判定
-			String stealString = InventoryUtil.createStealString(access.beforeInv, after);
-			if (stealString.length() > 0){
+			List<String> stealList = InventoryUtil.createSubList(access.beforeInv, after);
+			if (stealList.size() > 0){
 				// 窃盗あり
 				String locstr = Actions.getBlockLocationString(access.loc);
 

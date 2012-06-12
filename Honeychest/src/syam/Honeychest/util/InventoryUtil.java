@@ -98,12 +98,12 @@ public class InventoryUtil {
 	}
 
 	/**
-	 * 2つのハッシュマップ変換済みインベントリデータを比較して、減っているアイテムだけを整形して返す
+	 * 2つのハッシュマップ変換済みインベントリデータを比較して、減っているアイテムだけをリストに入れて返す
 	 * @param before インベントリ変更前のハッシュマップ HashMap<String, Integer>
 	 * @param after インベントリ変更後のハッシュマップ HashMap<String, Integer>
-	 * @return 減っているアイテム文字列 例: item:data,amount&item:data,amount
+	 * @return 減っているアイテムのStringList 例: item:data,amount || item:data,amount || ..
 	 */
-	public static String createStealString(HashMap<String, Integer> before, HashMap<String, Integer> after) {
+	public static List<String> createSubList(HashMap<String, Integer> before, HashMap<String, Integer> after) {
 		List<String> sub = new ArrayList<String>();
 
 		for (Entry<String, Integer> item : before.entrySet()){
@@ -115,8 +115,32 @@ public class InventoryUtil {
 				sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
 			}
 		}
-		// 文字列を結合して返す
-		return Util.join(sub, "&");
+		// リストを返す
+		return sub;
+	}
+	/**
+	 * 2つのハッシュマップ変換済みインベントリデータを比較して、増えているアイテムだけをリストに入れて返す
+	 * @param before インベントリ変更前のハッシュマップ HashMap<String, Integer>
+	 * @param after インベントリ変更後のハッシュマップ HashMap<String, Integer>
+	 * @return 増えているアイテムのStringList 例: item:data,amount || item:data,amount || ..
+	 */
+	public static List<String> createAddList(HashMap<String, Integer> before, HashMap<String, Integer> after) {
+		List<String> add = new ArrayList<String>();
+
+		for (Entry<String, Integer> item : before.entrySet()){
+			if(item.getValue() < after.get(item.getKey())){
+				// 変更後にアイテムが増えていた場合
+				add.add(item.getKey() + "," + (after.get(item.getKey()) - item.getValue()));
+			}
+		}
+		for (Entry<String, Integer> item : after.entrySet()) {
+			if (!before.containsKey(item.getKey())){
+				// 変更前に無いアイテムが変更後にあった場合
+				add.add(item.getKey() + "," + item.getValue());
+			}
+		}
+		// リストを返す
+		return add;
 	}
 
 	/**
