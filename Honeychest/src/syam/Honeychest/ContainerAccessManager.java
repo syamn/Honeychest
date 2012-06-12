@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
 import syam.Honeychest.Config.ConfigurationManager;
+import syam.Honeychest.Config.MessageManager;
 import syam.Honeychest.util.InventoryUtil;
 
 /**
@@ -84,7 +85,7 @@ public class ContainerAccessManager {
 					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
 				}
 
-				Actions.broadcastMessage("&4[Honeychest] &7Player &4"+player.getName()+" &7was caught stealing from honeychest.");
+				Actions.broadcastMessage("&4[Honeychest]&f "+ MessageManager.getString("Broadcast.alert", player.getName()));
 
 				// ロギング
 				String logfile = plugin.getHCConfig().getLogPath();

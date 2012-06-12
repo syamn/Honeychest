@@ -1,9 +1,10 @@
 ##  Plugin Information  ##
 name: Honeychest
-version: 0.50
+version: 0.60
 main: syam.Honeychest.Honeychest
 description: SakuraServer Plugin!
 website: http://sakura-server.net/
+softdepend: [MCBans]
 ##  Original Author     ##
 author: syam
 commands:

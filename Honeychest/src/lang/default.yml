@@ -7,3 +7,10 @@ Commands:
   dataSaveError: "&cAn error occured on saving honeychest data."
   dataLoaded: "&aHoneychest data loaded from file!"
   dataLoadError: "&cAn error occured on loading honeychest data."
+BlockListener:
+  notBreakTraps: "&cYou can't break Honeychest!"
+PlayerListener:
+  createTrap: "&aHoneychest created. Right click again to remove the Honeychest"
+  removeTrap: "&aHoneychest removed!"
+Broadcast:
+  alert: "&7Player&4 {0} &7was caught stealing from honeychest."

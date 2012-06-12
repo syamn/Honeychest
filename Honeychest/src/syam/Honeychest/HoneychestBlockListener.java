@@ -12,6 +12,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import syam.Honeychest.Config.MessageManager;
+
 public class HoneychestBlockListener implements Listener {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
@@ -43,7 +45,7 @@ public class HoneychestBlockListener implements Listener {
 					if (str != null){
 						// ハニーチェスト イベントキャンセル
 						event.setCancelled(true);
-						Actions.message(null, player, "&cハニーチェストは破壊できません");
+						Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTraps"));
 					}
 					break;
 			}

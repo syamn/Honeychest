@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import syam.Honeychest.Config.MessageManager;
+
 public class HoneychestPlayerListener implements Listener {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
@@ -88,10 +90,10 @@ public class HoneychestPlayerListener implements Listener {
 									if (second != null)
 										HoneyData.setHc(second.getLocation(), "*");
 								}
-								Actions.message(null, player, "&aハニーチェストを作りました！");
+								Actions.message(null, player, MessageManager.getString("PlayerListener.createTrap"));
 							}else{
 								HoneyData.removeHc(loc);
-								Actions.message(null, player, "&aハニーチェストを解除しました！");
+								Actions.message(null, player, MessageManager.getString("PlayerListener.removeTrap"));
 							}
 							event.setCancelled(true);
 						}

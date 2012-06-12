@@ -9,3 +9,10 @@ Commands:
   dataSaveError: "&cハニーチェストデータの保存中にエラーが発生しました。"
   dataLoaded: "&aハニーチェストデータをファイルから読み込みました！"
   dataLoadError: "&cハニーチェストデータの読み込み中にエラーが発生しました。"
+BlockListener:
+  notBreakTraps: "&cハニーチェストは破壊できません！"
+PlayerListener:
+  createTrap: "&aハニーチェストを作りました！"
+  removeTrap: "&aハニーチェストを解除しました！"
+Broadcast:
+  alert: "&7プレイヤー&4 {0} &7がハニーチェストからアイテムを盗みました！"
