@@ -107,7 +107,12 @@ public class ContainerAccessManager {
 					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
 				}
 
+				// メッセージをブロードキャスト
 				Actions.broadcastMessage("&4[Honeychest]&f "+ MessageManager.getString("Broadcast.alert", player.getName()));
+				// 盗んだアイテムをキャストするかどうか
+				if (config.getBroadcastItems()){
+					Actions.broadcastMessage(MessageManager.getString("Broadcast.items", substr));
+				}
 
 				// ロギング
 				String logfile = plugin.getHCConfig().getLogPath();

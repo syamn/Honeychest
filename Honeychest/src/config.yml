@@ -12,6 +12,7 @@ logPath: plugins/Honeychest/honeychest.log
 
 messageLocale: default
 hiddenTrapMessages: false
+broadcastItems: true
 
 honeychestKickBanSender: '[Honeychest]'
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'

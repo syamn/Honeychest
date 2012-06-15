@@ -16,3 +16,4 @@ PlayerListener:
   openedTrap: "&csorry, this container has been opened by others."
 Broadcast:
   alert: "&7Player&4 {0} &7was caught stealing from honeychest."
+  items: "&6Stolen Item(s): &4{0}"

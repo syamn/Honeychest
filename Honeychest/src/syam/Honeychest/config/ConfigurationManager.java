@@ -66,6 +66,9 @@ public class ConfigurationManager {
 	public boolean getHiddenTrapMessages() {
 		return conf.getBoolean("hiddenTrapMessages", false);
 	}
+	public boolean getBroadcastItems() {
+		return conf.getBoolean("broadcastItems", true);
+	}
 
 	public String getKickBanSender() {
 		return conf.getString("honeychestKickBanSender", defaultKickBanSender);

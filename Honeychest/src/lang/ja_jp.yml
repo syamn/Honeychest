@@ -18,3 +18,4 @@ PlayerListener:
   openedTrap: "&c他の人が開いているので使えません"
 Broadcast:
   alert: "&7プレイヤー&4 {0} &7がハニーチェストからアイテムを盗みました！"
+  items: "&6窃盗アイテム: &4{0}"
