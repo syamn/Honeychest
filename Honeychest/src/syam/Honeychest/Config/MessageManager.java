@@ -30,9 +30,9 @@ public class MessageManager {
 	public static void init(String lang){
 		File langDir = FileDirectoryStructure.getLanguageDirectory();
 
-		// 言語設定ファイルを出力する
-		FileDirectoryStructure.extractResource("/lang/default.yml", langDir);
-		FileDirectoryStructure.extractResource("/lang/ja_jp.yml", langDir);
+		// 言語設定ファイルを出力する - エンコードをクライアントによって決定
+		FileDirectoryStructure.extractResource("/lang/default.yml", langDir, false, true);
+		FileDirectoryStructure.extractResource("/lang/ja_jp.yml", langDir, false, true);
 
 		// デフォルトのメッセージファイルを読み込む
 		try{
@@ -55,7 +55,11 @@ public class MessageManager {
 	 * @param lang
 	 */
 	public static void setMessagesLanguage(String lang){
-		messages = loadMessageFile(lang);
+		try{
+			messages = loadMessageFile(lang);
+		}catch(Exception ex){
+			log.warning(logPrefix+"Error occured on setMessagesLanguage");
+		}
 	}
 	/**
 	 * 言語ファイルを読み込む
@@ -78,6 +82,7 @@ public class MessageManager {
 
 		YamlConfiguration conf = YamlConfiguration.loadConfiguration(locatedLangFile);
 
+
 		// すべてのメッセージが設定されていることを確認
 
 		// カスタム言語ファイルとデフォルト言語ファイルのキー数を比較
@@ -96,6 +101,7 @@ public class MessageManager {
 			}catch (IOException e){
 				log.warning("Can't write "+locatedLangFile+": "+e.getMessage());
 			}
+
 		}
 		return conf;
 	}

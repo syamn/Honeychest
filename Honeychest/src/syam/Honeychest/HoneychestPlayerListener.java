@@ -57,6 +57,7 @@ public class HoneychestPlayerListener implements Listener {
 		}
 	}
 
+	/* ハニーチェスト管理モードの処理 */
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void createHoneyChest(PlayerInteractEvent event){
 		Player player = event.getPlayer();
@@ -127,9 +128,10 @@ public class HoneychestPlayerListener implements Listener {
 	}
 
 	// 切断
-	//@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		// アクセスリストから削除
-		Honeychest.containerManager.removeAccessList(event.getPlayer());
+		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
+		//Honeychest.containerManager.removeAccessList(event.getPlayer());
 	}
 }

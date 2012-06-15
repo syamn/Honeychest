@@ -62,6 +62,10 @@ public class ContainerAccessManager {
 		// アクセスリスト(インベントリを開いた記録)がなければ返す
 		if (access == null) return;
 
+		// 処理中のフラグを立てて多重チェックしないようにする
+		if (access.checking) return;
+		access.checking = true;
+
 		// 閉じた時点でのインベントリを取得
 		HashMap<String, Integer> after = InventoryUtil.compressInventory(InventoryUtil.getContainerContents(access.container));
 		// String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
@@ -75,7 +79,6 @@ public class ContainerAccessManager {
 			if (stealList.size() > 0){
 				// 窃盗あり
 				String locstr = Actions.getBlockLocationString(access.loc);
-
 				// 設定ファイル確認
 				if (config.getBanFlag()){
 					// プレイヤーをBANする
@@ -93,8 +96,6 @@ public class ContainerAccessManager {
 				Actions.log(logfile, logmsg);
 			}
 		}
-
-
 		// アクセスリストから削除
 		accessList.remove(access);
 	}
@@ -129,12 +130,15 @@ public class ContainerAccessManager {
 		public HashMap<String, Integer> beforeInv;
 		// コンテナの座標
 		public Location loc;
+		// チェック中のフラグ
+		public boolean checking;
 
 		public ContainerAccess(InventoryHolder container, Player player, HashMap<String, Integer> beforeInv, Location loc){
 			this.container = container;
 			this.player = player;
 			this.beforeInv = beforeInv;
 			this.loc = loc;
+			this.checking = false;
 		}
 	}
 }

@@ -40,4 +40,19 @@ public class Util {
 		// バッファ文字列を返す
 		return buffer.toString();
 	}
+
+	/**
+	 * ファイル名から拡張子を返します。
+	 * @param fileName ファイル名
+	 * @return ファイルの拡張子
+	 */
+	public static String getSuffix(String fileName) {
+	    if (fileName == null)
+	        return null;
+	    int point = fileName.lastIndexOf(".");
+	    if (point != -1) {
+	        return fileName.substring(point + 1);
+	    }
+	    return fileName;
+	}
 }
