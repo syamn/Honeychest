@@ -15,6 +15,19 @@ import org.bukkit.material.MaterialData;
 import syam.Honeychest.Actions;
 
 public class InventoryUtil {
+	/**
+	 * 忘れたときのためのメモ書き
+	 *
+	 * 1. インベントリ情報(ItemStack配列: ItemStack[])を compressInventory 関数で HashMap<String アイテム名, Integer 個数> にして返す
+	 * 2. 1の処理を行ったインベントリ情報を createDifferenceString 関数で item:data,amount&...@item:data,amount&... の文字列にして返す
+	 * 3. 2の処理を行った2つのインベントリの増減情報文字列を interpretDifferenceString 関数で、増加と減少データの2つのハッシュマップをリストに入れて返す
+	 * 4. 3の処理を行ったリストを createChangeString 関数で、読みやすく整形された文字列を返す
+	 *
+	 * ファイルやデータベースに保存するときは、2番の処理で返された item:data,amount..@.. の文字列を保存、読み込む
+	 * 読み込んだ文字列は interpretDifferenceString 関数または interpret[Add/Sub]String 関数を通じて HashMap<String, Integer> に変換を行う
+	 * 変換後のハッシュマップは uncompressInventory 関数を通して、ゲーム内で直接参照可能な ItemStack[] に変換が可能である
+	 *
+	 */
 
 	/**
 	 * ItemStackの配列 を ハッシュマップ<アイテムID文字列(String), 個数(Integer)> に変換します
@@ -144,6 +157,15 @@ public class InventoryUtil {
 	}
 
 	/**
+	 * 違いのある(増加分または減少分のどちらかのみ)アイテムリストを整形して返す
+	 * @param diff 違いのある(増加分または減少分のどちらかのみ)アイテムリスト
+	 * @return ex) item:data,amount&item:data,amount
+	 */
+	public static String joinListToString(List<String> diff){
+		return Util.join(diff, "&");
+	}
+
+	/**
 	 * 違いのあるアイテムの文字列を受け取り、増加と減少データの2つのハッシュマップをリストに入れて返す
 	 * @param diff 処理済みの整形済みアイテム比較文字列
 	 * @return 増加分、減少分、2つのハッシュマップが入ったリストを返す 1つめの要素が増減分、2つめが減少分
@@ -169,9 +191,26 @@ public class InventoryUtil {
 		}
 		return ops;
 	}
-
 	/**
-	 * 人間にとって読みやすく整形した、チェスト増減データを作る
+	 * 違いのあるアイテムの文字列を受け取り、増加と減少データの2つのハッシュマップをリストに入れて返す
+	 * @param diff 処理済みの整形済みアイテム比較文字列
+	 * @return 増加分、減少分、2つのハッシュマップが入ったリストを返す 1つめの要素が増減分、2つめが減少分
+	 */
+	public static HashMap<String, Integer> interpretSubString(String diff) {
+		HashMap<String, Integer> op = new HashMap<String, Integer>();
+
+		// 一つの アイテム:個数 データごとに処理する
+		for (String change : diff.split("&")){
+			if (change.length() == 0) continue;
+			// アイテム部分と個数部分を分ける
+			String[] item = change.split(",");
+			op.put(item[0], Integer.parseInt(item[1]));
+		}
+
+		return op;
+	}
+	/**
+	 * 読みやすく整形した、チェスト増減データを作る
 	 * @param ops interpretDifferenceString関数で作った、増加分と減少分のハッシュマップが入ったリスト
 	 * @return 整形済み文字列
 	 */
@@ -193,6 +232,27 @@ public class InventoryUtil {
 		// それぞれのリストを組み立て
 		if (add.size() > 0) changeString += "&a+(" + Util.join(add, ", ") + ")";
 		if (sub.size() > 0) changeString += "&4-(" + Util.join(sub, ", ") + ")";
+
+		// 整形済み文字列を返す
+		return changeString;
+	}
+	/**
+	 * 読みやすく整形した、チェスト減少分データを作る
+	 * @param ops interpretDifferenceString関数で作った、減少分のハッシュマップが入ったリスト
+	 * @return 整形済み文字列
+	 */
+	public static String createSubString(HashMap<String, Integer> op) {
+		if (op.size() == 0) return "";
+		String changeString = "";
+
+		// 減少分をリストに追加
+		List<String> sub = new ArrayList<String>();
+		for (Entry<String, Integer> item : op.entrySet()){
+			sub.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+		}
+
+		// それぞれのリストを組み立て
+		if (sub.size() > 0) changeString += "-(" + Util.join(sub, ", ") + ")";
 
 		// 整形済み文字列を返す
 		return changeString;

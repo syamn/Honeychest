@@ -95,14 +95,15 @@ public class ContainerAccessManager {
 			// アイテムの窃盗があるか判定
 			List<String> stealList = InventoryUtil.createSubList(access.beforeInv, after);
 			if (stealList.size() > 0){
-				// 窃盗あり
+				// 窃盗あり ログ、通知用メッセージ用の座標文字列
 				String locstr = Actions.getBlockLocationString(access.loc);
-				// 設定ファイル確認
-				if (config.getBanFlag()){
-					// プレイヤーをBANする
+				// ログ、通知用の窃盗アイテム文字列
+				String substr = InventoryUtil.createSubString(InventoryUtil.interpretSubString(InventoryUtil.joinListToString(stealList)));
+
+				// 設定ファイル確認してアクションを行う
+				if (config.getBanFlag()){ // BAN
 					plugin.getBansHandler().ban(player, config.getKickBanSender(), config.getBanReason());
-				}else if(config.getKickFlag()){
-					// プレイヤーをKickする
+				}else if(config.getKickFlag()){ // Kick
 					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
 				}
 
@@ -112,6 +113,7 @@ public class ContainerAccessManager {
 				String logfile = plugin.getHCConfig().getLogPath();
 				String logmsg = "Player "+player.getName()+" was caught stealing from honeychest at location ("+locstr+")";
 				Actions.log(logfile, logmsg);
+				Actions.log(logfile,"Stolen Items: "+substr);
 			}
 		}
 		// アクセスリストから削除
