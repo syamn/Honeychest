@@ -10,8 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
-import syam.Honeychest.Config.ConfigurationManager;
-import syam.Honeychest.Config.MessageManager;
+import syam.Honeychest.config.ConfigurationManager;
+import syam.Honeychest.config.MessageManager;
 import syam.Honeychest.util.InventoryUtil;
 
 /**

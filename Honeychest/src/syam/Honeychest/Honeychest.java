@@ -7,10 +7,10 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import syam.Honeychest.Config.ConfigurationManager;
-import syam.Honeychest.Config.FileDirectoryStructure;
-import syam.Honeychest.Config.MessageManager;
 import syam.Honeychest.bans.BanHandler;
+import syam.Honeychest.config.ConfigurationManager;
+import syam.Honeychest.config.FileDirectoryStructure;
+import syam.Honeychest.config.MessageManager;
 
 public class Honeychest extends JavaPlugin{
 	// Logger

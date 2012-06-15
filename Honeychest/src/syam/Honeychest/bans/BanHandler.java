@@ -12,7 +12,7 @@ import com.mcbans.firestar.mcbans.pluginInterface.Kick;
 
 import syam.Honeychest.Actions;
 import syam.Honeychest.Honeychest;
-import syam.Honeychest.Config.ConfigurationManager;
+import syam.Honeychest.config.ConfigurationManager;
 import syam.Honeychest.util.Util;
 
 public class BanHandler {

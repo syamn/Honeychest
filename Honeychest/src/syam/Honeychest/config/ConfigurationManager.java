@@ -1,4 +1,4 @@
-package syam.Honeychest.Config;
+package syam.Honeychest.config;
 
 import java.util.logging.Logger;
 

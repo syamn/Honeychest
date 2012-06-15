@@ -12,7 +12,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import syam.Honeychest.Config.MessageManager;
+import syam.Honeychest.config.MessageManager;
 
 public class HoneychestBlockListener implements Listener {
 	public final static Logger log = Honeychest.log;

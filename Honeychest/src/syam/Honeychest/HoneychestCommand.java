@@ -10,7 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import syam.Honeychest.Config.MessageManager;
+import syam.Honeychest.config.MessageManager;
 
 public class HoneychestCommand implements CommandExecutor {
 	public final static Logger log = Honeychest.log;
