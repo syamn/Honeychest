@@ -83,29 +83,35 @@ public class HoneychestPlayerListener implements Listener {
 				case CHEST:
 					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
 						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.manage")){
-							// 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした
+							/* 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした */
+
+							// チェストならラージチェストか判定
+							Block second = null;
+							if (block.getType() == Material.CHEST){
+								// 走査開始
+								if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
+						            second = block.getRelative(BlockFace.NORTH);
+						        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
+						            second = block.getRelative(BlockFace.SOUTH);
+						        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
+						            second = block.getRelative(BlockFace.EAST);
+						        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
+						            second = block.getRelative(BlockFace.WEST);
+							}
+
+							// 既にハニーチェストになっているか判定
 							if (HoneyData.getHc(loc) == null) {
-								// クリックしたブロックをハニーチェストとして登録
-								HoneyData.setHc(loc, "*");
-								// チェストなら周辺を走査、ラージチェストなら両方を登録
-								if (block.getType() == Material.CHEST){
-									Block second = null;
-									// 走査開始
-									if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
-							            second = block.getRelative(BlockFace.NORTH);
-							        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
-							            second = block.getRelative(BlockFace.SOUTH);
-							        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
-							            second = block.getRelative(BlockFace.EAST);
-							        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
-							            second = block.getRelative(BlockFace.WEST);
-									// ラージチェスト登録
-									if (second != null)
-										HoneyData.setHc(second.getLocation(), "*");
-								}
+								HoneyData.setHc(loc, "*"); // 登録
+
+								if (second != null)
+									HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト登録
+
 								Actions.message(null, player, MessageManager.getString("PlayerListener.createTrap"));
 							}else{
-								HoneyData.removeHc(loc);
+								HoneyData.removeHc(loc); // 削除
+								if (second != null)
+									HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト削除
+
 								Actions.message(null, player, MessageManager.getString("PlayerListener.removeTrap"));
 							}
 							event.setCancelled(true);
