@@ -33,7 +33,7 @@ public class HoneychestCommand implements CommandExecutor {
 
 			Player player = (Player) sender;
 			// 権限チェック
-			if (!player.hasPermission("honeychest.manage")){
+			if (!player.hasPermission("honeychest.admin")){
 				Actions.message(null, player, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}
@@ -56,7 +56,7 @@ public class HoneychestCommand implements CommandExecutor {
 		// /honeychest save - ハニーチェストデータ保存
 		if (args.length >= 1 && (args[0].equalsIgnoreCase("save") || args[0].equalsIgnoreCase("s"))){
 			// 権限チェック
-			if (!sender.hasPermission("honeychest.manage")){
+			if (!sender.hasPermission("honeychest.admin")){
 				Actions.message(sender, null, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}
@@ -71,7 +71,7 @@ public class HoneychestCommand implements CommandExecutor {
 		// /honeychest reload - ハニーチェストデータを読み込み
 		if (args.length >= 1 && (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))){
 			// 権限チェック
-			if (!sender.hasPermission("honeychest.manage")){
+			if (!sender.hasPermission("honeychest.admin")){
 				Actions.message(sender, null, MessageManager.getString("Commands.permissionDenied"));
 				return true;
 			}

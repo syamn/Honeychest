@@ -34,13 +34,18 @@ public class HoneychestPlayerListener implements Listener {
 	/* 登録するイベントはここから下に */
 
 	// プレイヤーがブロックをクリックした
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
 
 		// インベントリが閉じられたかチェック
 		Honeychest.containerManager.checkInventoryClose(player);
+
+		// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
+		if (player.hasPermission("honeychest.ignore")){
+			return;
+		}
 
 		if (block != null) {
 			Location loc = block.getLocation();
@@ -82,7 +87,7 @@ public class HoneychestPlayerListener implements Listener {
 				case DISPENSER:
 				case CHEST:
 					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
-						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.manage")){
+						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.admin")){
 							/* 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした */
 
 							// チェストならラージチェストか判定
