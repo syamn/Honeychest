@@ -70,6 +70,7 @@ public class HoneychestBlockListener implements Listener {
 				(block.getRelative(BlockFace.WEST).getType() == Material.CHEST && HoneyData.getHc(block.getRelative(BlockFace.WEST).getLocation()) != null)){
 				// イベントキャンセル
 				event.setCancelled(true);
+				Actions.message(null, player, MessageManager.getString("BlockListener.notPlaceChest"));
 			}
 		}
 	}

@@ -110,7 +110,7 @@ public class HoneychestPlayerListener implements Listener {
 							}else{
 								HoneyData.removeHc(loc); // 削除
 								if (second != null)
-									HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト削除
+									HoneyData.removeHc(second.getLocation()); // ラージチェスト削除
 
 								Actions.message(null, player, MessageManager.getString("PlayerListener.removeTrap"));
 							}
