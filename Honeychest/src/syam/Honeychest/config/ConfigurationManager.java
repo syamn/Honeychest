@@ -59,8 +59,12 @@ public class ConfigurationManager {
 	public String getLogPath() {
 		return conf.getString("logPath", defaultLogPath);
 	}
+
 	public String getMessageLocale() {
 		return conf.getString("messageLocale", defaultMessageLocale);
+	}
+	public boolean getHiddenTrapMessages() {
+		return conf.getBoolean("hiddenTrapMessages", false);
 	}
 
 	public String getKickBanSender() {
@@ -72,6 +76,8 @@ public class ConfigurationManager {
 	public String getBanReason() {
 		return conf.getString("honeychestBanReason", defaultBanReason);
 	}
+
+
 
 
 

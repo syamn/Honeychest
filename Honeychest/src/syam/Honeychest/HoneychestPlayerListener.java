@@ -62,7 +62,11 @@ public class HoneychestPlayerListener implements Listener {
 							event.setCancelled(true);
 							event.setUseInteractedBlock(Result.DENY);
 							event.setUseItemInHand(Result.DENY);
-							Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
+
+							// メッセージ非表示フラグがtrueになっていれば何も表示しない
+							if(!plugin.getHCConfig().getHiddenTrapMessages())
+								Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
+
 							return;
 						}else{
 							// 開くことが出来る

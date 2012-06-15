@@ -48,7 +48,10 @@ public class HoneychestBlockListener implements Listener {
 					if (str != null){
 						// ハニーチェスト イベントキャンセル
 						event.setCancelled(true);
-						Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTrap"));
+
+						// メッセージを隠す設定をチェック
+						if(!plugin.getHCConfig().getHiddenTrapMessages())
+							Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTrap"));
 					}
 					break;
 			}
@@ -70,7 +73,10 @@ public class HoneychestBlockListener implements Listener {
 				(block.getRelative(BlockFace.WEST).getType() == Material.CHEST && HoneyData.getHc(block.getRelative(BlockFace.WEST).getLocation()) != null)){
 				// イベントキャンセル
 				event.setCancelled(true);
-				Actions.message(null, player, MessageManager.getString("BlockListener.notPlaceChest"));
+
+				// メッセージを隠す設定をチェック
+				if(!plugin.getHCConfig().getHiddenTrapMessages())
+					Actions.message(null, player, MessageManager.getString("BlockListener.notPlaceChest"));
 			}
 		}
 	}

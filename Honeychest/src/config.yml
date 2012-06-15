@@ -1,6 +1,7 @@
 # HoneyChest author syam
 # This is a default configuration file!
 
+
 toolID: 269
 kickFlag: true
 banFlag: false
@@ -8,7 +9,9 @@ banFlag: false
 globalBan: false
 
 logPath: plugins/Honeychest/honeychest.log
+
 messageLocale: default
+hiddenTrapMessages: false
 
 honeychestKickBanSender: '[Honeychest]'
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
