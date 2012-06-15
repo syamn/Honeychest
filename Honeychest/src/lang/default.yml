@@ -8,7 +8,8 @@ Commands:
   dataLoaded: "&aHoneychest data loaded from file!"
   dataLoadError: "&cAn error occured on loading honeychest data."
 BlockListener:
-  notBreakTraps: "&cYou can't break Honeychest!"
+  notBreakTrap: "&cYou can't break Honeychest!"
+  notPlaceChest: "&cThere is a Honeychest next to. Please remove it first."
 PlayerListener:
   createTrap: "&aHoneychest created. Right click again to remove the Honeychest"
   removeTrap: "&aHoneychest removed!"

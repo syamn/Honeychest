@@ -10,7 +10,8 @@ Commands:
   dataLoaded: "&aハニーチェストデータをファイルから読み込みました！"
   dataLoadError: "&cハニーチェストデータの読み込み中にエラーが発生しました。"
 BlockListener:
-  notBreakTraps: "&cハニーチェストは破壊できません！"
+  notBreakTrap: "&cハニーチェストは破壊できません！"
+  notPlaceChest: "&c隣のチェストがハニーチェストです！先に解除してください！"
 PlayerListener:
   createTrap: "&aハニーチェストを作りました！"
   removeTrap: "&aハニーチェストを解除しました！"

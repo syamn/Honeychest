@@ -50,13 +50,11 @@ public class ContainerAccessManager {
 		// ラージチェストか判定
 		boolean large = false;
 		if (block.getType() == Material.CHEST){
-			log.info("1");//debug
 			if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST ||
 				block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST ||
 				block.getRelative(BlockFace.EAST).getType() == Material.CHEST ||
 				block.getRelative(BlockFace.WEST).getType() == Material.CHEST){
 				large = true;
-				log.info("2");//debug
 			}
 		}
 
