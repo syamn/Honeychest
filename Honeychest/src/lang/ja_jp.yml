@@ -14,5 +14,6 @@ BlockListener:
 PlayerListener:
   createTrap: "&aハニーチェストを作りました！"
   removeTrap: "&aハニーチェストを解除しました！"
+  openedTrap: "&c他の人が開いているので使えません"
 Broadcast:
   alert: "&7プレイヤー&4 {0} &7がハニーチェストからアイテムを盗みました！"

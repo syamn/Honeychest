@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -42,8 +44,31 @@ public class ContainerAccessManager {
 		if (!(block.getState() instanceof InventoryHolder)){
 			return;
 		}
+
 		InventoryHolder container = (InventoryHolder) block.getState();
-		accessList.add(new ContainerAccess(container, player, InventoryUtil.compressInventory(InventoryUtil.getContainerContents(container)), block.getLocation()));
+
+		// ラージチェストか判定
+		boolean large = false;
+		if (block.getType() == Material.CHEST){
+			log.info("1");//debug
+			if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST ||
+				block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST ||
+				block.getRelative(BlockFace.EAST).getType() == Material.CHEST ||
+				block.getRelative(BlockFace.WEST).getType() == Material.CHEST){
+				large = true;
+				log.info("2");//debug
+			}
+		}
+
+		// アクセスリスト追加
+		accessList.add(new
+				ContainerAccess(
+						container,
+						player,
+						InventoryUtil.
+						compressInventory(InventoryUtil.getContainerContents(container)),
+						block.getLocation(),
+						large ));
 	}
 
 	/**
@@ -52,12 +77,7 @@ public class ContainerAccessManager {
 	 */
 	public void checkInventoryClose(Player player) {
 		// アクセスリストを取得
-		ContainerAccess access = null;
-		for (ContainerAccess acc : accessList){
-			if (acc.player == player){
-				access = acc;
-			}
-		}
+		ContainerAccess access = getAccess(player);
 
 		// アクセスリスト(インベントリを開いた記録)がなければ返す
 		if (access == null) return;
@@ -106,15 +126,75 @@ public class ContainerAccessManager {
 	 */
 	public void removeAccessList(Player player) {
 		// アクセスリストを取得
+		ContainerAccess access = getAccess(player);
+		// リストにあれば削除
+		if (access != null)
+			accessList.remove(access);
+	}
+
+	/**
+	 * プレイヤーがコンテナにアクセスしている場合、ContaierAccessインスタンスを返す
+	 * @param player チェックするプレイヤー
+	 * @return ContainerAccess または アクセスしていない場合 null
+	 */
+	public ContainerAccess getAccess(Player player){
+		// アクセスリストを取得
 		ContainerAccess access = null;
 		for (ContainerAccess acc : accessList){
 			if (acc.player == player){
 				access = acc;
 			}
 		}
-		// リストにあれば削除
-		if (access != null)
-			accessList.remove(access);
+		// 返す
+		return access;
+	}
+
+	/**
+	 * 座標のハニーチェストが開かれているかどうか返す
+	 * @param loc チェックするハニーチェストの座標
+	 * @return 使われていればtrue そうでなければfalse
+	 */
+	public boolean isAccessing(Location loc){
+		// 通常のチェストはfalseを返す
+		if (HoneyData.getHc(loc) == null)
+			return false;
+
+		Block block = loc.getBlock();
+
+		// アクセスリストをループさせてチェック
+		for (ContainerAccess acc : accessList){
+			// 同じ座標のHCにアクセス中
+			log.info("3");//debug
+			if (acc.loc.getBlock().equals(block)){
+				log.info("4");//debug
+				return true;
+			}else if(acc.large){
+				log.info("5");//debug
+				// ラージチェストは隣のチェストもチェック
+				// 走査開始
+				Block second = null;
+				if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
+		            second = block.getRelative(BlockFace.NORTH);
+		        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
+		            second = block.getRelative(BlockFace.SOUTH);
+		        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
+		            second = block.getRelative(BlockFace.EAST);
+		        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
+		            second = block.getRelative(BlockFace.WEST);
+
+				// エラー 不正 → アクセス不能にするため true
+				if (second == null)
+					return true;
+
+				// もう一つのチェストのアクセスをチェック
+				for (ContainerAccess acc2 : accessList){
+					if (acc2.loc.getBlock().equals(second)) return true;
+				}
+			}
+		}
+
+		// チェック終わり
+		return false;
 	}
 
 	/**
@@ -130,14 +210,17 @@ public class ContainerAccessManager {
 		public HashMap<String, Integer> beforeInv;
 		// コンテナの座標
 		public Location loc;
+		// ラージチェストかどうか
+		public boolean large;
 		// チェック中のフラグ
 		public boolean checking;
 
-		public ContainerAccess(InventoryHolder container, Player player, HashMap<String, Integer> beforeInv, Location loc){
+		public ContainerAccess(InventoryHolder container, Player player, HashMap<String, Integer> beforeInv, Location loc, boolean large){
 			this.container = container;
 			this.player = player;
 			this.beforeInv = beforeInv;
 			this.loc = loc;
+			this.large = large;
 			this.checking = false;
 		}
 	}

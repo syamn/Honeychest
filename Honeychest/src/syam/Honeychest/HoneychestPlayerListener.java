@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import syam.Honeychest.Config.MessageManager;
+import syam.Honeychest.config.MessageManager;
 
 public class HoneychestPlayerListener implements Listener {
 	public final static Logger log = Honeychest.log;
@@ -48,9 +49,20 @@ public class HoneychestPlayerListener implements Listener {
 				case FURNACE:
 				case DISPENSER:
 				case CHEST:
-					if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-						// コンテナのインベントリを開いた
-						Honeychest.containerManager.checkInventoryOpen(player, block);
+					// ハニーチェストのインベントリを開いた
+					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.getHc(block.getLocation()) != null) {
+						if (Honeychest.containerManager.isAccessing(block.getLocation())){
+							// このハニーチェストは他人に開かれている
+
+							event.setCancelled(true);
+							event.setUseInteractedBlock(Result.DENY);
+							event.setUseItemInHand(Result.DENY);
+							Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
+							return;
+						}else{
+							// 開くことが出来る
+							Honeychest.containerManager.checkInventoryOpen(player, block);
+						}
 					}
 					break;
 			}
