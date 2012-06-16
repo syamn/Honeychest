@@ -1,4 +1,4 @@
-# HoneyChest Configuration file
+# HoneyChest Configuration file for version 0.99(beta)
 # @author syam <admin@sakura-server.net>
 # BukkitDev: http://dev.bukkit.org/server-mods/honeychest/
 
@@ -40,6 +40,8 @@ hideIgnoreMessage: true
 #   Kick/Ban Config   #
 #=====================#
 # It is used to hookup with the MCBans.
+# ** This option is Inactive! **
+# I sent message to the MCBans about this option. waiting for a reply.
 honeychestKickBanSender: '[Honeychest]'
 
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
@@ -50,4 +52,4 @@ honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 0.9
+version: 0.99

@@ -85,7 +85,9 @@ public class ConfigurationManager {
 
 	/* Kick/Ban Config */
 	public String getKickBanSender() {
-		return conf.getString("honeychestKickBanSender", defaultKickBanSender);
+		/* この機能は一時的に無効にし、デフォルトのもので固定します */
+		// return conf.getString("honeychestKickBanSender", defaultKickBanSender);
+		return "[Honeychest]";
 	}
 	public String getKickReason(){
 		return conf.getString("honeychestKickReason", defaultKickReason);
