@@ -14,6 +14,7 @@ PlayerListener:
   createTrap: "&aHoneychest created. Right click again to remove the Honeychest"
   removeTrap: "&aHoneychest removed!"
   openedTrap: "&csorry, this container has been opened by others."
+  youAreIgnore: "&aYou can remove items from this trap!"
 Broadcast:
   alert: "&7Player&c {0} &7was caught stealing from honeychest."
   items: "&6Stolen Item(s): &c{0}"

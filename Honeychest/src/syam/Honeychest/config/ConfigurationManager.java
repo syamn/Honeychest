@@ -73,13 +73,17 @@ public class ConfigurationManager {
 	public String getMessageLocale() {
 		return conf.getString("messageLocale", defaultMessageLocale);
 	}
-	public boolean getHiddenTrapMessages() {
-		return conf.getBoolean("hiddenTrapMessages", false);
+	public boolean getHideTrapMessages() {
+		return conf.getBoolean("hideTrapMessages", false);
 	}
 	public boolean getBroadcastItems() {
 		return conf.getBoolean("broadcastItems", true);
 	}
+	public boolean getHideIgnoreMessage() {
+		return conf.getBoolean("hideIgnoreMessage", true);
+	}
 
+	/* Kick/Ban Config */
 	public String getKickBanSender() {
 		return conf.getString("honeychestKickBanSender", defaultKickBanSender);
 	}

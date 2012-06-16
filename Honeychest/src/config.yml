@@ -1,7 +1,14 @@
-# HoneyChest Configuration
+# HoneyChest Configuration file
+# @author syam <admin@sakura-server.net>
+# BukkitDev: http://dev.bukkit.org/server-mods/honeychest/
 
-### Basic Config ###
+
+#==================#
+#   Basic Config   #
+#==================#
+# ItemID, used to create/remove honeychest
 toolID: 269
+
 kickFlag: true
 banFlag: false
 
@@ -9,17 +16,40 @@ banFlag: false
 globalBan: false
 
 
-### Logging Config ###
+#====================#
+#   Logging Config   #
+#====================#
 logToFile: true
 logItems: true
 logPath: plugins/Honeychest/honeychest.log
 
 
-### Messages Config ###
+#=====================#
+#   Messages Config   #
+#=====================#
+# There is a language file in English(default) and Japanese(ja_jp)
+# If you want, you can create a custom message file in your language
 messageLocale: default
-hiddenTrapMessages: false
+# If it is true, hide some messages gives a hint for griefer
+# For example, notBreakTrap, notPlaceChest and openedTrap messages on language file
+hideTrapMessages: false
+# If it is true, broadcast stolen items.
 broadcastItems: true
+# If it is true, hide "PlayerListener.youAreIgnore" message on language file
+hideIgnoreMessage: true
 
+#=====================#
+#   Kick/Ban Config   #
+#=====================#
+# It is used to hookup with the MCBans.
 honeychestKickBanSender: '[Honeychest]'
+
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
-honeychestBanReason: 'Steal items from HoneyChest. {'
+# If you set globalBAN: true, need to use the English here for their guidelines
+honeychestBanReason: 'Steal items from HoneyChest.'
+
+#==================#
+#   DO NOT TOUCH   #
+#==================#
+# Do not touch this option! It is a check if you are running the recent configuration version
+version: 0.9

@@ -44,6 +44,8 @@ public class HoneychestPlayerListener implements Listener {
 
 		// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
 		if (player.hasPermission("honeychest.ignore")){
+			if (!plugin.getHCConfig().getHideIgnoreMessage())
+				Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
 			return;
 		}
 
@@ -64,7 +66,7 @@ public class HoneychestPlayerListener implements Listener {
 							event.setUseItemInHand(Result.DENY);
 
 							// メッセージ非表示フラグがtrueになっていれば何も表示しない
-							if(!plugin.getHCConfig().getHiddenTrapMessages())
+							if(!plugin.getHCConfig().getHideTrapMessages())
 								Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
 
 							return;

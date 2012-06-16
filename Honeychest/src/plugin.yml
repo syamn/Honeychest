@@ -1,8 +1,8 @@
 ##  Plugin Information  ##
 name: Honeychest
-version: 0.82
+version: 0.90
 main: syam.Honeychest.Honeychest
-description: SakuraServer Plugin!
+description: Anti-Grief Plugin! Can be able to create chest of honeypot!
 website: http://sakura-server.net/
 softdepend: [MCBans]
 ##  Original Author     ##
@@ -18,4 +18,4 @@ permissions:
         description: Can create/break honeychest.
     honeychest.ignore:
         default: op
-        description: Notify when stealing items from honeychest.
+        description: Can remove items from honeychest.

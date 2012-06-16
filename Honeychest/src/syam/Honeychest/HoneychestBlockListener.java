@@ -50,7 +50,7 @@ public class HoneychestBlockListener implements Listener {
 						event.setCancelled(true);
 
 						// メッセージを隠す設定をチェック
-						if(!plugin.getHCConfig().getHiddenTrapMessages())
+						if(!plugin.getHCConfig().getHideTrapMessages())
 							Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTrap"));
 					}
 					break;
@@ -75,7 +75,7 @@ public class HoneychestBlockListener implements Listener {
 				event.setCancelled(true);
 
 				// メッセージを隠す設定をチェック
-				if(!plugin.getHCConfig().getHiddenTrapMessages())
+				if(!plugin.getHCConfig().getHideTrapMessages())
 					Actions.message(null, player, MessageManager.getString("BlockListener.notPlaceChest"));
 			}
 		}
