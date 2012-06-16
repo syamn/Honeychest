@@ -41,7 +41,7 @@ public class HoneychestPlayerListener implements Listener {
 
 		// インベントリが閉じられたかチェック
 		if (Honeychest.containerManager.checkInventoryClose(player)){
-			// 窃盗が確認された場合、アクセスリストに追加しないよう返す
+			// 窃盗が確認されBANまたはKickされた場合、アクセスリストに追加しないよう返す
 			return;
 		}
 
