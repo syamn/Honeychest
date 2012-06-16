@@ -1,3 +1,9 @@
+Help:
+  helpMessage1: " &b<>&f = Required, &b[]&f = optional"
+  helpMessage2: " /honeychest(/hc)&7 - Toggle creator mode."
+  helpMessage3: " /honeychest save(/hc s)&7 - Save Honeychest data."
+  helpMessage4: " /honeychest load(/hc r)&7 - Load Honeychest data."
+  helpMessage5: " /honeychest help(/hc h)&7 - Show this help."
 Commands:
   notFromConsole: "&cThis command cannot be run from the console!"
   permissionDenied: "&cYou don't have permission to use this!"

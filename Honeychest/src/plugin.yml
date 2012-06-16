@@ -1,6 +1,6 @@
 ##  Plugin Information  ##
 name: Honeychest
-version: 0.99
+version: 1.00
 main: syam.Honeychest.Honeychest
 description: Anti-Grief Plugin! Can be able to create chest of honeypot!
 website: http://sakura-server.net/

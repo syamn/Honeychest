@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import syam.Honeychest.config.MessageManager;
 import syam.Honeychest.util.TextFileHandler;
 
 /**
@@ -121,11 +122,11 @@ public class Actions {
 	public static void sendHelp(CommandSender sender){
 		message(sender, null, "&c===================================");
 		message(sender, null, "&bHoneychest version &3%version &bby syamn");
-		message(sender, null, " &b<>&f = 必要, &b[]&f = オプション");
-		message(sender, null, " /honeychest(/hc)&7 - Honeychest設置/破壊");
-		message(sender, null, " /honeychest save(/hc s)&7 - Honeychestデータ保存");
-		message(sender, null, " /honeychest reload(/hc r)&7 - Honeychestデータ再読み込み");
-		message(sender, null, " /honeychest help(/hc h)&7 - このコマンドヘルプを表示");
+		message(sender, null, MessageManager.getString("Help.helpMessage1"));
+		message(sender, null, MessageManager.getString("Help.helpMessage2"));
+		message(sender, null, MessageManager.getString("Help.helpMessage3"));
+		message(sender, null, MessageManager.getString("Help.helpMessage4"));
+		message(sender, null, MessageManager.getString("Help.helpMessage5"));
 		message(sender, null, "&c===================================");
 	}
 

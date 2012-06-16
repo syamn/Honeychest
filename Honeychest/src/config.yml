@@ -1,4 +1,4 @@
-# HoneyChest Configuration file for version 0.99(beta)
+# HoneyChest Configuration file for version 1.00
 # @author syam <admin@sakura-server.net>
 # BukkitDev: http://dev.bukkit.org/server-mods/honeychest/
 
@@ -46,10 +46,11 @@ honeychestKickBanSender: '[Honeychest]'
 
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
 # If you set globalBAN: true, need to use the English here for their guidelines
+# "!location!" string is replaced by "worldname:x,y,y"
 honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 
 #==================#
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 0.99
+version: 1.00

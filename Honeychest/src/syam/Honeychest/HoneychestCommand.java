@@ -69,7 +69,7 @@ public class HoneychestCommand implements CommandExecutor {
 		}
 
 		// /honeychest reload - ハニーチェストデータを読み込み
-		if (args.length >= 1 && (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r"))){
+		if (args.length >= 1 && (args[0].equalsIgnoreCase("load") || args[0].equalsIgnoreCase("l"))){
 			// 権限チェック
 			if (!sender.hasPermission("honeychest.admin")){
 				Actions.message(sender, null, MessageManager.getString("Commands.permissionDenied"));
