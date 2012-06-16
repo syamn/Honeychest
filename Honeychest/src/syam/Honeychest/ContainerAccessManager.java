@@ -108,17 +108,21 @@ public class ContainerAccessManager {
 				}
 
 				// メッセージをブロードキャスト
-				Actions.broadcastMessage("&4[Honeychest]&f "+ MessageManager.getString("Broadcast.alert", player.getName()));
+				Actions.broadcastMessage("&c[Honeychest]&f "+ MessageManager.getString("Broadcast.alert", player.getName()));
 				// 盗んだアイテムをキャストするかどうか
 				if (config.getBroadcastItems()){
 					Actions.broadcastMessage(MessageManager.getString("Broadcast.items", substr));
 				}
 
 				// ロギング
-				String logfile = plugin.getHCConfig().getLogPath();
-				String logmsg = "Player "+player.getName()+" was caught stealing from honeychest at location ("+locstr+")";
-				Actions.log(logfile, logmsg);
-				Actions.log(logfile,"Stolen Items: "+substr);
+				if (config.getLogToFile()){
+					String logfile = plugin.getHCConfig().getLogPath();
+					String logmsg = "Player "+player.getName()+" was caught stealing from honeychest at location ("+locstr+")";
+					Actions.log(logfile, logmsg);
+					// アイテムロギング
+					if (config.getLogItems())
+						Actions.log(logfile,"Stolen Items: "+substr);
+				}
 			}
 		}
 		// アクセスリストから削除
@@ -169,9 +173,7 @@ public class ContainerAccessManager {
 		// アクセスリストをループさせてチェック
 		for (ContainerAccess acc : accessList){
 			// 同じ座標のHCにアクセス中
-			log.info("3");//debug
 			if (acc.loc.getBlock().equals(block)){
-				log.info("4");//debug
 				return true;
 			}else if(acc.large){
 				log.info("5");//debug

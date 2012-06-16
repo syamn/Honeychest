@@ -1,19 +1,25 @@
-# HoneyChest author syam
-# This is a default configuration file!
+# HoneyChest Configuration
 
-
+### Basic Config ###
 toolID: 269
 kickFlag: true
 banFlag: false
 
+# Set to true for MCBans global bans. Be sure to follow their guidelines
 globalBan: false
 
+
+### Logging Config ###
+logToFile: true
+logItems: true
 logPath: plugins/Honeychest/honeychest.log
 
+
+### Messages Config ###
 messageLocale: default
 hiddenTrapMessages: false
 broadcastItems: true
 
 honeychestKickBanSender: '[Honeychest]'
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
-honeychestBanReason: 'Steal items from HoneyChest. Goodbye!'
+honeychestBanReason: 'Steal items from HoneyChest. {'

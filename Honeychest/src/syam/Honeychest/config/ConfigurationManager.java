@@ -43,6 +43,7 @@ public class ConfigurationManager {
 
 	/* 以下設定取得用getter */
 
+	/* Basic Config */
 	public int getToolId() {
 		return conf.getInt("toolID", defaultToolID);
 	}
@@ -56,10 +57,19 @@ public class ConfigurationManager {
 	public boolean isGlobalBan(){
 		return conf.getBoolean("globalBan", false);
 	}
+
+	/* Logging Config */
+	public boolean getLogToFile(){
+		return conf.getBoolean("logToFile", true);
+	}
+	public boolean getLogItems(){
+		return conf.getBoolean("logItems", true);
+	}
 	public String getLogPath() {
 		return conf.getString("logPath", defaultLogPath);
 	}
 
+	/* Messages Config */
 	public String getMessageLocale() {
 		return conf.getString("messageLocale", defaultMessageLocale);
 	}

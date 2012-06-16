@@ -133,11 +133,10 @@ public class BanHandler {
 	private void ban_MCBans3(Player player, String sender, String reason){
 		// MCBansのBAN種類として "localBan" か "globalBan" が必要 (他:"tempBan","unBan")
 		String banType = "localBan";
+		
 		if (config.isGlobalBan())
 			banType = "globalBan";
-
-
-
+		
 		// MCBansプラグインに新規のBANを送る
 		Ban banMCBans3 = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");
 		// BANのためのスレッドを開始
