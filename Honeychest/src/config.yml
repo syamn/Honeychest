@@ -15,14 +15,12 @@ banFlag: false
 # Set to true for MCBans global bans. Be sure to follow their guidelines
 globalBan: false
 
-
 #====================#
 #   Logging Config   #
 #====================#
 logToFile: true
 logItems: true
 logPath: plugins/Honeychest/honeychest.log
-
 
 #=====================#
 #   Messages Config   #
@@ -46,7 +44,7 @@ honeychestKickBanSender: '[Honeychest]'
 
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
 # If you set globalBAN: true, need to use the English here for their guidelines
-honeychestBanReason: 'Steal items from HoneyChest.'
+honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 
 #==================#
 #   DO NOT TOUCH   #

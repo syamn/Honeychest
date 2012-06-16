@@ -102,7 +102,7 @@ public class ContainerAccessManager {
 
 				// 設定ファイル確認してアクションを行う
 				if (config.getBanFlag()){ // BAN
-					plugin.getBansHandler().ban(player, config.getKickBanSender(), config.getBanReason());
+					plugin.getBansHandler().ban(player, config.getKickBanSender(), config.getBanReason().replaceAll("!location!", locstr));
 				}else if(config.getKickFlag()){ // Kick
 					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
 				}
