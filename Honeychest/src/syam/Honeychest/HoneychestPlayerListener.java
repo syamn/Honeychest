@@ -45,13 +45,6 @@ public class HoneychestPlayerListener implements Listener {
 			return;
 		}
 
-		// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
-		if (player.hasPermission("honeychest.ignore")){
-			if (!plugin.getHCConfig().getHideIgnoreMessage())
-				Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
-			return;
-		}
-
 		if (block != null) {
 			Location loc = block.getLocation();
 
@@ -75,6 +68,15 @@ public class HoneychestPlayerListener implements Listener {
 							return;
 						}else{
 							// 開くことが出来る
+
+							// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
+							if (player.hasPermission("honeychest.ignore")){
+								if (!plugin.getHCConfig().getHideIgnoreMessage())
+									Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
+								return;
+							}
+
+							// 権限がなければ通常処理
 							Honeychest.containerManager.checkInventoryOpen(player, block);
 						}
 					}
