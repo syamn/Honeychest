@@ -73,15 +73,15 @@ public class ContainerAccessManager {
 	 * プレイヤーがコンテナインベントリが開いていたかチェックして表示
 	 * @param player チェックするプレイヤー
 	 */
-	public void checkInventoryClose(Player player) {
+	public boolean checkInventoryClose(Player player) {
 		// アクセスリストを取得
 		ContainerAccess access = getAccess(player);
 
 		// アクセスリスト(インベントリを開いた記録)がなければ返す
-		if (access == null) return;
+		if (access == null) return false;
 
 		// 処理中のフラグを立てて多重チェックしないようにする
-		if (access.checking) return;
+		if (access.checking) return false;
 		access.checking = true;
 
 		// 閉じた時点でのインベントリを取得
@@ -123,10 +123,18 @@ public class ContainerAccessManager {
 					if (config.getLogItems())
 						Actions.log(logfile,"Stolen Items: "+substr);
 				}
+
+				// BANまたはKickされた場合、このメソッドが呼びされた側の処理を続行しないようにtrueを返す
+				if (config.getBanFlag() || config.getKickFlag()){
+					// アクセスリストから削除
+					accessList.remove(access);
+					return true;
+				}
 			}
 		}
 		// アクセスリストから削除
 		accessList.remove(access);
+		return false;
 	}
 
 	/**
@@ -176,7 +184,6 @@ public class ContainerAccessManager {
 			if (acc.loc.getBlock().equals(block)){
 				return true;
 			}else if(acc.large){
-				log.info("5");//debug
 				// ラージチェストは隣のチェストもチェック
 				// 走査開始
 				Block second = null;
@@ -189,9 +196,12 @@ public class ContainerAccessManager {
 		        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
 		            second = block.getRelative(BlockFace.WEST);
 
-				// エラー 不正 → アクセス不能にするため true
-				if (second == null)
-					return true;
+				// エラー 不正
+				if (second == null){
+					String locstr = Actions.getBlockLocationString(second.getLocation());
+					log.warning(logPrefix+"Wrong honeychest data at "+locstr);
+					return false;
+				}
 
 				// もう一つのチェストのアクセスをチェック
 				for (ContainerAccess acc2 : accessList){

@@ -40,7 +40,10 @@ public class HoneychestPlayerListener implements Listener {
 		Block block = event.getClickedBlock();
 
 		// インベントリが閉じられたかチェック
-		Honeychest.containerManager.checkInventoryClose(player);
+		if (Honeychest.containerManager.checkInventoryClose(player)){
+			// 窃盗が確認された場合、アクセスリストに追加しないよう返す
+			return;
+		}
 
 		// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
 		if (player.hasPermission("honeychest.ignore")){
