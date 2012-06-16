@@ -70,10 +70,8 @@ public class HoneychestPlayerListener implements Listener {
 							// 開くことが出来る
 
 							// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
-							if (player.hasPermission("honeychest.ignore")){
-								if (!plugin.getHCConfig().getHideIgnoreMessage())
-									Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
-								return;
+							if (player.hasPermission("honeychest.ignore") && !plugin.getHCConfig().getHideIgnoreMessage()){
+								Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
 							}
 
 							// 権限がなければ通常処理

@@ -92,6 +92,13 @@ public class ContainerAccessManager {
 		// ハニーチェストか判定
 		String hc = HoneyData.getHc(access.loc);
 		if (hc != null){
+			// 権限保持者は何もしない
+			if (player.hasPermission("honeychest.ignore")){
+				// アクセスリストから削除
+				accessList.remove(access);
+				return false;
+			}
+
 			// アイテムの窃盗があるか判定
 			List<String> stealList = InventoryUtil.createSubList(access.beforeInv, after);
 			if (stealList.size() > 0){
