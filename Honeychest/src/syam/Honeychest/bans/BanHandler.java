@@ -15,6 +15,10 @@ import syam.Honeychest.Honeychest;
 import syam.Honeychest.config.ConfigurationManager;
 import syam.Honeychest.util.Util;
 
+/**
+ * I've made this class with reference to Honeypot.
+ * Thanks to them!
+ */
 public class BanHandler {
 	public final static Logger log = Honeychest.log;
 	private static final String logPrefix = Honeychest.logPrefix;
@@ -133,10 +137,10 @@ public class BanHandler {
 	private void ban_MCBans3(Player player, String sender, String reason){
 		// MCBansのBAN種類として "localBan" か "globalBan" が必要 (他:"tempBan","unBan")
 		String banType = "localBan";
-		
+
 		if (config.isGlobalBan())
 			banType = "globalBan";
-		
+
 		// MCBansプラグインに新規のBANを送る
 		Ban banMCBans3 = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");
 		// BANのためのスレッドを開始

@@ -14,6 +14,10 @@ import org.bukkit.material.MaterialData;
 
 import syam.Honeychest.Actions;
 
+/**
+ * I've made this class with reference to Hawkeye.
+ * Thanks to them!
+ */
 public class InventoryUtil {
 	/**
 	 * 忘れたときのためのメモ書き
