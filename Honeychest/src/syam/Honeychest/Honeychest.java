@@ -77,6 +77,12 @@ public class Honeychest extends JavaPlugin{
 			case MCBANS3:
 				log.info(logPrefix+"MCBans 3.x plugin found, using that.");
 				break;
+			case EASYBAN:
+				log.info(logPrefix+"EasyBan plugin found, using that.");
+				break;
+			case ULTRABAN:
+				log.info(logPrefix+"UltraBan plugin found, using that.");
+				break;
 			default:
 				log.warning(logPrefix+"Error occurred on setupBanHandler (Honeychest.class)");
 				break;

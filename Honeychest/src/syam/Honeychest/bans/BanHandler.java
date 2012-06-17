@@ -52,6 +52,11 @@ public class BanHandler {
 			checkEB = plugin.getServer().getPluginManager().getPlugin("easyban");
 		}
 
+		// UltraBan
+		Plugin checkUB = plugin.getServer().getPluginManager().getPlugin("UltraBan");
+		if (checkUB == null){
+			checkUB = plugin.getServer().getPluginManager().getPlugin("ultraban");
+		}
 
 		// 他のBAN関係のプラグインを追加する時はここに
 
@@ -83,6 +88,8 @@ public class BanHandler {
 			}
 		}else if (checkEB != null){
 			banMethod = BanMethod.EASYBAN;
+		}else if (checkUB != null){
+			banMethod = BanMethod.ULTRABAN;
 		}else{
 			// サポートしているBANプラグインが見つからなかった
 			banMethod = BanMethod.VANILLA;
@@ -113,6 +120,9 @@ public class BanHandler {
 			case EASYBAN: // EasyBan
 				ban_EB(player, reason);
 				break;
+			case ULTRABAN: // UltraBan
+				ban_UB(player, reason);
+				break;
 			default: // Exception: Undefined banMethod
 				log.warning(logPrefix+"Error occurred on banning player (BanHandler.class)");
 				break;
@@ -135,6 +145,9 @@ public class BanHandler {
 				break;
 			case EASYBAN: // EasyBan
 				kick_EB(player, reason);
+				break;
+			case ULTRABAN: // UltraBan
+				kick_UB(player, reason);
 				break;
 			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
@@ -189,5 +202,24 @@ public class BanHandler {
 	 */
 	private void kick_EB(Player player, String reason){
 		Actions.executeCommandOnConsole("ekick " + player.getName() + " " + reason);
+	}
+
+	/**
+	 * UltraBanを使ってKickを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void ban_UB(Player player, String reason){
+		Actions.executeCommandOnConsole("ban " + player.getName() + " " + reason);
+		// IPBANも可能
+		//Actions.executeCommandOnConsole("ipban " + player.getName() + " " + reason);
+	}
+	/**
+	 * UltraBanを使ってKickを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void kick_UB(Player player, String reason){
+		Actions.executeCommandOnConsole("eban " + player.getName() + " " + reason);
 	}
 }
