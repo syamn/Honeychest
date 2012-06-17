@@ -46,11 +46,18 @@ public class BanHandler {
 			checkMCBans = plugin.getServer().getPluginManager().getPlugin("MCBans");
 		}
 
+		// EasyBan
+		Plugin checkEB = plugin.getServer().getPluginManager().getPlugin("EasyBan");
+		if (checkEB == null){
+			checkEB = plugin.getServer().getPluginManager().getPlugin("easyban");
+		}
+
+
 		// 他のBAN関係のプラグインを追加する時はここに
 
-		// MCBansのバージョンを調べる
+		// MCBans
 		if (checkMCBans != null){
-			// 初めの.が出現する前の文字列だけをStringBuilderで取り出す
+			// バージョンを調べる 初めの.が出現する前の文字列だけをStringBuilderで取り出す
 			StringBuilder sb = new StringBuilder(checkMCBans.getDescription().getVersion().trim());
 			int dotIndex = sb.indexOf(".");
 			sb.delete(dotIndex, sb.length() - 1);
@@ -74,6 +81,8 @@ public class BanHandler {
 				log.warning(logPrefix+"MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
 				banMethod = BanMethod.VANILLA;
 			}
+		}else if (checkEB != null){
+			banMethod = BanMethod.EASYBAN;
 		}else{
 			// サポートしているBANプラグインが見つからなかった
 			banMethod = BanMethod.VANILLA;
@@ -101,7 +110,10 @@ public class BanHandler {
 				player.kickPlayer(config.getKickReason());
 				ban_MCBans3(player, sender, reason);
 				break;
-			default:
+			case EASYBAN: // EasyBan
+				ban_EB(player, reason);
+				break;
+			default: // Exception: Undefined banMethod
 				log.warning(logPrefix+"Error occurred on banning player (BanHandler.class)");
 				break;
 		}
@@ -115,11 +127,14 @@ public class BanHandler {
 	public void kick(Player player, String sender, String reason){
 		// 連携プラグインによって処理を分ける
 		switch (banMethod){
-			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のBAN処理
+			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のKick処理
 				player.kickPlayer(config.getKickReason());
 				break;
 			case MCBANS3: // MCBans 3.x
 				kick_MCBans3(player, sender, reason);
+				break;
+			case EASYBAN: // EasyBan
+				kick_EB(player, reason);
 				break;
 			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
@@ -159,4 +174,20 @@ public class BanHandler {
 		kickMCBans3.start();
 	}
 
+	/**
+	 * EasyBanを使ってBANを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void ban_EB(Player player, String reason){
+		Actions.executeCommandOnConsole("eban " + player.getName() + " " + reason);
+	}
+	/**
+	 * EasyBanを使ってKickを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void kick_EB(Player player, String reason){
+		Actions.executeCommandOnConsole("ekick " + player.getName() + " " + reason);
+	}
 }
