@@ -12,7 +12,7 @@ toolID: 269
 kickFlag: true
 banFlag: false
 
-# Set to true for MCBans global bans. Be sure to follow their guidelines
+# Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
 globalBan: false
 
 #====================#
@@ -53,4 +53,4 @@ honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 1.00
+version: 1.1
