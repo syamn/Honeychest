@@ -83,6 +83,9 @@ public class Honeychest extends JavaPlugin{
 			case ULTRABAN:
 				log.info(logPrefix+"UltraBan plugin found, using that.");
 				break;
+			case DYNBAN:
+				log.info(logPrefix+"DynamicBan plugin found, using that.");
+				break;
 			default:
 				log.warning(logPrefix+"Error occurred on setupBanHandler (Honeychest.class)");
 				break;

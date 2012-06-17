@@ -58,6 +58,12 @@ public class BanHandler {
 			checkUB = plugin.getServer().getPluginManager().getPlugin("ultraban");
 		}
 
+		// DynamicBan
+		Plugin checkDynB =plugin.getServer().getPluginManager().getPlugin("DynamicBan");
+		if (checkDynB == null){
+			checkDynB = plugin.getServer().getPluginManager().getPlugin("dynamicban");
+		}
+
 		// 他のBAN関係のプラグインを追加する時はここに
 
 		// MCBans
@@ -90,6 +96,8 @@ public class BanHandler {
 			banMethod = BanMethod.EASYBAN;
 		}else if (checkUB != null){
 			banMethod = BanMethod.ULTRABAN;
+		}else if (checkDynB != null){
+			banMethod = BanMethod.DYNBAN;
 		}else{
 			// サポートしているBANプラグインが見つからなかった
 			banMethod = BanMethod.VANILLA;
@@ -123,6 +131,9 @@ public class BanHandler {
 			case ULTRABAN: // UltraBan
 				ban_UB(player, reason);
 				break;
+			case DYNBAN: // DynamicBan
+				ban_DynB(player, reason);
+				break;
 			default: // Exception: Undefined banMethod
 				log.warning(logPrefix+"Error occurred on banning player (BanHandler.class)");
 				break;
@@ -148,6 +159,9 @@ public class BanHandler {
 				break;
 			case ULTRABAN: // UltraBan
 				kick_UB(player, reason);
+				break;
+			case DYNBAN: // DynamicBan
+				kick_DynB(player, reason);
 				break;
 			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
@@ -205,7 +219,7 @@ public class BanHandler {
 	}
 
 	/**
-	 * UltraBanを使ってKickを行う
+	 * UltraBanを使ってBANを行う
 	 * @param player 対象プレイヤー
 	 * @param reason 理由
 	 */
@@ -222,4 +236,23 @@ public class BanHandler {
 	private void kick_UB(Player player, String reason){
 		Actions.executeCommandOnConsole("eban " + player.getName() + " " + reason);
 	}
+
+	/**
+	 * DynamicBanを使ってBANを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void ban_DynB(Player player, String reason){
+		Actions.executeCommandOnConsole("dynban " + player.getName() + " " + reason);
+	}
+
+	/**
+	 * DynamicBanを使ってKickを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void kick_DynB(Player player, String reason){
+		Actions.executeCommandOnConsole("dynkick " + player.getName() + " " + reason);
+	}
+
 }

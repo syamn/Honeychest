@@ -5,5 +5,6 @@ public enum BanMethod {
 	VANILLA,
 	MCBANS3,
 	EASYBAN,
-	ULTRABAN
+	ULTRABAN,
+	DYNBAN
 }
