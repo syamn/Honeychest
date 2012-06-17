@@ -4,6 +4,7 @@ package syam.Honeychest.bans;
 public enum BanMethod {
 	VANILLA,
 	MCBANS3,
+	GLIZER,
 	EASYBAN,
 	ULTRABAN,
 	DYNBAN

@@ -46,6 +46,12 @@ public class BanHandler {
 			checkMCBans = plugin.getServer().getPluginManager().getPlugin("MCBans");
 		}
 
+		// glizer
+		Plugin checkGl = plugin.getServer().getPluginManager().getPlugin("glizer");
+		if (checkGl == null){
+			checkGl = plugin.getServer().getPluginManager().getPlugin("Glizer");
+		}
+
 		// EasyBan
 		Plugin checkEB = plugin.getServer().getPluginManager().getPlugin("EasyBan");
 		if (checkEB == null){
@@ -92,6 +98,8 @@ public class BanHandler {
 				log.warning(logPrefix+"MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
 				banMethod = BanMethod.VANILLA;
 			}
+		}else if (checkGl != null){
+			banMethod = BanMethod.GLIZER;
 		}else if (checkEB != null){
 			banMethod = BanMethod.EASYBAN;
 		}else if (checkUB != null){
@@ -125,6 +133,9 @@ public class BanHandler {
 				player.kickPlayer(config.getKickReason());
 				ban_MCBans3(player, sender, reason);
 				break;
+			case GLIZER: // glizer
+				ban_glizer(player, reason);
+				break;
 			case EASYBAN: // EasyBan
 				ban_EB(player, reason);
 				break;
@@ -153,6 +164,9 @@ public class BanHandler {
 				break;
 			case MCBANS3: // MCBans 3.x
 				kick_MCBans3(player, sender, reason);
+				break;
+			case GLIZER: // glizer
+				kick_glizer(player, reason);
 				break;
 			case EASYBAN: // EasyBan
 				kick_EB(player, reason);
@@ -202,6 +216,27 @@ public class BanHandler {
 	}
 
 	/**
+	 * glizerを使ってローカル/グローバルBANを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void ban_glizer(Player player, String reason){
+		if (config.isGlobalBan()){ // グローバル
+			Actions.executeCommandOnConsole("globalban " + player.getName() + " " + reason);
+		}else{ // ローカル
+			Actions.executeCommandOnConsole("localban " + player.getName() + " " + reason);
+		}
+	}
+	/**
+	 * glizerを使ってKickを行う
+	 * @param player 対象プレイヤー
+	 * @param reason 理由
+	 */
+	private void kick_glizer(Player player, String reason){
+		Actions.executeCommandOnConsole("kick " + player.getName() + " " + reason);
+	}
+
+	/**
 	 * EasyBanを使ってBANを行う
 	 * @param player 対象プレイヤー
 	 * @param reason 理由
@@ -245,7 +280,6 @@ public class BanHandler {
 	private void ban_DynB(Player player, String reason){
 		Actions.executeCommandOnConsole("dynban " + player.getName() + " " + reason);
 	}
-
 	/**
 	 * DynamicBanを使ってKickを行う
 	 * @param player 対象プレイヤー

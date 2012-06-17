@@ -70,12 +70,22 @@ public class Honeychest extends JavaPlugin{
 
 		// BANを行うプラグインの決定とハンドラ初期化
 		banHandler = new BanHandler(this);
+		boolean gban = config.isGlobalBan();
 		switch (banHandler.setupBanHandler(this)){
 			case VANILLA:
 				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
 				break;
 			case MCBANS3:
 				log.info(logPrefix+"MCBans 3.x plugin found, using that.");
+				if (gban)
+					log.info(logPrefix+"Enabled Global BAN!");
+				else
+					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
+				break;
+			case GLIZER:
+				log.info(logPrefix+"glizer plugin found, using that.");
+				if (gban)
+					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
 				break;
 			case EASYBAN:
 				log.info(logPrefix+"EasyBan plugin found, using that.");
