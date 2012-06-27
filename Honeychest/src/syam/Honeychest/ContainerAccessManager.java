@@ -9,8 +9,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 
 import syam.Honeychest.config.ConfigurationManager;
 import syam.Honeychest.config.MessageManager;
@@ -63,8 +65,7 @@ public class ContainerAccessManager {
 				ContainerAccess(
 						container,
 						player,
-						InventoryUtil.
-						compressInventory(InventoryUtil.getContainerContents(container)),
+						InventoryUtil.compressInventory(InventoryUtil.getContainerContents(container)),
 						block.getLocation(),
 						large ));
 	}
@@ -84,7 +85,7 @@ public class ContainerAccessManager {
 		if (access.checking) return false;
 		access.checking = true;
 
-		// 閉じた時点でのインベントリを取得
+		// 各時点でのインベントリを取得
 		HashMap<String, Integer> after = InventoryUtil.compressInventory(InventoryUtil.getContainerContents(access.container));
 		// String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
 		// String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
@@ -119,6 +120,13 @@ public class ContainerAccessManager {
 				// 盗んだアイテムをキャストするかどうか
 				if (config.getBroadcastItems()){
 					Actions.broadcastMessage(MessageManager.getString("Broadcast.items", substr));
+				}
+
+				// インベントリをロールバック
+				if (config.getRollbackFlag()){
+					access.container.getInventory().setContents(InventoryUtil.uncompressInventory(access.beforeInv));
+					//((Chest)access.loc.getBlock().getState()).getInventory().setContents(access.beforeItemStack);
+					log.info(logPrefix+ "successfully rolled back stolen items from player " +player.getName() + " at location (" + locstr+ ")");
 				}
 
 				// ロギング

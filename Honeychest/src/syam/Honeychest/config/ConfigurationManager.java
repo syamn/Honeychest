@@ -109,6 +109,10 @@ public class ConfigurationManager {
 		return conf.getBoolean("globalBan", false);
 	}
 
+	public boolean getRollbackFlag(){
+		return conf.getBoolean("rollback", true);
+	}
+
 	/* Logging Config */
 	public boolean getLogToFile(){
 		return conf.getBoolean("logToFile", true);

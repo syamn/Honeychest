@@ -15,6 +15,9 @@ banFlag: false
 # Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
 globalBan: false
 
+# Rollback inventory when we detect the theft
+rollback: true
+
 #====================#
 #   Logging Config   #
 #====================#
