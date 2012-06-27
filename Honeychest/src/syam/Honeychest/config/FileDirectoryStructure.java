@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -47,6 +48,25 @@ public class FileDirectoryStructure {
 	}
 
 	/**
+	 * コピー元のパス[srcPath]から、コピー先のパス[destPath]へファイルのコピーを行います。
+	 * コピー処理にはFileChannel#transferToメソッドを利用します。
+	 * コピー処理終了後、入力・出力のチャネルをクローズします。
+	 * @param srcPath コピー元のパス
+	 * @param destPath  コピー先のパス
+	 * @throws IOException 何らかの入出力処理例外が発生した場合
+	 */
+	public static void copyTransfer(String srcPath, String destPath) throws IOException {
+		FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
+		FileChannel destChannel = new FileOutputStream(destPath).getChannel();
+		try {
+		    srcChannel.transferTo(0, srcChannel.size(), destChannel);
+		} finally {
+		    srcChannel.close();
+		    destChannel.close();
+		}
+	}
+
+	/**
 	 * 存在しないディレクトリを作成する
 	 * @param dir File 作成するディレクトリ
 	 */
@@ -79,8 +99,16 @@ public class FileDirectoryStructure {
 			return;
 		}
 
+		/* v1.2 forceフラグだけをチェックする
 		// ファイルが既に存在して、そのファイルの最終変更日時がJarファイルより後ろなら、forceフラグが真の場合を除いて返す
+
 		if (of.exists() && of.lastModified() > getJarFile().lastModified() && !force){
+			return;
+		}
+		*/
+
+		// ファイルが既に存在する場合は、forceフラグがtrueでない限り展開しない
+		if (of.exists() && !force){
 			return;
 		}
 

@@ -28,11 +28,8 @@ public class MessageManager {
 	/****************************************/
 
 	public static void init(String lang){
-		File langDir = FileDirectoryStructure.getLanguageDirectory();
-
-		// 言語設定ファイルを出力する - エンコードをクライアントによって決定
-		FileDirectoryStructure.extractResource("/lang/default.yml", langDir, false, true);
-		FileDirectoryStructure.extractResource("/lang/ja_jp.yml", langDir, false, true);
+		// 言語ファイル展開
+		extractLanguageFile(false);
 
 		// デフォルトのメッセージファイルを読み込む
 		try{
@@ -48,6 +45,18 @@ public class MessageManager {
 			log.warning("Can't load messages for "+lang+": using default.yml");
 			messages = fallbackMessages;
 		}
+	}
+
+	/**
+	 * 言語設定ファイルを出力する
+	 * @param force 既存ファイルを上書きするかどうか
+	 */
+	public static void extractLanguageFile(boolean force){
+		File langDir = FileDirectoryStructure.getLanguageDirectory();
+
+		// 言語設定ファイルを出力する - エンコードをクライアントによって決定
+		FileDirectoryStructure.extractResource("/lang/default.yml", langDir, force, true);
+		FileDirectoryStructure.extractResource("/lang/ja_jp.yml", langDir, force, true);
 	}
 
 	/**

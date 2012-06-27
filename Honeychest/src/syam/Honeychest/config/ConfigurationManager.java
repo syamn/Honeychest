@@ -1,5 +1,6 @@
 package syam.Honeychest.config;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,14 +32,64 @@ public class ConfigurationManager {
 		this.plugin = plugin;
 		// 設定ファイルを読み込む
 		conf = plugin.getConfig();
+
+		// バージョンチェック
+		double version = conf.getDouble("version");
+		checkver(version);
 	}
 
 	/**
 	 * 設定ファイルに設定を書き込む
 	 * @throws Exception
 	 */
-	public void save() throws Exception{
+	public boolean save() {
 		plugin.saveConfig();
+		try {
+			plugin.saveConfig();
+			/* この方法ではコメントがconfig.ymlに残らないので却下
+			// 保存するデータをここに
+
+			// 保存
+			conf.save(new File(FileDirectoryStructure.getPluginDirectory(), "config.yml"));
+			*/
+		}catch (Exception ex){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 設定ファイルのバージョンをチェックする
+	 * @param ver
+	 */
+	private void checkver(final double ver){
+		double configVersion = ver; // 設定ファイルのバージョン
+		double nowVersion = 1.0D; // プラグインのバージョン
+		try{
+			nowVersion = Double.parseDouble(Honeychest.getInstance().getDescription().getVersion());
+		}catch (NumberFormatException ex){
+			log.warning(logPrefix+ "Cannot parse version string!");
+		}
+
+		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
+		if (configVersion < nowVersion){
+			// 先に古い設定ファイルをリネームする
+			String destName = "oldconfig-v"+configVersion+".yml";
+			String srcPath = new File(FileDirectoryStructure.getPluginDirectory(), "config.yml").getPath();
+			String destPath = new File(FileDirectoryStructure.getPluginDirectory(), destName).getPath();
+			try{
+				FileDirectoryStructure.copyTransfer(srcPath, destPath);
+				log.info(logPrefix+ "Copied old config.yml to "+destName+"!");
+			}catch(Exception ex){
+				log.warning(logPrefix+ "Cannot copy old config.yml!");
+			}
+
+			// config.ymlと言語ファイルを強制コピー
+			FileDirectoryStructure.extractResource("/config.yml", FileDirectoryStructure.getPluginDirectory(), true, false);
+			MessageManager.extractLanguageFile(true);
+
+			log.info(logPrefix+ "Deleted existing configuration file and generate a new one!");
+		}
 	}
 
 	/* 以下設定取得用getter */
