@@ -2,7 +2,7 @@ Help:
   helpMessage1: " &b<>&f = 必要, &b[]&f = オプション"
   helpMessage2: " /honeychest(/hc)&7 - Honeychest設置/破壊"
   helpMessage3: " /honeychest save(/hc s)&7 - Honeychestデータ保存"
-  helpMessage4: " /honeychest reload(/hc r)&7 - Honeychestデータ再読み込み"
+  helpMessage4: " /honeychest load(/hc l)&7 - Honeychestデータ読み込み"
   helpMessage5: " /honeychest help(/hc h)&7 - このコマンドヘルプを表示"
 Commands:
   notFromConsole: "&cコンソールから実行することはできません！"
