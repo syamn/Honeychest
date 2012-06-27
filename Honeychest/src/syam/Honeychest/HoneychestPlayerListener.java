@@ -14,10 +14,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import sun.security.krb5.Config;
+import syam.Honeychest.ContainerAccessManager.ContainerAccess;
 import syam.Honeychest.config.MessageManager;
 
 public class HoneychestPlayerListener implements Listener {
@@ -115,7 +118,7 @@ public class HoneychestPlayerListener implements Listener {
 
 							// 既にハニーチェストになっているか判定
 							if (HoneyData.getHc(loc) == null) {
-								HoneyData.setHc(loc, "*"); // 登録
+								HoneyData.setHc(loc, "*"); // TODO:
 
 								if (second != null)
 									HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト登録
@@ -133,6 +136,18 @@ public class HoneychestPlayerListener implements Listener {
 					}
 					break;
 			}
+		}
+	}
+
+	/* ロールバックが有効になっている場合はドロップを禁止する */
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onPlayerDropItem(PlayerDropItemEvent event){
+		Player player = event.getPlayer();
+
+		// 設定参照
+		ContainerAccess acc = Honeychest.containerManager.getAccess(player);
+		if(acc != null && plugin.getHCConfig().getRemoveDroppedFlag()){
+			event.setCancelled(true);
 		}
 	}
 

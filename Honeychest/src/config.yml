@@ -18,6 +18,9 @@ globalBan: false
 # Rollback inventory when we detect the theft
 rollback: true
 
+# Remove dropped items when player opening honeychest
+removeDropped: false
+
 #====================#
 #   Logging Config   #
 #====================#

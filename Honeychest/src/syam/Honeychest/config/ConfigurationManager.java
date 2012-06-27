@@ -113,6 +113,10 @@ public class ConfigurationManager {
 		return conf.getBoolean("rollback", true);
 	}
 
+	public boolean getRemoveDroppedFlag(){
+		return conf.getBoolean("removeDropped", false);
+	}
+
 	/* Logging Config */
 	public boolean getLogToFile(){
 		return conf.getBoolean("logToFile", true);
@@ -150,11 +154,4 @@ public class ConfigurationManager {
 	public String getBanReason() {
 		return conf.getString("honeychestBanReason", defaultBanReason);
 	}
-
-
-
-
-
-
-
 }
