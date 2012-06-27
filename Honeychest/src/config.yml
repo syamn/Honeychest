@@ -59,4 +59,4 @@ honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 1.1
+version: 1.2
