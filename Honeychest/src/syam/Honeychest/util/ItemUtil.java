@@ -28,7 +28,7 @@ public class ItemUtil {
 	public static ItemStack itemStringToStack(String item, Integer amount) {
 		// アイテムID文字列を配列に分ける
 		String[] itemArr = item.split(":");
-		ItemStack stack = new ItemStack(Integer.parseInt(itemArr[0], amount));
+		ItemStack stack = new ItemStack(Integer.parseInt(itemArr[0]), amount);
 		// アイテム名にデータ値があれば付与
 		if (itemArr.length > 1){
 			stack.setData(new MaterialData(Integer.parseInt(itemArr[0]), Byte.parseByte(itemArr[1])));
