@@ -1,6 +1,7 @@
 package syam.Honeychest;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -53,6 +54,9 @@ public class Honeychest extends JavaPlugin{
 
 		// 設定ファイル読み込み
 		loadConfig();
+
+		// Setup Metrics
+		setupMetrics();
 
 		// イベントを登録
 		PluginManager pm = getServer().getPluginManager();
@@ -139,6 +143,19 @@ public class Honeychest extends JavaPlugin{
 		String lang = config.getMessageLocale();
 		// 言語ファイルをセットアップ
 		MessageManager.init(lang);
+	}
+
+	/**
+	 * Metricsセットアップ
+	 */
+	public void setupMetrics(){
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException ex) {
+			log.warning("cant send metrics data!");
+		    ex.printStackTrace();
+		}
 	}
 
 	/**
