@@ -40,7 +40,7 @@ public class BanHandler {
 	 * @return BANを行うプラグインを列挙したBanMethod列挙体
 	 */
 	public BanMethod setupBanHandler(JavaPlugin plugin){
-		// MCBans (3.x以降)
+		// MCBans (3.8以降)
 		Plugin checkMCBans = plugin.getServer().getPluginManager().getPlugin("mcbans");
 		if (checkMCBans == null){ // 古いMCBansプラグインもチェック
 			checkMCBans = plugin.getServer().getPluginManager().getPlugin("MCBans");
@@ -75,28 +75,37 @@ public class BanHandler {
 		// MCBans
 		if (checkMCBans != null){
 			// バージョンを調べる 初めの.が出現する前の文字列だけをStringBuilderで取り出す
-			StringBuilder sb = new StringBuilder(checkMCBans.getDescription().getVersion().trim());
-			int dotIndex = sb.indexOf(".");
-			sb.delete(dotIndex, sb.length() - 1);
+			String verstr = checkMCBans.getDescription().getVersion().trim();
 
-			String majorVersionString = sb.toString();
-
-			// 数値かチェック
-			if (Util.isInteger(majorVersionString)){
-				int majorVersion = Integer.parseInt(majorVersionString);
-				if (majorVersion >= 3){
-					// メジャーバージョンが3以上
+			if (Util.isDouble(verstr)){
+				double ver = Double.parseDouble(verstr);
+				// バージョンチェック 3.x 以上
+				if (ver >= 3.8){
 					mcbans3 = (BukkitInterface) checkMCBans;
 					banMethod = BanMethod.MCBANS3;
 				}else{
-					// 2以下の古いバージョンはエラー
-					log.warning(logPrefix+"Old MCBans plugin found but Honeychest support 3.x mcbans plugin.");
+					log.warning("Old MCBans plugin found but Honeychest supports the version 3.8 or more.");
 					banMethod = BanMethod.VANILLA;
 				}
+
 			}else{
-				// メジャーバージョン文字列が数値に変換出来なかった
-				log.warning(logPrefix+"MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
-				banMethod = BanMethod.VANILLA;
+				// 単純変換が失敗してもver4.xには対応させる
+				StringBuilder sb = new StringBuilder(verstr);
+				int dotIndex = sb.indexOf(".");
+				if (dotIndex != -1){
+					String[] versions = verstr.split(".");
+					// メジャーバージョンが4以上
+					if (Util.isInteger(versions[0]) && Integer.parseInt(versions[0]) > 3){
+						mcbans3 = (BukkitInterface) checkMCBans;
+						banMethod = BanMethod.MCBANS3;
+					}else{
+						log.warning("MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
+						banMethod = BanMethod.VANILLA;
+					}
+				}else{
+					log.warning("MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
+					banMethod = BanMethod.VANILLA;
+				}
 			}
 		}else if (checkGl != null){
 			banMethod = BanMethod.GLIZER;
@@ -198,9 +207,10 @@ public class BanHandler {
 			banType = "globalBan";
 
 		// MCBansプラグインに新規のBANを送る
-		Ban banMCBans3 = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");
+		Ban banMCBans = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");
 		// BANのためのスレッドを開始
-		banMCBans3.start();
+		Thread triggerThread = new Thread(banMCBans);
+		triggerThread.start();
 	}
 	/**
 	 * MCBansのバージョン3.x以降を使ってKickを行う
@@ -211,8 +221,9 @@ public class BanHandler {
 	@SuppressWarnings("unused")
 	private void kick_MCBans3(Player player, String sender, String reason){
 		// MCBansプラグインに新規のKickを送る
-		Kick kickMCBans3 = new Kick(mcbans3.Settings, mcbans3, player.getName(), sender, reason);
-		kickMCBans3.start();
+		Kick kickMCBans = new Kick(mcbans3.Settings, mcbans3, player.getName(), sender, reason);
+		Thread triggerThread = new Thread(kickMCBans);
+		triggerThread.start();
 	}
 
 	/**

@@ -20,6 +20,20 @@ public class Util {
 	}
 
 	/**
+	 * 文字列がdouble型に変換できるか返す
+	 * @param str チェックする文字列
+	 * @return 変換成功ならtrue、失敗ならfalse
+	 */
+	public static boolean isDouble(String str) {
+		try{
+			Double.parseDouble(str);
+		}catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * PHPの join(array, delimiter) と同じ関数
 	 * @param s 結合するコレクション
 	 * @param delimiter デリミタ文字
