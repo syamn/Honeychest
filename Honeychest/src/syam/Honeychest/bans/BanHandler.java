@@ -6,14 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
-import com.mcbans.firestar.mcbans.pluginInterface.Ban;
-import com.mcbans.firestar.mcbans.pluginInterface.Kick;
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.api.MCBansAPI;
 
 import syam.Honeychest.Actions;
 import syam.Honeychest.Honeychest;
 import syam.Honeychest.config.ConfigurationManager;
-import syam.Honeychest.util.Util;
 
 /**
  * I've made this class with reference to Honeypot.
@@ -27,7 +25,7 @@ public class BanHandler {
 	private Honeychest plugin;
 	private ConfigurationManager config;
 	private BanMethod banMethod = BanMethod.VANILLA; // デフォルトメソッド
-	private BukkitInterface mcbans3;
+	private MCBansAPI mcbansAPI;
 
 	public BanHandler(Honeychest instance){
 		plugin = instance;
@@ -40,11 +38,8 @@ public class BanHandler {
 	 * @return BANを行うプラグインを列挙したBanMethod列挙体
 	 */
 	public BanMethod setupBanHandler(JavaPlugin plugin){
-		// MCBans (3.8以降)
-		Plugin checkMCBans = plugin.getServer().getPluginManager().getPlugin("mcbans");
-		if (checkMCBans == null){ // 古いMCBansプラグインもチェック
-			checkMCBans = plugin.getServer().getPluginManager().getPlugin("MCBans");
-		}
+		// MCBans (4.0以降)
+		Plugin checkMCBans = plugin.getServer().getPluginManager().getPlugin("MCBans");
 
 		// glizer
 		Plugin checkGl = plugin.getServer().getPluginManager().getPlugin("glizer");
@@ -74,38 +69,12 @@ public class BanHandler {
 
 		// MCBans
 		if (checkMCBans != null){
-			// バージョンを調べる 初めの.が出現する前の文字列だけをStringBuilderで取り出す
-			String verstr = checkMCBans.getDescription().getVersion().trim();
-
-			if (Util.isDouble(verstr)){
-				double ver = Double.parseDouble(verstr);
-				// バージョンチェック 3.x 以上
-				if (ver >= 3.8){
-					mcbans3 = (BukkitInterface) checkMCBans;
-					banMethod = BanMethod.MCBANS3;
-				}else{
-					log.warning("Old MCBans plugin found but Honeychest supports the version 3.8 or more.");
-					banMethod = BanMethod.VANILLA;
-				}
-
+			if (checkMCBans.getDescription().getVersion().trim().startsWith("3")){
+				log.warning("Old MCBans plugin (3.x) found but Honeychest supports the version 4.0+");
+				banMethod = BanMethod.VANILLA;
 			}else{
-				// 単純変換が失敗してもver4.xには対応させる
-				StringBuilder sb = new StringBuilder(verstr);
-				int dotIndex = sb.indexOf(".");
-				if (dotIndex != -1){
-					String[] versions = verstr.split(".");
-					// メジャーバージョンが4以上
-					if (Util.isInteger(versions[0]) && Integer.parseInt(versions[0]) > 3){
-						mcbans3 = (BukkitInterface) checkMCBans;
-						banMethod = BanMethod.MCBANS3;
-					}else{
-						log.warning("MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
-						banMethod = BanMethod.VANILLA;
-					}
-				}else{
-					log.warning("MCBans plugin found but unknown version.Please contact Honeychest plugin author.");
-					banMethod = BanMethod.VANILLA;
-				}
+				mcbansAPI = ((MCBans) checkMCBans).getAPI(plugin);
+				banMethod = BanMethod.MCBANS;
 			}
 		}else if (checkGl != null){
 			banMethod = BanMethod.GLIZER;
@@ -138,7 +107,7 @@ public class BanHandler {
 				// コンソールから ban (playername) 実行
 				Actions.executeCommandOnConsole("ban " + player.getName());
 				break;
-			case MCBANS3: // MCBans 3.x
+			case MCBANS: // MCBans
 				player.kickPlayer(config.getKickReason());
 				ban_MCBans3(player, sender, reason);
 				break;
@@ -171,8 +140,8 @@ public class BanHandler {
 			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のKick処理
 				player.kickPlayer(config.getKickReason());
 				break;
-			case MCBANS3: // MCBans 3.x
-				kick_MCBans3(player, sender, reason);
+			case MCBANS: // MCBans
+				kick_MCBans(player, sender, reason);
 				break;
 			case GLIZER: // glizer
 				kick_glizer(player, reason);
@@ -194,36 +163,26 @@ public class BanHandler {
 	}
 
 	/**
-	 * MCBansのバージョン3.x以降を使ってBANを行う
+	 * MCBansを使ってBANを行う
 	 * @param player BAN対象のプレイヤー
 	 * @param sender BANの送信者
 	 * @param reason BANの理由
 	 */
 	private void ban_MCBans3(Player player, String sender, String reason){
-		// MCBansのBAN種類として "localBan" か "globalBan" が必要 (他:"tempBan","unBan")
-		String banType = "localBan";
-
-		if (config.isGlobalBan())
-			banType = "globalBan";
-
-		// MCBansプラグインに新規のBANを送る
-		Ban banMCBans = new Ban(mcbans3, banType, player.getName(), player.getAddress().toString(), sender, reason, "","");
-		// BANのためのスレッドを開始
-		Thread triggerThread = new Thread(banMCBans);
-		triggerThread.start();
+		if (config.isGlobalBan()){
+			mcbansAPI.globalBan(player.getName(), sender, reason);
+		}else{
+			mcbansAPI.localBan(player.getName(), sender, reason);
+		}
 	}
 	/**
-	 * MCBansのバージョン3.x以降を使ってKickを行う
+	 * MCBansを使ってKickを行う
 	 * @param player Kick対象のプレイヤー
 	 * @param sender Kickの送信者
 	 * @param reason Kickの理由
 	 */
-	@SuppressWarnings("unused")
-	private void kick_MCBans3(Player player, String sender, String reason){
-		// MCBansプラグインに新規のKickを送る
-		Kick kickMCBans = new Kick(mcbans3.Settings, mcbans3, player.getName(), sender, reason);
-		Thread triggerThread = new Thread(kickMCBans);
-		triggerThread.start();
+	private void kick_MCBans(Player player, String sender, String reason){
+		mcbansAPI.kick(player.getName(), sender, reason);
 	}
 
 	/**

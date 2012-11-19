@@ -79,8 +79,8 @@ public class Honeychest extends JavaPlugin{
 			case VANILLA:
 				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
 				break;
-			case MCBANS3:
-				log.info(logPrefix+"MCBans (version 3.8+) plugin found, using that.");
+			case MCBANS:
+				log.info(logPrefix+"MCBans 4.0+ plugin found, using that.");
 				if (gban)
 					log.info(logPrefix+"Enabled Global BAN!");
 				else
