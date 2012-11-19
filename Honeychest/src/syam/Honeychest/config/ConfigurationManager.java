@@ -19,7 +19,6 @@ public class ConfigurationManager {
 	// デフォルトの設定定数
 	public static final String defaultKickReason = "[Honeychest] You have been caught steal items from honeychest.";
     public static final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
-    public static final String defaultKickBanSender = "[Honeychest]"; // MCBansに送信するBANを行ったユーザ名
     public static final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
     public static final String defaultMessageLocale = "default"; // デフォルトの言語ファイル
     public static final int defaultToolID = 271;
@@ -142,12 +141,7 @@ public class ConfigurationManager {
 		return conf.getBoolean("hideIgnoreMessage", true);
 	}
 
-	/* Kick/Ban Config */
-	public String getKickBanSender() {
-		/* この機能は一時的に無効にし、デフォルトのもので固定します */
-		// return conf.getString("honeychestKickBanSender", defaultKickBanSender);
-		return "[Honeychest]";
-	}
+	/* Action Config */
 	public String getKickReason(){
 		return conf.getString("honeychestKickReason", defaultKickReason);
 	}

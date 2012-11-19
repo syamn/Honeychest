@@ -110,9 +110,9 @@ public class ContainerAccessManager {
 
 				// 設定ファイル確認してアクションを行う
 				if (config.getBanFlag()){ // BAN
-					plugin.getBansHandler().ban(player, config.getKickBanSender(), config.getBanReason().replaceAll("!location!", locstr));
+					plugin.getBansHandler().ban(player, "[Honeychest]", config.getBanReason().replaceAll("!location!", locstr));
 				}else if(config.getKickFlag()){ // Kick
-					plugin.getBansHandler().kick(player, config.getKickBanSender(), config.getKickReason());
+					plugin.getBansHandler().kick(player, "[Honeychest]", config.getKickReason());
 				}
 
 				// メッセージをブロードキャスト

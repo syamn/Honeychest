@@ -42,14 +42,9 @@ broadcastItems: true
 # If it is true, hide "PlayerListener.youAreIgnore" message on language file
 hideIgnoreMessage: true
 
-#=====================#
-#   Kick/Ban Config   #
-#=====================#
-# It is used to hookup with the MCBans.
-# ** This option is Inactive! **
-# I sent message to the MCBans about this option. waiting for a reply.
-honeychestKickBanSender: '[Honeychest]'
-
+#===================#
+#   Action Config   #
+#===================#
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
 # If you set globalBAN: true, need to use the English here for their guidelines
 # "!location!" string is replaced by "worldname:x,y,y"
