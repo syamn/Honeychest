@@ -90,6 +90,7 @@ public class ContainerAccessManager {
 		// String diff = InventoryUtil.createDifferenceString(access.beforeInv, after);
 		// String readble = InventoryUtil.createChangeString(InventoryUtil.interpretDifferenceString(diff));
 
+		boolean kicked = false;
 		// ハニーチェストか判定
 		String hc = HoneyData.getHc(access.loc);
 		if (hc != null){
@@ -109,10 +110,25 @@ public class ContainerAccessManager {
 				String substr = InventoryUtil.createSubString(InventoryUtil.interpretSubString(InventoryUtil.joinListToString(stealList)));
 
 				// 設定ファイル確認してアクションを行う
-				if (config.getBanFlag()){ // BAN
-					plugin.getBansHandler().ban(player, "[Honeychest]", config.getBanReason().replaceAll("!location!", locstr));
-				}else if(config.getKickFlag()){ // Kick
-					plugin.getBansHandler().kick(player, "[Honeychest]", config.getKickReason());
+				switch (config.getTakeAction()){
+					case KICK:
+						plugin.getBansHandler().kick(player, "[Honeychest]", config.getKickReason());
+						kicked = true;
+						break;
+					case BAN:
+						plugin.getBansHandler().ban(player, "[Honeychest]", config.getBanReason().replace("!location!", locstr));
+						kicked = true;
+						break;
+					case COMMAND:
+						List<String> cmds = config.getCommands();
+						if (cmds == null || cmds.isEmpty()){
+							log.warning("Take command list is Empty!");
+							break;
+						}
+						for (String cmd : cmds){
+							Actions.executeCommandOnConsole(cmd.replace("!player!", player.getName()));
+						}
+						break;
 				}
 
 				// メッセージをブロードキャスト
@@ -138,18 +154,12 @@ public class ContainerAccessManager {
 					if (config.getLogItems())
 						Actions.log(logfile,"Stolen Items: "+substr);
 				}
-
-				// BANまたはKickされた場合、このメソッドが呼びされた側の処理を続行しないようにtrueを返す
-				if (config.getBanFlag() || config.getKickFlag()){
-					// アクセスリストから削除
-					accessList.remove(access);
-					return true;
-				}
 			}
 		}
 		// アクセスリストから削除
 		accessList.remove(access);
-		return false;
+		// Kickされた場合、このメソッドが呼びされた側の処理を続行しないようにtrueを返す
+		return kicked;
 	}
 
 	/**

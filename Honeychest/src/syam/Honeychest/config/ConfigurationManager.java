@@ -1,6 +1,8 @@
 package syam.Honeychest.config;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,11 +19,15 @@ public class ConfigurationManager {
 	private FileConfiguration conf;
 
 	// デフォルトの設定定数
-	public static final String defaultKickReason = "[Honeychest] You have been caught steal items from honeychest.";
-    public static final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
-    public static final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
-    public static final String defaultMessageLocale = "default"; // デフォルトの言語ファイル
-    public static final int defaultToolID = 271;
+	private final String defaultKickReason = "[Honeychest] You have been caught steal items from honeychest.";
+	private final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
+    private final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
+    private final String defaultMessageLocale = "default"; // デフォルトの言語ファイル
+    private final int defaultToolID = 271;
+    private final List<String> defaultCommands = new ArrayList<String>(0);
+
+    // action
+    private TakeAction takeAction = null;
 
 	/**
 	 * 設定ファイルから設定を読み込む
@@ -35,6 +41,19 @@ public class ConfigurationManager {
 		// バージョンチェック
 		double version = conf.getDouble("version");
 		checkver(version);
+
+		takeAction = null;
+		String takeActionStr = conf.getString("takeAction", "kick").trim();
+		for (TakeAction ta : TakeAction.values()){
+			if (ta.name().equalsIgnoreCase(takeActionStr)){
+				this.takeAction = ta;
+				break;
+			}
+		}
+		if (takeAction == null){
+			log.warning("Specified NOT valid action! Use default kick action!");
+			takeAction = TakeAction.KICK;
+		}
 	}
 
 	/**
@@ -97,15 +116,20 @@ public class ConfigurationManager {
 	public int getToolId() {
 		return conf.getInt("toolID", defaultToolID);
 	}
-	public boolean getKickFlag() {
-		return conf.getBoolean("kickFlag", true);
-	}
-	public boolean getBanFlag() {
-		return conf.getBoolean("banFlag", false);
+	public TakeAction getTakeAction() {
+		return this.takeAction;
 	}
 
 	public boolean isGlobalBan(){
 		return conf.getBoolean("globalBan", false);
+	}
+
+	public List<String> getCommands(){
+		if(conf.get("commands") != null){
+			return conf.getStringList("commands");
+		}else{
+			return defaultCommands;
+		}
 	}
 
 	public boolean getRollbackFlag(){

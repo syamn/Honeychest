@@ -9,13 +9,21 @@
 # ItemID, used to create/remove honeychest
 toolID: 269
 
-kickFlag: true
-banFlag: false
+# Take action when plugin caught steal items from honeychest
+# Valid actions: kick, ban, command
+takeAction: kick
 
 # Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
+# Set "takeAction: ban" and use MCBans or glizer if you want to use this option
 globalBan: false
 
-# Rollback inventory when we detect the theft
+# Take commands from console if set takeAction: command
+# "!player!" string is replaced by caught player name.
+commands:
+- "jail !player! 3m"
+- "say !player! has been jailed because steal items from honeychest!"
+
+# Rollback inventory when we detect the theft (Use ItemID:data only)
 rollback: true
 
 # Remove dropped items when player opening honeychest
@@ -43,12 +51,13 @@ broadcastItems: true
 hideIgnoreMessage: true
 
 #===================#
-#   Action Config   #
+#   Reason Config   #
 #===================#
 honeychestKickReason: '[Honeychest] You have been caught steal items from honeychest.'
 # If you set globalBAN: true, need to use the English here for their guidelines
 # "!location!" string is replaced by "worldname:x,y,y"
 honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
+
 
 #==================#
 #   DO NOT TOUCH   #
