@@ -1,7 +1,6 @@
-# HoneyChest Configuration file for version 1.00
-# @author syam <admin@sakura-server.net>
+# HoneyChest Configuration file
+# @author syamn <admin@sakura-server.net>
 # BukkitDev: http://dev.bukkit.org/server-mods/honeychest/
-
 
 #==================#
 #   Basic Config   #
@@ -63,4 +62,4 @@ honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 1.2
+version: 1.4
