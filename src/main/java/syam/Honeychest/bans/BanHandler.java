@@ -70,8 +70,8 @@ public class BanHandler {
 
 		// MCBans
 		if (checkMCBans != null){
-			if (checkMCBans.getDescription().getVersion().trim().startsWith("3")){
-				log.warning("Old MCBans plugin (3.x) found but Honeychest supports the version 4.0+");
+			if (isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
+				log.warning("Old MCBans plugin found. Honeychest supports MCBans v4.3.4 or later. Please update MCBans!");
 				banMethod = BanMethod.VANILLA;
 			}else{
 				mcbansAPI = ((MCBans) checkMCBans).getAPI(plugin);
@@ -266,16 +266,57 @@ public class BanHandler {
 	}
 
 	/**
-	 * 指定した名前のプレイヤーを取得する
-	 * @param name プレイヤー名
-	 * @return プレイヤー、見つからない（オフライン）ならnullになることに注意
+	 *  指定した名前のプレイヤーを取得する
+	 *  @param name プレイヤー名
+	 *  @return プレイヤー、見つからない（オフライン）ならnullになることに注意
 	 */
-	private static Player getPlayer(String name) {
-		for ( Player player : Bukkit.getOnlinePlayers() ) {
-			if ( player.getName().equals(name) ) {
-				return player;
-			}
+	private static  Player getPlayer(String name) {
+		 for ( Player player : Bukkit.getOnlinePlayers() ) {
+			 if ( player.getName().equals(name) ) {
+				 return player;
+			 }
+		 }
+		 return null;
+	}
+
+	/**
+	 * 指定されたバージョンが、基準より新しいバージョンかどうかを確認する<br>
+	 * 完全一致した場合もtrueになることに注意。
+	 * @param version 確認するバージョン
+	 * @param border 基準のバージョン
+	 * @return 基準より確認対象の方が新しいバージョンかどうか
+	 */
+	public static boolean isUpperVersion(String version, String border) {
+
+		String[] versionArray = version.split("\\.");
+		int[] versionNumbers = new int[versionArray.length];
+		for ( int i=0; i<versionArray.length; i++ ) {
+			if ( !versionArray[i].matches("[0-9]+") )
+				return false;
+			versionNumbers[i] = Integer.parseInt(versionArray[i]);
 		}
-		return null;
+
+		String[] borderArray = border.split("\\.");
+		int[] borderNumbers = new int[borderArray.length];
+		for ( int i=0; i<borderArray.length; i++ ) {
+			if ( !borderArray[i].matches("[0-9]+") )
+				return false;
+			borderNumbers[i] = Integer.parseInt(borderArray[i]);
+		}
+
+		int index = 0;
+		while ( (versionNumbers.length > index) && (borderNumbers.length > index) ) {
+			if ( versionNumbers[index] > borderNumbers[index] ) {
+				return true;
+			} else if ( versionNumbers[index] < borderNumbers[index] ) {
+				return false;
+			}
+			index++;
+		}
+		if ( borderNumbers.length == index ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
