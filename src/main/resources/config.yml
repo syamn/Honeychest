@@ -12,10 +12,6 @@ toolMaterial: WOOD_SPADE
 # Valid actions: kick, ban, command
 takeAction: kick
 
-# Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
-# Set "takeAction: ban" and use MCBans or glizer if you want to use this option
-globalBan: false
-
 # Take commands from console if set takeAction: command
 # "!player!" string is replaced by caught player name.
 commands:
