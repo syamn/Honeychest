@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import syam.Honeychest.Actions;
 import syam.Honeychest.Honeychest;
 import syam.Honeychest.config.ConfigurationManager;
+import syam.Honeychest.util.Util;
 
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.MCBansAPI;
@@ -68,7 +69,7 @@ public class BanHandler {
 
 		// MCBans
 		if (checkMCBans != null){
-			if (isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
+			if (Util.isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
 				log.warning("Old MCBans plugin found. Honeychest supports MCBans v4.3.4 or later. Please update MCBans!");
 				banMethod = BanMethod.VANILLA;
 			}else{
@@ -275,46 +276,5 @@ public class BanHandler {
 			 }
 		 }
 		 return null;
-	}
-
-	/**
-	 * 指定されたバージョンが、基準より新しいバージョンかどうかを確認する<br>
-	 * 完全一致した場合もtrueになることに注意。
-	 * @param version 確認するバージョン
-	 * @param border 基準のバージョン
-	 * @return 基準より確認対象の方が新しいバージョンかどうか
-	 */
-	public static boolean isUpperVersion(String version, String border) {
-
-		String[] versionArray = version.split("\\.");
-		int[] versionNumbers = new int[versionArray.length];
-		for ( int i=0; i<versionArray.length; i++ ) {
-			if ( !versionArray[i].matches("[0-9]+") )
-				return false;
-			versionNumbers[i] = Integer.parseInt(versionArray[i]);
-		}
-
-		String[] borderArray = border.split("\\.");
-		int[] borderNumbers = new int[borderArray.length];
-		for ( int i=0; i<borderArray.length; i++ ) {
-			if ( !borderArray[i].matches("[0-9]+") )
-				return false;
-			borderNumbers[i] = Integer.parseInt(borderArray[i]);
-		}
-
-		int index = 0;
-		while ( (versionNumbers.length > index) && (borderNumbers.length > index) ) {
-			if ( versionNumbers[index] > borderNumbers[index] ) {
-				return true;
-			} else if ( versionNumbers[index] < borderNumbers[index] ) {
-				return false;
-			}
-			index++;
-		}
-		if ( borderNumbers.length == index ) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import syam.Honeychest.Honeychest;
+import syam.Honeychest.util.Util;
 
 public class ConfigurationManager {
 	public final static Logger log = Honeychest.log;
@@ -38,8 +39,8 @@ public class ConfigurationManager {
 		conf = plugin.getConfig();
 
 		// バージョンチェック
-		double version = conf.getDouble("version");
-		checkver(version);
+		String version = conf.getString("version", "1.0.0");
+		checkver(version, plugin.getDescription().getVersion());
 
 		takeAction = null;
 		String takeActionStr = conf.getString("takeAction", "kick").trim();
@@ -77,19 +78,13 @@ public class ConfigurationManager {
 
 	/**
 	 * 設定ファイルのバージョンをチェックする
-	 * @param ver
+	 * @param configVersion 設定ファイルのバージョン
+	 * @param nowVersion プラグインのバージョン
 	 */
-	private void checkver(final double ver){
-		double configVersion = ver; // 設定ファイルのバージョン
-		double nowVersion = 1.0D; // プラグインのバージョン
-		try{
-			nowVersion = Double.parseDouble(Honeychest.getInstance().getDescription().getVersion());
-		}catch (NumberFormatException ex){
-			log.warning("Cannot parse version string!");
-		}
+	private void checkver(final String configVersion, final String nowVersion){
 
 		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
-		if (configVersion < nowVersion){
+		if (Util.isUpperVersion(configVersion, nowVersion)){
 			// 先に古い設定ファイルをリネームする
 			String destName = "oldconfig-v"+configVersion+".yml";
 			String srcPath = new File(FileDirectoryStructure.getPluginDirectory(), "config.yml").getPath();
