@@ -29,22 +29,18 @@ package syam.Honeychest;
  * either expressed or implied, of anybody else.
  */
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,6 +48,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>
@@ -236,7 +240,8 @@ public class Metrics {
             }
 
             // Begin hitting the server with glorious data
-            taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            BukkitTask task =
+                    plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
 
                 private boolean firstPost = true;
 
@@ -268,6 +273,8 @@ public class Metrics {
                     }
                 }
             }, 0, PING_INTERVAL * 1200);
+
+            taskId = task.getTaskId();
 
             return true;
         }
@@ -349,7 +356,7 @@ public class Metrics {
         data.append(encode("guid")).append('=').append(encode(guid));
         encodeDataPair(data, "version", description.getVersion());
         encodeDataPair(data, "server", Bukkit.getVersion());
-        encodeDataPair(data, "players", Integer.toString(Bukkit.getServer().getOnlinePlayers().length));
+        encodeDataPair(data, "players", Integer.toString(getOnlinePlayerNum()));
         encodeDataPair(data, "revision", String.valueOf(REVISION));
 
         // If we're pinging, append it
@@ -615,4 +622,16 @@ public class Metrics {
 
     }
 
+    private static int getOnlinePlayerNum() {
+        try {
+            if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class)
+                return ((Collection<?>)Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0])).size();
+            else
+                return ((Player[])Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0])).length;
+        }
+        catch (NoSuchMethodException ex){} // can never happen
+        catch (InvocationTargetException ex){} // can also never happen
+        catch (IllegalAccessException ex){} // can still never happen
+        return 0;
+    }
 }

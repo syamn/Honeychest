@@ -12,14 +12,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import sun.security.krb5.Config;
 import syam.Honeychest.ContainerAccessManager.ContainerAccess;
 import syam.Honeychest.config.MessageManager;
 
@@ -155,7 +154,7 @@ public class HoneychestPlayerListener implements Listener {
 
 	// チャット
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerChat(PlayerChatEvent event){
+	public void onPlayerChat(AsyncPlayerChatEvent event){
 		// インベントリが閉じられたかチェック
 		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
 	}
