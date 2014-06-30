@@ -84,7 +84,7 @@ public class ConfigurationManager {
 	private void checkver(final String configVersion, final String nowVersion){
 
 		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
-		if (Util.isUpperVersion(configVersion, nowVersion)){
+		if (!Util.isUpperVersion(configVersion, nowVersion)){
 			// 先に古い設定ファイルをリネームする
 			String destName = "oldconfig-v"+configVersion+".yml";
 			String srcPath = new File(FileDirectoryStructure.getPluginDirectory(), "config.yml").getPath();
