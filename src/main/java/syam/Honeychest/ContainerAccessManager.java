@@ -219,7 +219,7 @@ public class ContainerAccessManager {
 
 				// エラー 不正
 				if (second == null){
-					String locstr = Actions.getBlockLocationString(second.getLocation());
+					String locstr = Actions.getBlockLocationString(block.getLocation());
 					log.warning("Wrong honeychest data at "+locstr);
 					return false;
 				}
