@@ -1,6 +1,5 @@
 package syam.Honeychest.config;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -48,13 +47,17 @@ public class FileDirectoryStructure {
 	 * @throws IOException 何らかの入出力処理例外が発生した場合
 	 */
 	public static void copyTransfer(String srcPath, String destPath) throws IOException {
-		FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
-		FileChannel destChannel = new FileOutputStream(destPath).getChannel();
+		FileChannel srcChannel = null;
+		FileChannel destChannel = null;
 		try {
-		    srcChannel.transferTo(0, srcChannel.size(), destChannel);
+			srcChannel = new FileInputStream(srcPath).getChannel();
+			destChannel = new FileOutputStream(destPath).getChannel();
+			srcChannel.transferTo(0, srcChannel.size(), destChannel);
 		} finally {
-		    srcChannel.close();
-		    destChannel.close();
+			if ( srcChannel != null )
+				srcChannel.close();
+			if ( destChannel != null )
+				destChannel.close();
 		}
 	}
 
@@ -108,7 +111,6 @@ public class FileDirectoryStructure {
 		InputStream in = null;
 		InputStreamReader reader = null;
 		OutputStreamWriter writer =null;
-		DataInputStream dis = null;
 		try{
 			// jar内部のリソースファイルを取得
 			URL res = Honeychest.class.getResource(from);
