@@ -5,8 +5,8 @@
 #==================#
 #   Basic Config   #
 #==================#
-# ItemID, used to create/remove honeychest
-toolID: 269
+# ItemMaterial for Honeychest tool, used to create/remove honeychest.
+toolMaterial: WOOD_SPADE
 
 # Take action when plugin caught steal items from honeychest
 # Valid actions: kick, ban, command

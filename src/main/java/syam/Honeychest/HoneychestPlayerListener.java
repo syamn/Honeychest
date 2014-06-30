@@ -90,7 +90,8 @@ public class HoneychestPlayerListener implements Listener {
 					block.getType() == Material.CHEST ) ) {
 			Location loc = block.getLocation();
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
-				if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.admin")){
+				if (player.getItemInHand().getType() == plugin.getHCConfig().getToolMaterial() &&
+						player.hasPermission("honeychest.admin")){
 					/* 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした */
 
 					// チェストならラージチェストか判定

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +22,7 @@ public class ConfigurationManager {
 	private final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
     private final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
     private final String defaultMessageLocale = "default"; // デフォルトの言語ファイル
-    private final int defaultToolID = 271;
+    private final Material defaultToolMaterial = Material.WOOD_SPADE;
     private final List<String> defaultCommands = new ArrayList<String>(0);
 
     // action
@@ -111,8 +112,13 @@ public class ConfigurationManager {
 	/* 以下設定取得用getter */
 
 	/* Basic Config */
-	public int getToolId() {
-		return conf.getInt("toolID", defaultToolID);
+	public Material getToolMaterial() {
+		String name = conf.getString("toolMaterial", defaultToolMaterial.name());
+		Material material = Material.matchMaterial(name.toUpperCase());
+		if ( material == null ) {
+			material = defaultToolMaterial;
+		}
+		return material;
 	}
 	public TakeAction getTakeAction() {
 		return this.takeAction;
