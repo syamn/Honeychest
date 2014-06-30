@@ -208,6 +208,7 @@ public class MessageManager {
 			s = o.toString();
 		} // リスト形式なら、一つずつのリストに改行文字を付けて結合する
 		else if (o instanceof List<?>) {
+			@SuppressWarnings("unchecked")
 			List<String> l = (List<String>) o;
 			s = Joiner.on("\n").join(l);
 		}

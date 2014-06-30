@@ -35,21 +35,19 @@ public class HoneychestBlockListener implements Listener {
 		if (block != null) {
 			Location loc = block.getLocation();
 
-			switch (block.getType()){
-				case FURNACE:
-				case DISPENSER:
-				case CHEST:
-					// ハニーチェストか判定 ハニーチェストならイベントをキャンセルする
-					String str = HoneyData.getHc(loc);
-					if (str != null){
-						// ハニーチェスト イベントキャンセル
-						event.setCancelled(true);
+			if ( block.getType() == Material.FURNACE ||
+					block.getType() == Material.DISPENSER ||
+					block.getType() == Material.CHEST ) {
+				// ハニーチェストか判定 ハニーチェストならイベントをキャンセルする
+				String str = HoneyData.getHc(loc);
+				if (str != null){
+					// ハニーチェスト イベントキャンセル
+					event.setCancelled(true);
 
-						// メッセージを隠す設定をチェック
-						if(!plugin.getHCConfig().getHideTrapMessages())
-							Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTrap"));
-					}
-					break;
+					// メッセージを隠す設定をチェック
+					if(!plugin.getHCConfig().getHideTrapMessages())
+						Actions.message(null, player, MessageManager.getString("BlockListener.notBreakTrap"));
+				}
 			}
 		}
 	}
@@ -62,7 +60,6 @@ public class HoneychestBlockListener implements Listener {
 
 		// チェスト設置時は横にハニーチェストが無いかチェック
 		if (block.getType() == Material.CHEST){
-			boolean flag = false;
 			if ((block.getRelative(BlockFace.NORTH).getType() == Material.CHEST&& HoneyData.getHc(block.getRelative(BlockFace.NORTH).getLocation()) != null) ||
 				(block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST && HoneyData.getHc(block.getRelative(BlockFace.SOUTH).getLocation()) != null) ||
 				(block.getRelative(BlockFace.EAST).getType() == Material.CHEST && HoneyData.getHc(block.getRelative(BlockFace.EAST).getLocation()) != null) ||
