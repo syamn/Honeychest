@@ -12,8 +12,6 @@ import syam.Honeychest.Honeychest;
 
 public class ConfigurationManager {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private JavaPlugin plugin;
 	private FileConfiguration conf;
@@ -86,7 +84,7 @@ public class ConfigurationManager {
 		try{
 			nowVersion = Double.parseDouble(Honeychest.getInstance().getDescription().getVersion());
 		}catch (NumberFormatException ex){
-			log.warning(logPrefix+ "Cannot parse version string!");
+			log.warning("Cannot parse version string!");
 		}
 
 		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
@@ -97,16 +95,16 @@ public class ConfigurationManager {
 			String destPath = new File(FileDirectoryStructure.getPluginDirectory(), destName).getPath();
 			try{
 				FileDirectoryStructure.copyTransfer(srcPath, destPath);
-				log.info(logPrefix+ "Copied old config.yml to "+destName+"!");
+				log.info("Copied old config.yml to "+destName+"!");
 			}catch(Exception ex){
-				log.warning(logPrefix+ "Cannot copy old config.yml!");
+				log.warning("Cannot copy old config.yml!");
 			}
 
 			// config.ymlと言語ファイルを強制コピー
 			FileDirectoryStructure.extractResource("/config.yml", FileDirectoryStructure.getPluginDirectory(), true, false);
 			MessageManager.extractLanguageFile(true);
 
-			log.info(logPrefix+ "Deleted existing configuration file and generate a new one!");
+			log.info("Deleted existing configuration file and generate a new one!");
 		}
 	}
 

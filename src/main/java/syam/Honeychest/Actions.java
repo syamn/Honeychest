@@ -24,8 +24,6 @@ import syam.Honeychest.util.TextFileHandler;
  */
 public class Actions {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	public static Honeychest plugin;
 	public Actions(Honeychest instance){

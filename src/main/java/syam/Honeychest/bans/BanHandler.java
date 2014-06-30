@@ -20,8 +20,6 @@ import com.mcbans.firestar.mcbans.api.MCBansAPI;
  */
 public class BanHandler {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	private ConfigurationManager config;
@@ -125,7 +123,7 @@ public class BanHandler {
 				ban_DynB(player, reason);
 				break;
 			default: // Exception: Undefined banMethod
-				log.warning(logPrefix+"Error occurred on banning player (BanHandler.class)");
+				log.warning("Error occurred on banning player (BanHandler.class)");
 				break;
 		}
 	}
@@ -158,7 +156,7 @@ public class BanHandler {
 				break;
 			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
-				log.warning(logPrefix+"Error occurred on kicking player (BanHandler.class)");
+				log.warning("Error occurred on kicking player (BanHandler.class)");
 				break;
 		}
 	}

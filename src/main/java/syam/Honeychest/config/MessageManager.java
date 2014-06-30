@@ -8,17 +8,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.google.common.base.Joiner;
 
 import syam.Honeychest.Honeychest;
 
+import com.google.common.base.Joiner;
+
 public class MessageManager {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	static Configuration fallbackMessages = null;
 	static Configuration messages = null;
@@ -67,7 +64,7 @@ public class MessageManager {
 		try{
 			messages = loadMessageFile(lang);
 		}catch(Exception ex){
-			log.warning(logPrefix+"Error occured on setMessagesLanguage");
+			log.warning("Error occured on setMessagesLanguage");
 		}
 	}
 	/**
@@ -159,7 +156,7 @@ public class MessageManager {
 	public static String getString(String key){
 		// カスタムされた言語ファイルがきちんと読み込めていない
 		if (messages == null){
-			log.warning(logPrefix+ "Localized messages file is NOT loaded..");
+			log.warning("Localized messages file is NOT loaded..");
 			return "!" + key + "!";
 		}
 
@@ -168,7 +165,7 @@ public class MessageManager {
 
 		// カスタムされた言語ファイルに特定のキーが存在しない
 		if (s == null){
-			log.warning(logPrefix+ "Missing message key '"+ key +"'");
+			log.warning("Missing message key '"+ key +"'");
 
 			// デフォルトの言語ファイルから読み込みを試す
 			s = getString(fallbackMessages, key);
@@ -191,7 +188,7 @@ public class MessageManager {
 		try{
 			return MessageFormat.format(getString(key), args);
 		}catch (Exception e){
-			log.warning(logPrefix+"Error formatting message for "+ key + ": "+e.getMessage());
+			log.warning("Error formatting message for "+ key + ": "+e.getMessage());
 			return getString(key);
 		}
 	}

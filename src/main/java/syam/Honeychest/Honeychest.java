@@ -15,8 +15,7 @@ import syam.Honeychest.config.MessageManager;
 
 public class Honeychest extends JavaPlugin{
 	// Logger
-	public final static Logger log = Logger.getLogger("Minecraft");
-	public final static String logPrefix = "[Honeychest] ";
+	public static Logger log;
 	public final static String msgPrefix = "&c[Honeychest] &f";
 
 	// Listener
@@ -38,7 +37,7 @@ public class Honeychest extends JavaPlugin{
 	public void onDisable(){
 		// ハニーチェストデータをファイルに書き込み
 		if (!HoneyData.saveData()){
-			log.warning(logPrefix+"an error occured while trying to save the honeychest data.");
+			log.warning("an error occured while trying to save the honeychest data.");
 		}
 
 		// メッセージ表示
@@ -51,6 +50,7 @@ public class Honeychest extends JavaPlugin{
 	 */
 	public void onEnable(){
 		instance = this;
+		log = getLogger();
 
 		// 設定ファイル読み込み
 		loadConfig();
@@ -65,11 +65,11 @@ public class Honeychest extends JavaPlugin{
 
 		// コマンドを登録
 		getServer().getPluginCommand("honeychest").setExecutor(new HoneychestCommand(this));
-		log.info(logPrefix+"Initialized Command.");
+		log.info("Initialized Command.");
 
 		// ハニーチェストデータをファイルから読み出し
 		if (!HoneyData.reloadData()){
-			log.warning(logPrefix+"an error occured while trying to load the honeychest data.");
+			log.warning("an error occured while trying to load the honeychest data.");
 		}
 
 		// BANを行うプラグインの決定とハンドラ初期化
@@ -77,31 +77,31 @@ public class Honeychest extends JavaPlugin{
 		boolean gban = config.isGlobalBan();
 		switch (banHandler.setupBanHandler(this)){
 			case VANILLA:
-				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
+				log.info("Didn't Find ban plugin, using vanilla.");
 				break;
 			case MCBANS:
-				log.info(logPrefix+"MCBans 4.3.4+ plugin found, using that.");
+				log.info("MCBans 4.3.4+ plugin found, using that.");
 				if (gban)
-					log.info(logPrefix+"Enabled Global BAN!");
+					log.info("Enabled Global BAN!");
 				else
-					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
+					log.info("Disabled Global BAN. Using local type BAN.");
 				break;
 			case GLIZER:
-				log.info(logPrefix+"glizer plugin found, using that.");
+				log.info("glizer plugin found, using that.");
 				if (gban)
-					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
+					log.info("Disabled Global BAN. Using local type BAN.");
 				break;
 			case EASYBAN:
-				log.info(logPrefix+"EasyBan plugin found, using that.");
+				log.info("EasyBan plugin found, using that.");
 				break;
 			case ULTRABAN:
-				log.info(logPrefix+"UltraBan plugin found, using that.");
+				log.info("UltraBan plugin found, using that.");
 				break;
 			case DYNBAN:
-				log.info(logPrefix+"DynamicBan plugin found, using that.");
+				log.info("DynamicBan plugin found, using that.");
 				break;
 			default:
-				log.warning(logPrefix+"Error occurred on setupBanHandler (Honeychest.class)");
+				log.warning("Error occurred on setupBanHandler (Honeychest.class)");
 				break;
 		}
 
@@ -127,7 +127,7 @@ public class Honeychest extends JavaPlugin{
 		// 設定ファイルが見つからなければデフォルトのファイルをコピー
 		if (!file.exists()){
 			this.saveDefaultConfig();
-			log.info(logPrefix+ "config.yml is not found! Created default config.yml!");
+			log.info("config.yml is not found! Created default config.yml!");
 		}
 
 		// 設定ファイルを読み込む
@@ -135,7 +135,7 @@ public class Honeychest extends JavaPlugin{
 		try{
 			config.load(this);
 		}catch(Exception ex){
-			log.warning(logPrefix+ "an error occured while trying to load the config file.");
+			log.warning("an error occured while trying to load the config file.");
 			ex.printStackTrace();
 		}
 

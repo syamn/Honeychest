@@ -24,8 +24,6 @@ import syam.Honeychest.config.MessageManager;
 
 public class HoneychestPlayerListener implements Listener {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private final Honeychest plugin;
 

@@ -1,31 +1,23 @@
 package syam.Honeychest.config;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
 
 import syam.Honeychest.Honeychest;
-import syam.Honeychest.util.Util;
 
 public class FileDirectoryStructure {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private static File pluginDir = new File("plugins", "Honeychest");
 	private static File languageDir;
@@ -76,7 +68,7 @@ public class FileDirectoryStructure {
 			return;
 		}
 		if (!dir.mkdir()){
-			log.warning(logPrefix+ "Can't create directory: " + dir.getName());
+			log.warning("Can't create directory: " + dir.getName());
 		}
 	}
 
@@ -95,7 +87,7 @@ public class FileDirectoryStructure {
 			String filename = new File(from).getName();
 			of = new File(to, filename);
 		}else if(!of.isFile()){
-			log.warning(logPrefix+ "not a file:" + of);
+			log.warning("not a file:" + of);
 			return;
 		}
 
@@ -121,7 +113,7 @@ public class FileDirectoryStructure {
 			// jar内部のリソースファイルを取得
 			URL res = Honeychest.class.getResource(from);
 			if (res == null){
-				log.warning(logPrefix+ "Can't find "+ from +" in plugin Jar file");
+				log.warning("Can't find "+ from +" in plugin Jar file");
 				return;
 			}
 			URLConnection resConn = res.openConnection();
@@ -129,7 +121,7 @@ public class FileDirectoryStructure {
 			in = resConn.getInputStream();
 
 			if (in == null){
-				log.warning(logPrefix+ "Can't get input stream from " + res);
+				log.warning("Can't get input stream from " + res);
 			}else{
 				// 出力処理 ファイルによって出力方法を変える
 				if (checkenc){
