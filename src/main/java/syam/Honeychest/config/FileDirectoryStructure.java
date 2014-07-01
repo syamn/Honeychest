@@ -160,7 +160,9 @@ public class FileDirectoryStructure {
 					reader.close();
 				if (writer != null)
 					writer.close();
-			}catch (Exception ex){}
+			}catch (Exception ex){
+				// do nothing.
+			}
 		}
 	}
 

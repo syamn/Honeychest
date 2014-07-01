@@ -18,11 +18,6 @@ import syam.Honeychest.util.TextFileHandler;
 public class HoneyData {
 	public final static Logger log = Honeychest.log;
 
-	public static Honeychest plugin;
-	public HoneyData(Honeychest instance){
-		plugin = instance;
-	}
-
 	// ハニーチェストのデータ保存用ファイルパス
 	private static final String hcDataPath = "plugins/Honeychest/list.ncsv";
 	// ハニーチェストを作っているプレイヤーの名前リスト

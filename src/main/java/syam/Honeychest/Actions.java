@@ -24,11 +24,6 @@ import syam.Honeychest.util.TextFileHandler;
 public class Actions {
 	public final static Logger log = Honeychest.log;
 
-	public static Honeychest plugin;
-	public Actions(Honeychest instance){
-		plugin = instance;
-	}
-
 	/*
 	 *  TODO:
 	 *  ・ハニーチェスト破壊時の扱いをどうするか設定可能にする (現在は破壊禁止)

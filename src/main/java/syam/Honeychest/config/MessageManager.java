@@ -129,7 +129,7 @@ public class MessageManager {
 			String basename = langFile.getName().replaceAll("\\.yml$", "");
 			// _(アンダーバー)があれば、_を含むそこから後ろの文字列を削除 ja_jp → ja
 			if (basename.contains("_")){
-				basename.replaceAll("_.+$", "");
+				basename = basename.replaceAll("_.+$", "");
 			}
 			// ja.yml が存在し、かつ読み込むことが出来るかチェック
 			File actual = new File(langFile.getParent(), basename + ".yml");

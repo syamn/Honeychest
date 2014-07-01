@@ -50,7 +50,7 @@ public class Honeychest extends JavaPlugin{
 	 */
 	public void onEnable(){
 		instance = this;
-		log = getLogger();
+		log = instance.getLogger();
 
 		// 設定ファイル読み込み
 		loadConfig();
