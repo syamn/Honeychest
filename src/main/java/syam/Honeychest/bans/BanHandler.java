@@ -69,7 +69,7 @@ public class BanHandler {
 
 		// MCBans
 		if (checkMCBans != null){
-			if (Util.isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
+			if (!Util.isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
 				log.warning("Old MCBans plugin found. Honeychest supports MCBans v4.3.4 or later. Please update MCBans!");
 				banMethod = BanMethod.VANILLA;
 			}else{
