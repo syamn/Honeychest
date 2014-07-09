@@ -269,12 +269,8 @@ public class BanHandler {
 	 *  @param name プレイヤー名
 	 *  @return プレイヤー、見つからない（オフライン）ならnullになることに注意
 	 */
+	@SuppressWarnings("deprecation")
 	private static  Player getPlayer(String name) {
-		 for ( Player player : Bukkit.getOnlinePlayers() ) {
-			 if ( player.getName().equals(name) ) {
-				 return player;
-			 }
-		 }
-		 return null;
+		 return Bukkit.getPlayerExact(name);
 	}
 }

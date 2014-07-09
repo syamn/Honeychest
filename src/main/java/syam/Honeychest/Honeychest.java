@@ -42,7 +42,7 @@ public class Honeychest extends JavaPlugin{
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is disabled!");
+		log.info("version "+pdfFile.getVersion()+" is disabled!");
 	}
 
 	/**
@@ -74,22 +74,22 @@ public class Honeychest extends JavaPlugin{
 
 		// BANを行うプラグインの決定とハンドラ初期化
 		banHandler = new BanHandler(this);
-		boolean gban = config.isGlobalBan();
+		//boolean gban = config.isGlobalBan();
 		switch (banHandler.setupBanHandler(this)){
 			case VANILLA:
 				log.info("Didn't Find ban plugin, using vanilla.");
 				break;
 			case MCBANS:
 				log.info("MCBans 4.3.4+ plugin found, using that.");
-				if (gban)
-					log.info("Enabled Global BAN!");
-				else
-					log.info("Disabled Global BAN. Using local type BAN.");
+//				if (gban)
+//					log.info("Enabled Global BAN!");
+//				else
+//					log.info("Disabled Global BAN. Using local type BAN.");
 				break;
 			case GLIZER:
 				log.info("glizer plugin found, using that.");
-				if (gban)
-					log.info("Disabled Global BAN. Using local type BAN.");
+//				if (gban)
+//					log.info("Disabled Global BAN. Using local type BAN.");
 				break;
 			case EASYBAN:
 				log.info("EasyBan plugin found, using that.");
@@ -110,7 +110,7 @@ public class Honeychest extends JavaPlugin{
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
+		log.info("version "+pdfFile.getVersion()+" is enabled!");
 	}
 
 	/**

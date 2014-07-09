@@ -93,18 +93,7 @@ public class Actions {
 	 * @param message メッセージ
 	 */
 	public static void permcastMessage(String permission, String message){
-		// 動かなかった どうして？
-		//int i = Bukkit.getServer().broadcast(message, permission);
-
-		// OK
-		int i = 0;
-		for (Player player : Bukkit.getServer().getOnlinePlayers()){
-			if (player.hasPermission(permission)){
-				Actions.message(null, player, message);
-				i++;
-			}
-		}
-
+		int i = Bukkit.getServer().broadcast(message, permission);
 		log.info("Received "+i+"players: "+message);
 	}
 
