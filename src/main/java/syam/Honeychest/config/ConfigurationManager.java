@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import syam.Honeychest.Honeychest;
+import syam.Honeychest.util.Util;
 
 public class ConfigurationManager {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private JavaPlugin plugin;
 	private FileConfiguration conf;
@@ -23,7 +23,7 @@ public class ConfigurationManager {
 	private final String defaultBanReason = "Steal items from HoneyChest. Goodbye!";  // BANの理由
     private final String defaultLogPath = "plugins/Honeychest/honeychest.log"; // デフォルトのログ出力先
     private final String defaultMessageLocale = "default"; // デフォルトの言語ファイル
-    private final int defaultToolID = 271;
+    private final Material defaultToolMaterial = Material.WOOD_SPADE;
     private final List<String> defaultCommands = new ArrayList<String>(0);
 
     // action
@@ -39,8 +39,8 @@ public class ConfigurationManager {
 		conf = plugin.getConfig();
 
 		// バージョンチェック
-		double version = conf.getDouble("version");
-		checkver(version);
+		String version = conf.getString("version", "1.0.0");
+		checkver(version, plugin.getDescription().getVersion());
 
 		takeAction = null;
 		String takeActionStr = conf.getString("takeAction", "kick").trim();
@@ -78,43 +78,42 @@ public class ConfigurationManager {
 
 	/**
 	 * 設定ファイルのバージョンをチェックする
-	 * @param ver
+	 * @param configVersion 設定ファイルのバージョン
+	 * @param nowVersion プラグインのバージョン
 	 */
-	private void checkver(final double ver){
-		double configVersion = ver; // 設定ファイルのバージョン
-		double nowVersion = 1.0D; // プラグインのバージョン
-		try{
-			nowVersion = Double.parseDouble(Honeychest.getInstance().getDescription().getVersion());
-		}catch (NumberFormatException ex){
-			log.warning(logPrefix+ "Cannot parse version string!");
-		}
+	private void checkver(final String configVersion, final String nowVersion){
 
 		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
-		if (configVersion < nowVersion){
+		if (!Util.isUpperVersion(configVersion, nowVersion)){
 			// 先に古い設定ファイルをリネームする
 			String destName = "oldconfig-v"+configVersion+".yml";
 			String srcPath = new File(FileDirectoryStructure.getPluginDirectory(), "config.yml").getPath();
 			String destPath = new File(FileDirectoryStructure.getPluginDirectory(), destName).getPath();
 			try{
 				FileDirectoryStructure.copyTransfer(srcPath, destPath);
-				log.info(logPrefix+ "Copied old config.yml to "+destName+"!");
+				log.info("Copied old config.yml to "+destName+"!");
 			}catch(Exception ex){
-				log.warning(logPrefix+ "Cannot copy old config.yml!");
+				log.warning("Cannot copy old config.yml!");
 			}
 
 			// config.ymlと言語ファイルを強制コピー
 			FileDirectoryStructure.extractResource("/config.yml", FileDirectoryStructure.getPluginDirectory(), true, false);
 			MessageManager.extractLanguageFile(true);
 
-			log.info(logPrefix+ "Deleted existing configuration file and generate a new one!");
+			log.info("Deleted existing configuration file and generate a new one!");
 		}
 	}
 
 	/* 以下設定取得用getter */
 
 	/* Basic Config */
-	public int getToolId() {
-		return conf.getInt("toolID", defaultToolID);
+	public Material getToolMaterial() {
+		String name = conf.getString("toolMaterial", defaultToolMaterial.name());
+		Material material = Material.matchMaterial(name.toUpperCase());
+		if ( material == null ) {
+			material = defaultToolMaterial;
+		}
+		return material;
 	}
 	public TakeAction getTakeAction() {
 		return this.takeAction;

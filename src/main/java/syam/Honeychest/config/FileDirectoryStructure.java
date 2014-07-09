@@ -1,31 +1,22 @@
 package syam.Honeychest.config;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
 
 import syam.Honeychest.Honeychest;
-import syam.Honeychest.util.Util;
 
 public class FileDirectoryStructure {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private static File pluginDir = new File("plugins", "Honeychest");
 	private static File languageDir;
@@ -56,13 +47,17 @@ public class FileDirectoryStructure {
 	 * @throws IOException 何らかの入出力処理例外が発生した場合
 	 */
 	public static void copyTransfer(String srcPath, String destPath) throws IOException {
-		FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
-		FileChannel destChannel = new FileOutputStream(destPath).getChannel();
+		FileChannel srcChannel = null;
+		FileChannel destChannel = null;
 		try {
-		    srcChannel.transferTo(0, srcChannel.size(), destChannel);
+			srcChannel = new FileInputStream(srcPath).getChannel();
+			destChannel = new FileOutputStream(destPath).getChannel();
+			srcChannel.transferTo(0, srcChannel.size(), destChannel);
 		} finally {
-		    srcChannel.close();
-		    destChannel.close();
+			if ( srcChannel != null )
+				srcChannel.close();
+			if ( destChannel != null )
+				destChannel.close();
 		}
 	}
 
@@ -76,7 +71,7 @@ public class FileDirectoryStructure {
 			return;
 		}
 		if (!dir.mkdir()){
-			log.warning(logPrefix+ "Can't create directory: " + dir.getName());
+			log.warning("Can't create directory: " + dir.getName());
 		}
 	}
 
@@ -95,7 +90,7 @@ public class FileDirectoryStructure {
 			String filename = new File(from).getName();
 			of = new File(to, filename);
 		}else if(!of.isFile()){
-			log.warning(logPrefix+ "not a file:" + of);
+			log.warning("not a file:" + of);
 			return;
 		}
 
@@ -116,12 +111,11 @@ public class FileDirectoryStructure {
 		InputStream in = null;
 		InputStreamReader reader = null;
 		OutputStreamWriter writer =null;
-		DataInputStream dis = null;
 		try{
 			// jar内部のリソースファイルを取得
 			URL res = Honeychest.class.getResource(from);
 			if (res == null){
-				log.warning(logPrefix+ "Can't find "+ from +" in plugin Jar file");
+				log.warning("Can't find "+ from +" in plugin Jar file");
 				return;
 			}
 			URLConnection resConn = res.openConnection();
@@ -129,7 +123,7 @@ public class FileDirectoryStructure {
 			in = resConn.getInputStream();
 
 			if (in == null){
-				log.warning(logPrefix+ "Can't get input stream from " + res);
+				log.warning("Can't get input stream from " + res);
 			}else{
 				// 出力処理 ファイルによって出力方法を変える
 				if (checkenc){
@@ -166,7 +160,9 @@ public class FileDirectoryStructure {
 					reader.close();
 				if (writer != null)
 					writer.close();
-			}catch (Exception ex){}
+			}catch (Exception ex){
+				// do nothing.
+			}
 		}
 	}
 

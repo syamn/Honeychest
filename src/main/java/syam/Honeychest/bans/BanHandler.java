@@ -2,16 +2,18 @@ package syam.Honeychest.bans;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.api.MCBansAPI;
-
 import syam.Honeychest.Actions;
 import syam.Honeychest.Honeychest;
 import syam.Honeychest.config.ConfigurationManager;
+import syam.Honeychest.util.Util;
+
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.api.MCBansAPI;
 
 /**
  * I've made this class with reference to Honeypot.
@@ -19,8 +21,6 @@ import syam.Honeychest.config.ConfigurationManager;
  */
 public class BanHandler {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	private ConfigurationManager config;
@@ -69,8 +69,8 @@ public class BanHandler {
 
 		// MCBans
 		if (checkMCBans != null){
-			if (checkMCBans.getDescription().getVersion().trim().startsWith("3")){
-				log.warning("Old MCBans plugin (3.x) found but Honeychest supports the version 4.0+");
+			if (!Util.isUpperVersion(checkMCBans.getDescription().getVersion().trim(), "4.3.4")){
+				log.warning("Old MCBans plugin found. Honeychest supports MCBans v4.3.4 or later. Please update MCBans!");
 				banMethod = BanMethod.VANILLA;
 			}else{
 				mcbansAPI = ((MCBans) checkMCBans).getAPI(plugin);
@@ -124,7 +124,7 @@ public class BanHandler {
 				ban_DynB(player, reason);
 				break;
 			default: // Exception: Undefined banMethod
-				log.warning(logPrefix+"Error occurred on banning player (BanHandler.class)");
+				log.warning("Error occurred on banning player (BanHandler.class)");
 				break;
 		}
 	}
@@ -157,7 +157,7 @@ public class BanHandler {
 				break;
 			default: // Exception: Undefined banMethod
 				player.kickPlayer(config.getKickReason());
-				log.warning(logPrefix+"Error occurred on kicking player (BanHandler.class)");
+				log.warning("Error occurred on kicking player (BanHandler.class)");
 				break;
 		}
 	}
@@ -169,10 +169,13 @@ public class BanHandler {
 	 * @param reason BANの理由
 	 */
 	private void ban_MCBans3(Player player, String sender, String reason){
+		String targetUUID = player.getUniqueId().toString();
+		Player senderPlayer = getPlayer(sender);
+		String senderUUID = (senderPlayer != null) ? senderPlayer.getUniqueId().toString() : "";
 		if (config.isGlobalBan()){
-			mcbansAPI.globalBan(player.getName(), sender, reason);
+			mcbansAPI.globalBan(player.getName(), targetUUID, sender, senderUUID, reason);
 		}else{
-			mcbansAPI.localBan(player.getName(), sender, reason);
+			mcbansAPI.localBan(player.getName(), targetUUID, sender, senderUUID, reason);
 		}
 	}
 	/**
@@ -182,7 +185,9 @@ public class BanHandler {
 	 * @param reason Kickの理由
 	 */
 	private void kick_MCBans(Player player, String sender, String reason){
-		mcbansAPI.kick(player.getName(), sender, reason);
+		Player senderPlayer = getPlayer(sender);
+		String senderUUID = (senderPlayer != null) ? senderPlayer.getUniqueId().toString() : "";
+		mcbansAPI.kick(player.getName(), "", sender, senderUUID, reason);
 	}
 
 	/**
@@ -259,4 +264,13 @@ public class BanHandler {
 		Actions.executeCommandOnConsole("dynkick " + player.getName() + " " + reason);
 	}
 
+	/**
+	 *  指定した名前のプレイヤーを取得する
+	 *  @param name プレイヤー名
+	 *  @return プレイヤー、見つからない（オフライン）ならnullになることに注意
+	 */
+	@SuppressWarnings("deprecation")
+	private static  Player getPlayer(String name) {
+		 return Bukkit.getPlayerExact(name);
+	}
 }

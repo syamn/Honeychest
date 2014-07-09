@@ -12,21 +12,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import sun.security.krb5.Config;
 import syam.Honeychest.ContainerAccessManager.ContainerAccess;
 import syam.Honeychest.config.MessageManager;
 
 public class HoneychestPlayerListener implements Listener {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private final Honeychest plugin;
 
@@ -48,40 +45,35 @@ public class HoneychestPlayerListener implements Listener {
 			return;
 		}
 
-		if (block != null) {
-			Location loc = block.getLocation();
+		if ( block != null &&
+				( block.getType() == Material.FURNACE ||
+					block.getType() == Material.DISPENSER ||
+					block.getType() == Material.CHEST ) ) {
+			// ハニーチェストのインベントリを開いた
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.getHc(block.getLocation()) != null) {
+				if (Honeychest.containerManager.isAccessing(block.getLocation())){
+					// このハニーチェストは他人に開かれている
 
-			switch (block.getType()){
-				case FURNACE:
-				case DISPENSER:
-				case CHEST:
-					// ハニーチェストのインベントリを開いた
-					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.getHc(block.getLocation()) != null) {
-						if (Honeychest.containerManager.isAccessing(block.getLocation())){
-							// このハニーチェストは他人に開かれている
+					event.setCancelled(true);
+					event.setUseInteractedBlock(Result.DENY);
+					event.setUseItemInHand(Result.DENY);
 
-							event.setCancelled(true);
-							event.setUseInteractedBlock(Result.DENY);
-							event.setUseItemInHand(Result.DENY);
+					// メッセージ非表示フラグがtrueになっていれば何も表示しない
+					if(!plugin.getHCConfig().getHideTrapMessages())
+						Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
 
-							// メッセージ非表示フラグがtrueになっていれば何も表示しない
-							if(!plugin.getHCConfig().getHideTrapMessages())
-								Actions.message(null, player, MessageManager.getString("PlayerListener.openedTrap"));
+					return;
+				}else{
+					// 開くことが出来る
 
-							return;
-						}else{
-							// 開くことが出来る
-
-							// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
-							if (player.hasPermission("honeychest.ignore") && !plugin.getHCConfig().getHideIgnoreMessage()){
-								Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
-							}
-
-							// 権限がなければ通常処理
-							Honeychest.containerManager.checkInventoryOpen(player, block);
-						}
+					// 権限を持っていればハニーチェストを開いた記録に残さない → 窃盗可能
+					if (player.hasPermission("honeychest.ignore") && !plugin.getHCConfig().getHideIgnoreMessage()){
+						Actions.message(null, player, MessageManager.getString("PlayerListener.youAreIgnore"));
 					}
-					break;
+
+					// 権限がなければ通常処理
+					Honeychest.containerManager.checkInventoryOpen(player, block);
+				}
 			}
 		}
 	}
@@ -91,50 +83,48 @@ public class HoneychestPlayerListener implements Listener {
 	public void createHoneyChest(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
-		if (block != null) {
+
+		if ( block != null &&
+				( block.getType() == Material.FURNACE ||
+					block.getType() == Material.DISPENSER ||
+					block.getType() == Material.CHEST ) ) {
 			Location loc = block.getLocation();
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
+				if (player.getItemInHand().getType() == plugin.getHCConfig().getToolMaterial() &&
+						player.hasPermission("honeychest.admin")){
+					/* 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした */
 
-			switch (block.getType()){
-				case FURNACE:
-				case DISPENSER:
-				case CHEST:
-					if (event.getAction() == Action.RIGHT_CLICK_BLOCK && HoneyData.isCreator(player)) {
-						if (player.getItemInHand().getTypeId() == plugin.getHCConfig().getToolId() && player.hasPermission("honeychest.admin")){
-							/* 管理モードで特定のアイテムを持ったままコンテナブロックを右クリックした */
-
-							// チェストならラージチェストか判定
-							Block second = null;
-							if (block.getType() == Material.CHEST){
-								// 走査開始
-								if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
-						            second = block.getRelative(BlockFace.NORTH);
-						        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
-						            second = block.getRelative(BlockFace.SOUTH);
-						        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
-						            second = block.getRelative(BlockFace.EAST);
-						        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
-						            second = block.getRelative(BlockFace.WEST);
-							}
-
-							// 既にハニーチェストになっているか判定
-							if (HoneyData.getHc(loc) == null) {
-								HoneyData.setHc(loc, "*"); // TODO:
-
-								if (second != null)
-									HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト登録
-
-								Actions.message(null, player, MessageManager.getString("PlayerListener.createTrap"));
-							}else{
-								HoneyData.removeHc(loc); // 削除
-								if (second != null)
-									HoneyData.removeHc(second.getLocation()); // ラージチェスト削除
-
-								Actions.message(null, player, MessageManager.getString("PlayerListener.removeTrap"));
-							}
-							event.setCancelled(true);
-						}
+					// チェストならラージチェストか判定
+					Block second = null;
+					if (block.getType() == Material.CHEST){
+						// 走査開始
+						if (block.getRelative(BlockFace.NORTH).getType() == Material.CHEST)
+				            second = block.getRelative(BlockFace.NORTH);
+				        else if (block.getRelative(BlockFace.SOUTH).getType() == Material.CHEST)
+				            second = block.getRelative(BlockFace.SOUTH);
+				        else if (block.getRelative(BlockFace.EAST).getType() == Material.CHEST)
+				            second = block.getRelative(BlockFace.EAST);
+				        else if (block.getRelative(BlockFace.WEST).getType() == Material.CHEST)
+				            second = block.getRelative(BlockFace.WEST);
 					}
-					break;
+
+					// 既にハニーチェストになっているか判定
+					if (HoneyData.getHc(loc) == null) {
+						HoneyData.setHc(loc, "*"); // TODO:
+
+						if (second != null)
+							HoneyData.setHc(second.getLocation(), "*"); // ラージチェスト登録
+
+						Actions.message(null, player, MessageManager.getString("PlayerListener.createTrap"));
+					}else{
+						HoneyData.removeHc(loc); // 削除
+						if (second != null)
+							HoneyData.removeHc(second.getLocation()); // ラージチェスト削除
+
+						Actions.message(null, player, MessageManager.getString("PlayerListener.removeTrap"));
+					}
+					event.setCancelled(true);
+				}
 			}
 		}
 	}
@@ -155,7 +145,7 @@ public class HoneychestPlayerListener implements Listener {
 
 	// チャット
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerChat(PlayerChatEvent event){
+	public void onPlayerChat(AsyncPlayerChatEvent event){
 		// インベントリが閉じられたかチェック
 		Honeychest.containerManager.checkInventoryClose(event.getPlayer());
 	}

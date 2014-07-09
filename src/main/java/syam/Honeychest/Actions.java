@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,13 +23,6 @@ import syam.Honeychest.util.TextFileHandler;
  */
 public class Actions {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
-
-	public static Honeychest plugin;
-	public Actions(Honeychest instance){
-		plugin = instance;
-	}
 
 	/*
 	 *  TODO:
@@ -101,18 +93,7 @@ public class Actions {
 	 * @param message メッセージ
 	 */
 	public static void permcastMessage(String permission, String message){
-		// 動かなかった どうして？
-		//int i = Bukkit.getServer().broadcast(message, permission);
-
-		// OK
-		int i = 0;
-		for (Player player : Bukkit.getServer().getOnlinePlayers()){
-			if (player.hasPermission(permission)){
-				Actions.message(null, player, message);
-				i++;
-			}
-		}
-
+		int i = Bukkit.getServer().broadcast(message, permission);
 		log.info("Received "+i+"players: "+message);
 	}
 
@@ -191,18 +172,13 @@ public class Actions {
 	public static String getLocationString(Location loc){
 		return loc.getWorld().getName()+":"+loc.getX()+","+loc.getY()+","+loc.getZ();
 	}
+	/**
+	 * 座標データを ワールド名:x, y, z の形式の文字列にして返す
+	 * @param loc
+	 * @return
+	 */
 	public static String getBlockLocationString(Location loc){
 		return loc.getWorld().getName()+":"+loc.getBlockX()+","+loc.getBlockY()+","+loc.getBlockZ();
-	}
-	/**
-	 * デバッグ用 syamnがオンラインならメッセージを送る
-	 * @param msg
-	 */
-	public static void debug(String msg){
-		OfflinePlayer syamn = Bukkit.getServer().getOfflinePlayer("syamn");
-		if (syamn.isOnline()){
-			Actions.message(null, (Player) syamn, msg);
-		}
 	}
 
 	/****************************************/

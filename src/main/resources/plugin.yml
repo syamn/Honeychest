@@ -1,0 +1,31 @@
+##  Plugin Information  ##
+name: ${project.name}
+version: ${project.version}
+main: syam.Honeychest.Honeychest
+description: Anti-Grief Plugin! Can be able to create chest of honeypot!
+website: http://sakura-server.net/
+softdepend: [MCBans]
+##  Original Author     ##
+author: syam
+authors: [ucchy]
+
+##  Command Settings    ##
+commands:
+    honeychest:
+        usage: /honeychest help - to see the help
+        aliases: [hc]
+        description: To see the Honeychest help.
+
+##  Permission Settings    ##
+permissions:
+    honeychest.admin:
+        default: op
+        description: Can create/break honeychest.
+    honeychest.ignore:
+        default: op
+        description: Can remove items from honeychest.
+    honeychest.*:
+        children:
+            honeychest.admin: true
+            honeychest.ignore: true
+        description: All of honeychest permission.

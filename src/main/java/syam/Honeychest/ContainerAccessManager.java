@@ -9,10 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 
 import syam.Honeychest.config.ConfigurationManager;
 import syam.Honeychest.config.MessageManager;
@@ -23,8 +21,6 @@ import syam.Honeychest.util.InventoryUtil;
  */
 public class ContainerAccessManager {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	private ConfigurationManager config;
@@ -142,7 +138,7 @@ public class ContainerAccessManager {
 				if (config.getRollbackFlag()){
 					access.container.getInventory().setContents(InventoryUtil.uncompressInventory(access.beforeInv));
 					//((Chest)access.loc.getBlock().getState()).getInventory().setContents(access.beforeItemStack);
-					log.info(logPrefix+ "successfully rolled back stolen items from player " +player.getName() + " at location (" + locstr+ ")");
+					log.info("successfully rolled back stolen items from player " +player.getName() + " at location (" + locstr+ ")");
 				}
 
 				// ロギング
@@ -223,8 +219,8 @@ public class ContainerAccessManager {
 
 				// エラー 不正
 				if (second == null){
-					String locstr = Actions.getBlockLocationString(second.getLocation());
-					log.warning(logPrefix+"Wrong honeychest data at "+locstr);
+					String locstr = Actions.getBlockLocationString(block.getLocation());
+					log.warning("Wrong honeychest data at "+locstr);
 					return false;
 				}
 

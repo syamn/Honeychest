@@ -5,16 +5,12 @@
 #==================#
 #   Basic Config   #
 #==================#
-# ItemID, used to create/remove honeychest
-toolID: 269
+# ItemMaterial for Honeychest tool, used to create/remove honeychest.
+toolMaterial: WOOD_SPADE
 
 # Take action when plugin caught steal items from honeychest
 # Valid actions: kick, ban, command
 takeAction: kick
-
-# Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
-# Set "takeAction: ban" and use MCBans or glizer if you want to use this option
-globalBan: false
 
 # Take commands from console if set takeAction: command
 # "!player!" string is replaced by caught player name.
@@ -62,4 +58,4 @@ honeychestBanReason: 'Steal items from HoneyChest. (!location!)'
 #   DO NOT TOUCH   #
 #==================#
 # Do not touch this option! It is a check if you are running the recent configuration version
-version: 1.4
+version: ${project.version}

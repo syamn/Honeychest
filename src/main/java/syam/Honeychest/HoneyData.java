@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,13 +17,6 @@ import syam.Honeychest.util.TextFileHandler;
 
 public class HoneyData {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
-
-	public static Honeychest plugin;
-	public HoneyData(Honeychest instance){
-		plugin = instance;
-	}
 
 	// ハニーチェストのデータ保存用ファイルパス
 	private static final String hcDataPath = "plugins/Honeychest/list.ncsv";
@@ -57,14 +49,14 @@ public class HoneyData {
 
 				// 行の形式がおかしい場合はその行をスキップ
 				if (data.length != 2 || coord.length != 4){
-					log.warning(logPrefix+ "Skipping line "+line+": incorrect format");
+					log.warning("Skipping line "+line+": incorrect format");
 					continue;
 				}
 
 				World world = Honeychest.getInstance().getServer().getWorld(coord[0]);
 				// ワールドが存在しなければその行をスキップ
 				if (world == null){
-					log.warning(logPrefix+ "Skipping line "+line+": no World defined for world "+coord[0]);
+					log.warning("Skipping line "+line+": no World defined for world "+coord[0]);
 					continue;
 				}
 

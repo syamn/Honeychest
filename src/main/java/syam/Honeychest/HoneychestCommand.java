@@ -2,9 +2,6 @@ package syam.Honeychest;
 
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,8 +11,6 @@ import syam.Honeychest.config.MessageManager;
 
 public class HoneychestCommand implements CommandExecutor {
 	public final static Logger log = Honeychest.log;
-	private static final String logPrefix = Honeychest.logPrefix;
-	private static final String msgPrefix = Honeychest.msgPrefix;
 
 	private Honeychest plugin;
 	public HoneychestCommand(Honeychest instance){
@@ -46,7 +41,7 @@ public class HoneychestCommand implements CommandExecutor {
 				// 管理モード開始
 				HoneyData.setCreator(player, true);
 
-				String tool = Material.getMaterial(plugin.getHCConfig().getToolId()).name();
+				String tool = plugin.getHCConfig().getToolMaterial().name();
 
 				Actions.message(null, player, MessageManager.getString("Commands.manageStart", tool));
 			}

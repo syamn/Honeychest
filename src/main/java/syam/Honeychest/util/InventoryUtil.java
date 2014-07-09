@@ -5,14 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
-import syam.Honeychest.Actions;
 
 /**
  * I've made this class with reference to Hawkeye.
@@ -225,12 +219,12 @@ public class InventoryUtil {
 		// 増加分をリストに追加
 		List<String> add = new ArrayList<String>();
 		for (Entry<String, Integer> item : ops.get(0).entrySet()){
-			add.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+			add.add(item.getValue() + "x " + item.getKey());
 		}
 		// 減少分をリストに追加
 		List<String> sub = new ArrayList<String>();
 		for (Entry<String, Integer> item : ops.get(1).entrySet()){
-			sub.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+			sub.add(item.getValue() + "x " + item.getKey());
 		}
 
 		// それぞれのリストを組み立て
@@ -252,7 +246,7 @@ public class InventoryUtil {
 		// 減少分をリストに追加
 		List<String> sub = new ArrayList<String>();
 		for (Entry<String, Integer> item : op.entrySet()){
-			sub.add(item.getValue() + "x " + ItemUtil.getItemStringName(item.getKey()));
+			sub.add(item.getValue() + "x " + item.getKey());
 		}
 
 		// それぞれのリストを組み立て
